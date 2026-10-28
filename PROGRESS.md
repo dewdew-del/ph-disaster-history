@@ -155,5 +155,5 @@ Open http://localhost:3000. For the production build: `npm run build`, then `npm
 - npm scripts: `data:typhoons` now includes `compute-affected`; new `data:all` runs provinces → quakes → typhoons.
 
 **How to test**
-- Open `/bagyo`, pick "Bohol" in the province filter: 136 storms; pick a decade to see their tracks.
+- Open `/bagyo`, pick "Bohol" in the province filter: 71 storms; pick a decade to see their tracks.
 - Open `/bagyo/2013306N07162` (Yolanda): the provinces card lists Leyte, Samar, etc., and they're shaded on the map.
