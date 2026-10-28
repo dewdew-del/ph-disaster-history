@@ -26,3 +26,15 @@ Open http://localhost:3000. For the production build: `npm run build`, then `npm
 **How to test**
 - `npm run dev`, open http://localhost:3000: you should see the two cards and a map of the Philippines.
 - Click the ☾ / ☀︎ button: the whole page and the map tiles switch theme, and it stays after a reload.
+
+### Step 2: Earthquake scripts (2026-10-28)
+**Done**
+- `scripts/fetch-earthquakes.ts`: downloads USGS quakes M4.5+ one year at a time (1900 → now) into `data/raw/quakes/` (gitignored). Past years are cached, the current year always re-downloads. `--force` re-downloads all. Uses `endtime = Jan 1 of next year` so quakes late on Dec 31 aren't lost (the plan's `endtime=YYYY-12-31` would cut most of Dec 31).
+- `scripts/build-earthquakes.ts`: merges and de-duplicates, keeps `id, time, mag, depth, lat, lon, place`, rounds coords to 3 decimals. Writes `public/data/quakes.json` (compact rows) and `public/data/quakes-summary.json` (per year, per magnitude band, top 20 strongest).
+- Shared helpers in `scripts/lib/` (polite fetch with retries, CSV, paths, size check). Data shapes in `src/lib/types.ts`.
+- Result: **15,778 quakes** (M6+: 664, M7+: 86). `quakes.json` = 1.4 MB, summary = 7 KB (both under the 2 MB rule).
+- Strongest: M8.3 1918 Celebes Sea, M8.1 1924 Mindanao, M8.0 1972 Mindanao, M7.9 1976 Moro Gulf.
+
+**How to test**
+- `npm run data:quakes` (takes ~2 min the first time, a few seconds after that because of the cache).
+- Check the console summary and that `public/data/quakes.json` exists.
