@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "preview": "serve out",
-    "lint": "eslint"
+    "lint": "eslint",
+    "data:quakes": "tsx scripts/fetch-earthquakes.ts && tsx scripts/build-earthquakes.ts"
   },
   "dependencies": {
     "leaflet": "^1.9.4",
