@@ -97,3 +97,20 @@ Open http://localhost:3000. For the production build: `npm run build`, then `npm
 - Open http://localhost:3000/bagyo: 2020s storms are listed and drawn.
 - Type "haiyan": 2 results (2013 STY 230 km/h, 2001 TY). Click the 2013 one: its track is highlighted.
 - Pick "All years" in Decade: the map asks you to narrow down (1,793 storms > 300).
+
+### Step 7: Wikipedia auto-fill (2026-10-28)
+**Done**
+- `scripts/fetch-wikipedia.ts` (MediaWiki API only, User-Agent with your GitHub URL, 1 s between requests, 20 pages per request, raw responses cached in `data/raw/wikipedia/`):
+  - **Local names:** reads every "[YEAR] Pacific typhoon season" page 1990 → 2026, parses headings like `Typhoon Haiyan (Yolanda)`, and matches each to an IBTrACS storm by international name + season, then JTWC number (`Tropical Depression 30W (Wilma)`), then dates (only when exactly one unnamed storm fits). Local names are checked against that season's official PAGASA name table on the same page, so JTWC names like "Tropical Depression Jack" (1993) aren't mistaken for PAGASA names.
+  - **Damage + deaths:** reads the infobox (`fatalities`, `damage(s)`, `damage-prefix`, `year`) of each matched storm's own article. Ranges, "at least", ">", pesos/other currencies, "unknown" → `needs_review = true` (shown as "approximate"). Articles that redirect to a whole season page are skipped (they'd give season totals).
+  - **Retired names:** parses the tables on "List of retired Philippine typhoon names" → `data/retired-names.csv` (also lists PH-only deaths, used in Step 9).
+- Parsers live in `scripts/lib/wiki.ts` with 9 unit tests: `npm run test:scripts`.
+- **"Entered the PAR" now also includes storms PAGASA named** even if the IBTrACS track just misses the PAR polygon (agencies' positions differ near the edge, e.g. Jelawat/Caloy 2018, Lupit/Huaning 2021). Total storms: 1,805.
+- Result: **640 storms with a local name** (572 by name, 46 by JTWC number, 5 by dates, 17 pre-1990 from the retired list), **393 with deaths/damage** (78 need review), **90 of 96 retired names** matched.
+- 31 Wikipedia sections couldn't be matched: almost all are PAGASA-only depressions that IBTrACS doesn't track (e.g. TD Winnie 2004, the deadly Quezon floods), plus 3 storms from late 2026 that IBTrACS hasn't added yet. They're listed in `data/raw/wikipedia-unmatched.txt` and skipped, as the plan says.
+- Famous storms all matched: Yolanda (Haiyan) 6,352 deaths / >$2.98B, Odette (Rai), Ondoy (Ketsana), Pepeng (Parma), Sendong (Washi, range → approximate), Pablo (Bopha), Rolly (Goni), Ulysses (Vamco), Uring (Thelma), Reming (Durian), Frank (Fengshen), Glenda (Rammasun), Kristine (Trami), Carina (Gaemi), Agaton (Megi), Paeng (Nalgae).
+- `npm run data:typhoons` now runs: fetch IBTrACS → fetch Wikipedia → build typhoons.
+
+**How to test**
+- `npm run test:scripts` → 9 passing tests.
+- Open http://localhost:3000/bagyo and search "yolanda": "Yolanda (Haiyan) 2013 · 6,352 dead (all areas)".
