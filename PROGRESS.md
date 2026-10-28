@@ -143,3 +143,17 @@ Open http://localhost:3000. For the production build: `npm run build`, then `npm
 **How to test**
 - `/bagyo` → **Stats** tab → "Deadliest in the Philippines" shows the list above.
 - `/bagyo/2013306N07162`: "Deaths in the Philippines 6,300" plus "Deaths, total all areas 6,352".
+
+### Step 10: Affected provinces (2026-10-29)
+**Done**
+- `scripts/compute-affected.ts`: a province is in a storm's **approximate path area** when the full 3-hourly IBTrACS track passes within ~50 km of it (or runs through it). Writes `data/affected-provinces.json`; `build-typhoons.ts` joins it. Runs in ~6 s.
+- 828 of 1,805 storms have a path area over at least one province. Most often hit: Cagayan (245), Aurora, Isabela, Quezon, Palawan, Eastern Samar, Samar, Ilocos Sur.
+- Spot-checks: Yolanda → Eastern Samar, Samar, Leyte, Biliran, Cebu, Capiz, Aklan, Iloilo, Antique, Negros Occ., Occidental Mindoro, Palawan…; Rolly → Catanduanes, Albay, Camarines Sur, Quezon, Laguna, Batangas, Metro Manila…
+- Note: Ondoy's center passed north of Metro Manila (> 50 km away), so Metro Manila isn't in its path area even though its rain flooded the city. That's why it's labeled "approximate path area, not official".
+- Storm pages now list the provinces (links to `/lugar/...`, built in Step 12) and highlight them on the map.
+- `/bagyo` filter: **Province hit (approximate path area)** dropdown is now visible; `/bagyo?province=bohol` opens with that filter.
+- npm scripts: `data:typhoons` now includes `compute-affected`; new `data:all` runs provinces → quakes → typhoons.
+
+**How to test**
+- Open `/bagyo`, pick "Bohol" in the province filter: 136 storms; pick a decade to see their tracks.
+- Open `/bagyo/2013306N07162` (Yolanda): the provinces card lists Leyte, Samar, etc., and they're shaded on the map.
