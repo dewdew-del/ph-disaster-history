@@ -11,7 +11,7 @@ const NAV = [
 export default function SiteHeader() {
   return (
     <header className="sticky top-0 z-[1100] border-b border-border bg-background/90 backdrop-blur">
-      <div className="mx-auto flex max-w-7xl items-center gap-3 px-4 py-2.5">
+      <div className="mx-auto flex h-14 max-w-7xl items-center gap-3 px-4">
         <Link href="/" className="shrink-0 font-semibold tracking-tight">
           PH Disaster History
         </Link>

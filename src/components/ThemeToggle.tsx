@@ -1,19 +1,9 @@
 "use client";
 
-import { useSyncExternalStore } from "react";
-
-function subscribe(onChange: () => void) {
-  const observer = new MutationObserver(onChange);
-  observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
-  return () => observer.disconnect();
-}
-
-function isDarkNow() {
-  return document.documentElement.classList.contains("dark");
-}
+import { useIsDark } from "@/lib/useIsDark";
 
 export default function ThemeToggle() {
-  const dark = useSyncExternalStore(subscribe, isDarkNow, () => false);
+  const dark = useIsDark();
 
   function toggle() {
     const next = !dark;
