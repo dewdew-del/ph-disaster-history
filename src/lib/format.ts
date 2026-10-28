@@ -30,6 +30,15 @@ export function yearPH(unixSeconds: number): number {
   return Number(yearFmt.format(new Date(unixSeconds * 1000)));
 }
 
+/** Fast version of yearPH for big loops (PH has no daylight saving, so UTC+8 is exact). */
+export function fastYearPH(unixSeconds: number): number {
+  return new Date((unixSeconds + 8 * 3600) * 1000).getUTCFullYear();
+}
+
+export function escapeHtml(s: string): string {
+  return s.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]!);
+}
+
 /** Date range like "Nov 3 – 11, 2013" or "Dec 28, 2011 – Jan 2, 2012". */
 export function formatDateRangePH(start: number, end: number): string {
   const a = formatDatePH(start);

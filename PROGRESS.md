@@ -38,3 +38,19 @@ Open http://localhost:3000. For the production build: `npm run build`, then `npm
 **How to test**
 - `npm run data:quakes` (takes ~2 min the first time, a few seconds after that because of the cache).
 - Check the console summary and that `public/data/quakes.json` exists.
+
+### Step 3: Linog Map MVP (2026-10-28)
+**Done**
+- `/linog` page: all 15,778 quakes on the map as canvas circle markers, sized and colored by magnitude, with a legend.
+- Filters: magnitude range (M4.5–M9.0), year range (1900–now), depth bands (shallow 0–70 km, intermediate 70–300 km, deep 300+ km), reset button, and a live "Showing X of Y quakes" count.
+- Click a quake: popup with date/time (PH time), magnitude, depth, place and a link to the USGS event page.
+- Mobile: map is full width, filters open in a bottom sheet ("Filters" button on the map). Desktop: filters in a left sidebar.
+- Performance: markers are created once and cached; a filter change only adds/removes the markers that changed (slider drag ~20–60 ms instead of ~600 ms for a full redraw). Dark mode restyles markers instead of recreating them.
+- Colors: one orange ramp (light = weak, dark = strong; flipped in dark mode so strong quakes stand out), checked with a color validator for contrast and single hue.
+- Note on the page: pre-1973 catalog only lists bigger quakes; USGS vs PHIVOLCS magnitudes can differ.
+
+**How to test**
+- `npm run dev`, open http://localhost:3000/linog.
+- Drag the magnitude "From" slider to 6.0: the count drops to 664 and only big quakes remain.
+- Click any circle: a popup shows the date in PHT and a USGS link.
+- Shrink the browser to phone width: the "Filters" button opens the bottom sheet.
