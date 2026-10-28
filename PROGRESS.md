@@ -114,3 +114,14 @@ Open http://localhost:3000. For the production build: `npm run build`, then `npm
 **How to test**
 - `npm run test:scripts` → 9 passing tests.
 - Open http://localhost:3000/bagyo and search "yolanda": "Yolanda (Haiyan) 2013 · 6,352 dead (all areas)".
+
+### Step 8: Typhoon detail pages (2026-10-29)
+**Done**
+- `/bagyo/[id]`: one static page per storm, **1,805 pages** pre-rendered with `generateStaticParams` (`dynamicParams = false`). Full build takes ~40 s on this laptop.
+- Each page: both names ("Yolanda (Haiyan), 2013"), category chip, dates in PHT, retired-name and provisional badges, map with the full track colored by strength (start/end markers, PAR outline, legend), wind speed over time chart with PAGASA threshold lines, stat cards (peak wind, peak inside PAR, lowest pressure, time inside PAR), damage card (Wikipedia totals labeled "Total, all areas", USD with year, "approximate" label for `needs_review` values, source link, "As written on Wikipedia" text; or "No damage data yet"), provinces card (fills in at Step 10), sources (IBTrACS storm page + Wikipedia), prev/next storm links.
+- Map and chart load client-side only (lazy), so the HTML stays small (~29 KB per page).
+- `src/lib/data-server.ts`: build-time JSON readers for server components.
+
+**How to test**
+- `npm run build && npm run preview`, open `/bagyo/2013306N07162` (Yolanda): 230 km/h, 895 hPa, 6,352 deaths, >$2.98 billion (2013 USD) marked approximate.
+- Click "Details →" on any storm in `/bagyo`, then use the ← / → links at the bottom.
