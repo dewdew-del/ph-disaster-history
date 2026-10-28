@@ -169,3 +169,18 @@ Open http://localhost:3000. For the production build: `npm run build`, then `npm
 **How to test**
 - Open `/bagyo/retired`: Yolanda 2013 shows 6,300 deaths and ₱95.5 billion; Kristine/Leon 2024 show 159*.
 - Click "Yolanda": opens the Haiyan storm page.
+
+### Step 12: My Place (2026-10-29)
+**Done**
+- `/lugar`: pick a province from a dropdown (grouped by region) or tap it on the map. The map is a choropleth you can switch between **Typhoons** (storms in path area since 1945) and **Earthquakes** (M4.5+ since 1900), with a legend and hover tooltips. Plus a sortable table of all 84 provinces.
+- `/lugar/[province]`: one static page per province (84 pages). Shows:
+  - stat cards: quakes since 1900 (on land vs offshore), strongest quake + M6+ count, typhoons in the path area + latest one, deadliest typhoon (curated PH deaths, labeled "deaths nationwide").
+  - map zoomed to the province (highlighted) with its quakes.
+  - storms per decade and quakes per decade charts.
+  - lists: strongest quakes (USGS links), deadliest typhoons, strongest typhoons, most recent, and a link to `/bagyo?province=<slug>` for the full list.
+- `src/lib/province-stats.ts`: build-time counts per province shared by both pages.
+- Storm pages' province chips now link here.
+
+**How to test**
+- Open `/lugar`, switch the map to **Earthquakes**: Davao Oriental and Surigao del Sur are darkest. Click Leyte.
+- `/lugar/leyte`: 89 quakes (strongest M7.1, 1908), 135 typhoons, deadliest Yolanda (Haiyan) 2013 with 6,300 deaths nationwide.
