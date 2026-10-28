@@ -205,18 +205,20 @@ async function main() {
   const localFromRetired = new Map<string, string>();
   if (retiredPage) {
     for (const r of parseRetiredTables(retiredPage.wikitext)) {
+      if (!/^[A-Z][a-z]+$/.test(r.local)) continue; // footnote rows like "24 Names"
+      // Some rows give the year the name was retired, so look one year either side.
       const year = r.year ?? 0;
-      const candidates = [...(bySeason.get(year) ?? []), ...(bySeason.get(year - 1) ?? [])];
+      const candidates = [year, year - 1, year + 1].flatMap((y) => bySeason.get(y) ?? []);
       const from = r.startDate ? Date.UTC(+r.startDate.slice(0, 4), +r.startDate.slice(4, 6) - 1, +r.startDate.slice(6, 8)) / 1000 : null;
       let storm: Storm | undefined;
       if (r.intl) {
         const key = nameKey(r.intl);
         storm = candidates
           .filter((s) => s.names.some((n) => nameKey(n) === key))
-          .sort((a, b) => distanceToWindow(a, from) - distanceToWindow(b, from))[0];
-      }
-      if (!storm && from !== null) {
-        const byDate = candidates.filter((s) => overlaps(s, from, from));
+          .sort((a, b) => Math.abs(a.season - year) - Math.abs(b.season - year) || distanceToWindow(a, from) - distanceToWindow(b, from))[0];
+      } else if (from !== null) {
+        // No international name (a PAGASA-only depression): accept a single unnamed storm on those dates.
+        const byDate = candidates.filter((s) => s.names.length === 0 && overlaps(s, from, from));
         if (byDate.length === 1) storm = byDate[0];
       }
       if (storm && r.article && !articleFor.has(storm.sid)) articleFor.set(storm.sid, r.article);
