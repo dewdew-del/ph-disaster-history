@@ -150,6 +150,24 @@ export type TyphoonDetail = TyphoonSummary & {
   next: StormLink | null;
 };
 
+/** One row of the retired PAGASA names list. */
+export type RetiredName = {
+  local: string;
+  intl: string | null;
+  year: number;
+  /** Storm page id, when the storm is in the archive */
+  id: string | null;
+  cat: CatCode;
+  kmh: number | null;
+  /** PH deaths as listed in the retired-names table */
+  deathsListed: number | null;
+  /** The table gives one combined count for storms that hit together */
+  deathsShared: boolean;
+  /** Damage in pesos as listed, e.g. "₱95480000000" */
+  damagePhp: string | null;
+  articleUrl: string | null;
+};
+
 /** Simplified tracks for one decade: storm id -> [lat, lon, category index][] */
 export type DecadeTracks = { decade: number; storms: Record<string, [number, number, number][]> };
 

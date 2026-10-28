@@ -57,8 +57,8 @@ export function formatNumber(n: number): string {
   return n.toLocaleString("en-US");
 }
 
-/** USD as Wikipedia lists it: $2.2 billion, $97.8 million, $450 thousand. */
-export function formatUsd(amount: number): string {
+/** Money in words: $2.2 billion, ₱97.8 million, $450 thousand. */
+export function formatMoney(amount: number, symbol: string): string {
   const units: [number, string][] = [
     [1e12, "trillion"],
     [1e9, "billion"],
@@ -69,10 +69,20 @@ export function formatUsd(amount: number): string {
     if (amount >= size) {
       const v = amount / size;
       const digits = v >= 100 ? 0 : v >= 10 ? 1 : 2;
-      return `$${Number(v.toFixed(digits)).toLocaleString("en-US")} ${word}`;
+      return `${symbol}${Number(v.toFixed(digits)).toLocaleString("en-US")} ${word}`;
     }
   }
-  return `$${formatNumber(Math.round(amount))}`;
+  return `${symbol}${formatNumber(Math.round(amount))}`;
+}
+
+/** USD as Wikipedia lists it: $2.2 billion, $97.8 million, $450 thousand. */
+export const formatUsd = (amount: number) => formatMoney(amount, "$");
+
+/** "₱95480000000" (as listed) -> "₱95.48 billion"; anything else is returned as-is. */
+export function formatPhpListed(raw: string | null): string | null {
+  if (!raw) return null;
+  const m = raw.replace(/,/g, "").match(/^₱\s*(\d+(?:\.\d+)?)$/);
+  return m ? formatMoney(Number(m[1]), "₱") : raw;
 }
 
 export function formatMag(mag: number): string {

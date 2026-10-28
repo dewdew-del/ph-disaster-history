@@ -1,6 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
+import Link from "next/link";
 import { useCallback, useDeferredValue, useEffect, useMemo, useRef, useState } from "react";
 import CategoryLegend from "@/components/map/CategoryLegend";
 import MapLoading from "@/components/map/MapLoading";
@@ -132,8 +133,11 @@ export default function BagyoExplorer() {
       <div className="px-4 pb-3 pt-4 lg:hidden">
         <h1 className="text-2xl font-bold tracking-tight">Bagyo Archive</h1>
         <p className="mt-1 text-sm text-muted">Every storm that entered the PAR since 1945 (IBTrACS).</p>
-        <p className="mt-2 text-sm" aria-live="polite">
-          {countLine}
+        <p className="mt-2 flex items-baseline justify-between gap-2 text-sm">
+          <span aria-live="polite">{countLine}</span>
+          <Link href="/bagyo/retired" className="text-xs text-accent underline">
+            Retired names →
+          </Link>
         </p>
       </div>
 
@@ -168,8 +172,11 @@ export default function BagyoExplorer() {
           <p className="mt-1 text-sm text-muted">
             Every storm that entered the Philippine Area of Responsibility since 1945, from IBTrACS.
           </p>
-          <p className="mt-3 text-sm" aria-live="polite">
-            {countLine}
+          <p className="mt-3 flex items-baseline justify-between gap-2 text-sm">
+            <span aria-live="polite">{countLine}</span>
+            <Link href="/bagyo/retired" className="text-xs text-accent underline">
+              Retired names →
+            </Link>
           </p>
           <div className="mt-4">{filters}</div>
         </div>
