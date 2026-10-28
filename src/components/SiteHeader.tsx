@@ -10,12 +10,12 @@ const NAV = [
 
 export default function SiteHeader() {
   return (
-    <header className="sticky top-0 z-[1100] border-b border-border bg-background/90 backdrop-blur">
-      <div className="mx-auto flex h-14 max-w-7xl items-center gap-3 px-4">
+    <header className="sticky top-0 z-[1100] bg-card">
+      <div className="mx-auto flex h-14 max-w-[1440px] items-center gap-3 px-5 md:px-8">
         <Link href="/" className="shrink-0 font-semibold tracking-tight">
           PH Disaster History
         </Link>
-        <nav className="flex flex-1 gap-1 overflow-x-auto text-sm" aria-label="Main">
+        <nav className="no-scrollbar flex flex-1 gap-1 overflow-x-auto text-sm" aria-label="Main">
           {NAV.map((item) => (
             <Link
               key={item.href}

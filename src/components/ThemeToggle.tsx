@@ -19,11 +19,22 @@ export default function ThemeToggle() {
     <button
       type="button"
       onClick={toggle}
-      className="rounded-md border border-border px-2.5 py-1.5 text-sm hover:bg-foreground/5"
+      className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-foreground/5 hover:bg-foreground/10 active:scale-95"
       aria-label={dark ? "Switch to light mode" : "Switch to dark mode"}
       title={dark ? "Light mode" : "Dark mode"}
     >
-      {dark ? "☀︎" : "☾"}
+      {dark ? (
+        <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden fill="currentColor">
+          <circle cx="12" cy="12" r="5" />
+          <g stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+            <path d="M12 1.5v2.5M12 20v2.5M1.5 12H4M20 12h2.5M4.6 4.6l1.8 1.8M17.6 17.6l1.8 1.8M4.6 19.4l1.8-1.8M17.6 6.4l1.8-1.8" />
+          </g>
+        </svg>
+      ) : (
+        <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden fill="currentColor">
+          <path d="M20.5 14.5A8.5 8.5 0 0 1 9.5 3.5a8.5 8.5 0 1 0 11 11Z" />
+        </svg>
+      )}
     </button>
   );
 }

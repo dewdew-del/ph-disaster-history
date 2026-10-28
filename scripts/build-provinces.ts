@@ -2,6 +2,7 @@
 //   -> data/raw/provinces/provinces-detail.json  (medium detail, used by the scripts for tagging)
 //   -> public/data/provinces.json                (simplified for the map, < 1 MB)
 //   -> public/data/provinces-index.json          (names, regions, centers for dropdowns)
+//   -> public/data/ph-outline.json               (whole-country coastline, very simplified)
 // The 4 NCR districts are merged into "Metro Manila", and the City of Isabela into Basilan.
 // Run: npx tsx scripts/build-provinces.ts   (add --force to re-download)
 import fs from "node:fs";
@@ -93,6 +94,13 @@ async function main() {
   );
   const simple = JSON.parse(String(simpleOut["simple.json"])) as FeatureCollection<Polygon | MultiPolygon>;
 
+  // Whole-country coastline, very simplified, for small drawings (the landing page thumbnails).
+  const outlineOut = await mapshaper.applyCommands(
+    "-i in.json -dissolve -simplify 1.5% keep-shapes -filter-islands min-area=40km2 -o outline.json format=geojson precision=0.01",
+    { "in.json": detail },
+  );
+  const outline = JSON.parse(String(outlineOut["outline.json"]));
+
   detail.features.sort((a, b) => String(a.properties?.name).localeCompare(String(b.properties?.name)));
   simple.features.sort((a, b) => String(a.properties?.name).localeCompare(String(b.properties?.name)));
 
@@ -115,6 +123,7 @@ async function main() {
   console.log(`  data/raw/provinces/provinces-detail.json: ${Math.round(fs.statSync(detailFile).size / 1024)} KB`);
   checkSize("public/data/provinces.json", writeJson(path.join(PUBLIC_DATA_DIR, "provinces.json"), simple));
   checkSize("public/data/provinces-index.json", writeJson(path.join(PUBLIC_DATA_DIR, "provinces-index.json"), index));
+  checkSize("public/data/ph-outline.json", writeJson(path.join(PUBLIC_DATA_DIR, "ph-outline.json"), outline));
 }
 
 const round = (n: number) => Math.round(n * 1000) / 1000;
