@@ -5,6 +5,7 @@ import { useCallback, useDeferredValue, useEffect, useMemo, useRef, useState } f
 import MapLoading from "@/components/map/MapLoading";
 import MagnitudeLegend from "@/components/map/MagnitudeLegend";
 import BottomSheet from "@/components/ui/BottomSheet";
+import LazyVisible from "@/components/ui/LazyVisible";
 import { loadQuakes } from "@/lib/data-client";
 import { fastYearPH, formatNumber } from "@/lib/format";
 import { WHERE_LAND, WHERE_OFFSHORE, toQuake, type Quake, type QuakesFile } from "@/lib/types";
@@ -169,13 +170,15 @@ export default function LinogExplorer() {
         </div>
         <div className="pt-4" role="tabpanel">
           {!data ? null : tab === "charts" ? (
-            <QuakeCharts
-              quakes={filtered}
-              provinceNames={provinceNames}
-              yearFrom={deferredFilter.yearFrom}
-              yearTo={deferredFilter.yearTo}
-              dark={dark}
-            />
+            <LazyVisible minHeight={600}>
+              <QuakeCharts
+                quakes={filtered}
+                provinceNames={provinceNames}
+                yearFrom={deferredFilter.yearFrom}
+                yearTo={deferredFilter.yearTo}
+                dark={dark}
+              />
+            </LazyVisible>
           ) : (
             <StrongestList quakes={filtered} dark={dark} label={provinceLabel} onPick={pickQuake} />
           )}

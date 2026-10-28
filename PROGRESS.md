@@ -4,6 +4,10 @@ Build follows the Build Order in `PLAN.md`. Each step: `npm run build` passes, o
 
 ## Needs Dewdew
 - **Vercel deploy (Steps 1 and 3 say "deploy" / "ship it").** Skipped on purpose: the project rule is no deploys unless you ask. When you're ready: push to GitHub, then import the repo on vercel.com (Framework: Next.js, no settings to change). The site is a static export, so the free Hobby plan is enough.
+- **Push to GitHub.** Not done (your rule). The repo is local with one commit per step on `main`.
+- **30-second demo video.** Needs you (screen recording). Suggested flow: landing → Linog Map heatmap → Strongest 20 click → Bagyo search "yolanda" → storm page → My Place → Leyte.
+- **"Problem I solved" note.** Drafted in `docs/problem-i-solved.md`; rewrite it in your own words.
+- **Map pages' Lighthouse score (optional follow-up).** Mobile Lighthouse: landing 92, Linog Map 52, Bagyo Archive 57, storm page 64 (accessibility 96–100 everywhere). The slow part is that the largest thing on screen is an OpenStreetMap tile, which only loads after Leaflet's JavaScript runs. Fix idea: show a small static map image in the map box until Leaflet is ready. Not done yet.
 - **Optional data check (Step 9), not blocking.** 3 retired storms list more PH deaths than Wikipedia's all-areas total, so I left them out of the curated deadliest list: Ruby/Hagupit 2014 (24 vs 18), Nika/Toraji 2024 (17 vs 4), Crising/Wipha 2025 (36 vs 20). If you find the right NDRRMC number, add a `ph_deaths` + `ph_source_url` row for it in `data/overrides.csv`.
 - **Ulysses (Vamco) 2020 death count.** Sources disagree: the retired-names table says 51 (PAGASA report), the Vamco article cites NDRRMC 98 (Jan 13, 2021). I used **98 (NDRRMC)**. Change it in `data/overrides.csv` if you prefer the other.
 
@@ -184,3 +188,21 @@ Open http://localhost:3000. For the production build: `npm run build`, then `npm
 **How to test**
 - Open `/lugar`, switch the map to **Earthquakes**: Davao Oriental and Surigao del Sur are darkest. Click Leyte.
 - `/lugar/leyte`: 89 quakes (strongest M7.1, 1908), 135 typhoons, deadliest Yolanda (Haiyan) 2013 with 6,300 deaths nationwide.
+
+### Step 13: Landing, sources, README, polish (2026-10-29)
+**Done**
+- **Landing page (`/`)**, designed with the design-taste skill (direction "contact sheet"): the name at poster size, one sentence on what the site is, a "Look up your province" button, and links to the four sections with real counts. Then **"Storms that changed the list"**: a contact sheet of 8 storms PAGASA retired (Yolanda, Sendong, Pablo, Odette, Ondoy, Rolly, Ulysses, Rosing), each shown as its satellite image, its track and its winds drawn from our own data, plus the 1990 Luzon and 2013 Bohol earthquakes with photos and their epicentres. Then **"Your province"**, a live picker that tells you a province's typhoon and quake count, strongest quake and deadliest storm. Then "In numbers", "Deadliest typhoons", "About this project".
+- Pictures: 11 real images from Wikimedia Commons (NASA / NOAA / Chiba University satellite images, PHIVOLCS photo of the 1990 Baguio hotel collapse, two CC BY-SA photos of Bohol churches), resized to small JPEGs with `scripts/optimize-images.mjs` (436 KB total). Credits in `public/images/archive/credits.json`, on the landing page and on `/sources#pictures`.
+- Design checks: the skill's lint has 0 issues; its browser inspector at 1440/768/390 px gives **0 FAIL** and 2 warnings I kept on purpose: no video (keeps the page light on mobile data) and system font instead of the dealt "General Sans" (no external font request, same font as the rest of the site).
+- **Sources page (`/sources`)**: every data source with licence and citation (USGS, IBTrACS with DOI, Wikipedia CC BY-SA, PSGC boundaries, OSM), the methods (PAR rule, PAGASA scale, wind conversion, path area, curated deaths), picture credits, and links to PAGASA, PHIVOLCS, NDRRMC, EMSC.
+- **README.md** with screenshots (`docs/screenshots/`, taken with headless Edge), features, data sources, how to run, how to refresh the data, how to add manual fixes, how the numbers are made, structure, limitations.
+- **Polish**: theme toggle uses drawn icons instead of an emoji; header and footer have no hairlines (tone steps instead) and share the page margins; nav scrolls on phones without a scrollbar; footer text is 14px+; chart axis labels no longer clipped; Linog markers are added in small time slices and charts load only when scrolled into view (mobile blocking time: Linog 2.2 s → 1.2 s, storm page 1.1 s → 0.7 s).
+- Checked at 375px width (phone): no page scrolls sideways.
+
+**How to test**
+- `npm run build && npm run preview`, open `/`: change the province in "Your province" and the sentence updates; hover a storm in the contact sheet and the others dim; click it to open its page.
+- Open `/sources` and click any credit link.
+- `npm run lint` and `npm run test:scripts` both pass.
+
+## Summary
+All 13 steps of the Build Order are done and committed. What's left is in **Needs Dewdew** at the top: GitHub push, Vercel deploy, the demo video, your edit of the "Problem I solved" note, and two optional follow-ups (map-page Lighthouse score, three death counts to check).

@@ -72,31 +72,40 @@ export default function QuakeLayer({ quakes, dark, provinceLabel, focus }: Props
     const group = groupRef.current;
     const renderer = rendererRef.current;
     if (!group || !renderer) return;
+    const shown = shownRef.current;
     const next = new Set(quakes.map((q) => q.id));
-    for (const id of shownRef.current) {
+    for (const id of [...shown]) {
       if (!next.has(id)) {
         const m = markersRef.current.get(id);
         if (m) group.removeLayer(m);
+        shown.delete(id);
       }
     }
-    const added: [Quake, L.CircleMarker][] = [];
-    for (const q of quakes) {
-      if (shownRef.current.has(q.id)) continue;
-      let m = markersRef.current.get(q.id);
-      if (!m) {
-        m = L.circleMarker([q.lat, q.lon], { renderer, ...markerStyle(q, darkRef.current) });
-        m.bindPopup(() => quakePopupHtml(q, labelRef.current?.(q)));
-        markersRef.current.set(q.id, m);
+    // Small quakes first so big ones end up drawn on top.
+    const todo = quakes.filter((q) => !shown.has(q.id)).sort((a, b) => a.mag - b.mag);
+    let i = 0;
+    let timer: ReturnType<typeof setTimeout> | null = null;
+    // Add markers in ~12 ms slices so the page stays responsive while thousands are created (phones).
+    const step = () => {
+      const start = performance.now();
+      while (i < todo.length && performance.now() - start < 12) {
+        const q = todo[i++];
+        let m = markersRef.current.get(q.id);
+        if (!m) {
+          m = L.circleMarker([q.lat, q.lon], { renderer, ...markerStyle(q, darkRef.current) });
+          m.bindPopup(() => quakePopupHtml(q, labelRef.current?.(q)));
+          markersRef.current.set(q.id, m);
+        }
+        group.addLayer(m);
+        shown.add(q.id);
       }
-      added.push([q, m]);
-    }
-    // Add small quakes first so big ones end up drawn on top.
-    added.sort((a, b) => a[0].mag - b[0].mag);
-    for (const [, m] of added) group.addLayer(m);
-    if (added.length > 0) {
-      for (const q of quakes) if (q.mag >= 6.5) markersRef.current.get(q.id)?.bringToFront();
-    }
-    shownRef.current = next;
+      if (i < todo.length) timer = setTimeout(step, 0);
+      else if (todo.length > 0) for (const q of quakes) if (q.mag >= 6.5) markersRef.current.get(q.id)?.bringToFront();
+    };
+    step();
+    return () => {
+      if (timer) clearTimeout(timer);
+    };
   }, [quakes]);
 
   // Theme change: restyle cached markers instead of recreating them.
