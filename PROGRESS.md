@@ -82,3 +82,18 @@ Open http://localhost:3000. For the production build: `npm run build`, then `npm
 **How to test**
 - `npm run data:typhoons` → prints the storm count and category breakdown.
 - Open `public/data/typhoons/2013306N07162.json` (Haiyan): peak 230 km/h, 38 track points.
+
+### Step 6: Bagyo list + track map (2026-10-28)
+**Done**
+- `/bagyo` page: searchable list of all 1,793 storms (newest first, 60 at a time with "Show more"), each with category chip, dates (PHT), peak wind, deaths when known, and a "Details →" link.
+- Filters: name search (searches all years, ignores the decade filter, also matches JTWC numbers like "30W" and years), decade (default: latest decade), year, peak strength chips (TD/TS/STS/TY/STY/Unknown). Province filter is wired in but only appears after Step 10 adds the data.
+- Map: tracks of the filtered storms colored by strength along the track (same orange ramp, PAGASA scale), dashed PAR outline, legend. Tracks load from the small per-decade files only for the decades in view; more than 300 matching storms → the map asks you to narrow the filter instead of drawing them all (keeps phones smooth).
+- Click a storm in the list or a track on the map: it's highlighted (thicker line with a casing) and the map zooms to it; track popups link to the storm page.
+- Stats tab: storms per year (current filters) with a numbers table; "Deadliest in the Philippines" (curated only; fills in at Step 9).
+- URL presets: `/bagyo?q=haiyan`, `/bagyo?decade=1990`, `/bagyo?province=bohol` (after Step 10).
+- Mobile: map on top, filters in the bottom sheet, list below.
+
+**How to test**
+- Open http://localhost:3000/bagyo: 2020s storms are listed and drawn.
+- Type "haiyan": 2 results (2013 STY 230 km/h, 2001 TY). Click the 2013 one: its track is highlighted.
+- Pick "All years" in Decade: the map asks you to narrow down (1,793 storms > 300).
