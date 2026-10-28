@@ -68,3 +68,17 @@ Open http://localhost:3000. For the production build: `npm run build`, then `npm
 - Open http://localhost:3000/linog, click **Heatmap**: bright spots east of Mindanao and around Luzon.
 - Open the **Strongest 20** tab, click "M8.3 Aug 15, 1918": the map flies to the Celebes Sea and the popup says "Offshore, near Sultan Kudarat".
 - Set years to 2000–2026 in the filters: the charts redraw for that range.
+
+### Step 5: IBTrACS script → typhoon JSON (2026-10-28)
+**Done**
+- `scripts/fetch-ibtracs.ts`: downloads the IBTrACS Western Pacific CSV (115 MB) into `data/raw/ibtracs/` (gitignored); skips if the file is under 7 days old, `--force` to re-download.
+- `scripts/lib/ibtracs.ts`: parses the CSV, keeps storms from **1945+** that entered the **real PAR polygon**, main + provisional tracks (no spurs). Wind = JMA 10-min wind, else JTWC 1-min × 0.88 (flagged "estimated"), in km/h rounded to 5. Parsed result is cached in `data/raw/ibtracs/par-storms.json`.
+- `scripts/build-typhoons.ts`: writes `public/data/typhoons/index.json` (388 KB), one `{sid}.json` per storm (6-hourly track, largest 4 KB), and `tracks-{decade}.json` (simplified tracks for the list map, 20–77 KB each). It already knows how to join local names, damage, affected provinces, retired names and `overrides.csv` (applied last) for the later steps.
+- PAGASA categories from the 10-min wind: TD ≤ 61, TS 62–88, STS 89–117, TY 118–184, STY ≥ 185 km/h.
+- Result: **1,793 storms** (TD 114, TS 318, STS 269, TY 528, STY 298, unknown strength 266, mostly 1945–1980s storms with no wind in IBTrACS).
+- Spot-checks: Haiyan 2013 230 km/h STY, Rai 2021 195 STY, Ketsana 2009 130 TY, Washi 2011 95 STS, Bopha 2012 185 STY, Goni 2020 220 STY, Thelma 1991 75 TS.
+- New npm script: `npm run data:typhoons`.
+
+**How to test**
+- `npm run data:typhoons` → prints the storm count and category breakdown.
+- Open `public/data/typhoons/2013306N07162.json` (Haiyan): peak 230 km/h, 38 track points.

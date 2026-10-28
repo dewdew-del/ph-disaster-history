@@ -8,7 +8,8 @@
     "preview": "serve out",
     "lint": "eslint",
     "data:provinces": "tsx scripts/build-provinces.ts",
-    "data:quakes": "tsx scripts/fetch-earthquakes.ts && tsx scripts/build-earthquakes.ts"
+    "data:quakes": "tsx scripts/fetch-earthquakes.ts && tsx scripts/build-earthquakes.ts",
+    "data:typhoons": "tsx scripts/fetch-ibtracs.ts && tsx scripts/build-typhoons.ts"
   },
   "dependencies": {
     "leaflet": "^1.9.4",

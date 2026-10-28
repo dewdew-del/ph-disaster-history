@@ -1,3 +1,5 @@
+import type { CatCode } from "./types";
+
 // Color and size scales shared by maps, legends and charts.
 // One single-hue (orange) ordinal ramp for "intensity", validated for both themes
 // (dataviz validator: monotone lightness, one hue, light end clears the surface).
@@ -62,11 +64,24 @@ export const CATEGORIES = [
   { code: "STY", name: "Super Typhoon", min: 185 },
 ] as const;
 
-export type CategoryCode = (typeof CATEGORIES)[number]["code"] | "UNK";
+export type CategoryCode = CatCode;
 
 export function categoryIndex(code: CategoryCode): number {
   return CATEGORIES.findIndex((c) => c.code === code);
 }
+
+/** PAGASA category index from 10-min wind in km/h: 0 = TD … 4 = STY, -1 = unknown. */
+export function catIndexFromKmh(kmh: number | null): number {
+  if (kmh === null) return -1;
+  for (let i = CATEGORIES.length - 1; i >= 0; i--) if (kmh >= CATEGORIES[i].min) return i;
+  return 0;
+}
+
+export function catCodeFromIndex(i: number): CatCode {
+  return i < 0 ? "UNK" : CATEGORIES[i].code;
+}
+
+export const catColorByIndex = (i: number, dark: boolean) => (i < 0 ? UNKNOWN_COLOR : rampColor(i, dark));
 
 export function categoryColor(code: CategoryCode, dark: boolean): string {
   const i = categoryIndex(code);
