@@ -331,6 +331,8 @@ export type RetiredRow = {
   year: number | null;
   deathsRaw: string | null;
   damagePhpRaw: string | null;
+  /** Deaths cell is shared with another storm (rowspan) or the row is missing cells: don't use per storm. */
+  ambiguous: boolean;
 };
 
 /** Splits a table row on `||` (or `!!`) outside of {{templates}} and [[links]]. */
@@ -379,14 +381,36 @@ export function parseRetiredTables(wikitext: string): RetiredRow[] {
     const iDeaths = col("deaths");
     const iDamage = col("damage");
     if (iName < 0 || iDeaths < 0) continue;
+    // Cells with rowspan=N also fill the same column in the next N-1 rows.
+    const spans = new Map<number, { text: string; left: number }>();
     for (const rowText of lines.slice(1)) {
       const joined = rowText.trim().replace(/^\|/, "").replace(/\n\|/g, "||");
       if (!joined) continue;
-      const cells = splitCells(joined, "||").map((c) => {
-        // Drop cell attributes like `bgcolor="#..." |`
-        const attr = c.match(/^\s*[a-z-]+\s*=\s*"[^"]*"\s*\|(?!\|)/i);
-        return attr ? c.slice(attr[0].length) : c;
+      const own = splitCells(joined, "||").map((c) => {
+        // Cell attributes like `bgcolor="#..." |` or `rowspan=2|`
+        const attr = c.match(/^\s*((?:[a-z-]+\s*=\s*(?:"[^"]*"|[^\s|"]+)\s*)+)\|(?!\|)/i);
+        const rowspan = attr ? Number(attr[1].match(/rowspan\s*=\s*"?(\d+)/i)?.[1] ?? 1) : 1;
+        return { text: attr ? c.slice(attr[0].length) : c, rowspan };
       });
+      const cells: string[] = [];
+      const sharedCols = new Set<number>();
+      for (let col = 0, k = 0; k < own.length || spans.has(col); col++) {
+        const span = spans.get(col);
+        if (span) {
+          cells.push(span.text);
+          sharedCols.add(col);
+          if (--span.left <= 0) spans.delete(col);
+          continue;
+        }
+        const cell = own[k++];
+        if (!cell) break;
+        cells.push(cell.text);
+        if (cell.rowspan > 1) {
+          spans.set(col, { text: cell.text, left: cell.rowspan - 1 });
+          sharedCols.add(col);
+        }
+      }
+      const ambiguous = sharedCols.has(iDeaths) || cells.length < headers.length - 1;
       const nameCell = cells[iName] ?? "";
       const link = nameCell.match(/\[\[([^\]|]+)(?:\|([^\]]+))?\]\]/);
       const shown = stripWikitext(nameCell);
@@ -403,6 +427,7 @@ export function parseRetiredTables(wikitext: string): RetiredRow[] {
         year: Number.isFinite(yearText) ? yearText : null,
         deathsRaw: cells[iDeaths] ?? null,
         damagePhpRaw: iDamage >= 0 ? (cells[iDamage] ?? null) : null,
+        ambiguous,
       });
     }
   }

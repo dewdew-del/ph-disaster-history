@@ -124,9 +124,43 @@ test("parseRetiredTables", () => {
     year: 1964,
     deathsRaw: " {{nts|56}} ",
     damagePhpRaw: " {{ntsp|31000000||₱}} ",
+    ambiguous: false,
   });
   assert.equal(rows[1].local, "Yolanda");
   assert.equal(parseDeaths(rows[1].deathsRaw).value, 6300);
+});
+
+test("parseRetiredTables handles rowspan cells", () => {
+  const wt = `
+{| class="wikitable"
+|-
+! Name !! Dates active !! Damage !! Deaths
+|-
+| [[Typhoon A|Aaa (Alpha)]] || {{sort|20250101|x}} || rowspan=2|{{ntsp|100||₱}} || {{nts|5}}
+|-
+| [[Typhoon B|Bbb (Beta)]] || {{sort|20250201|y}} || {{nts|7}}
+|}`;
+  const rows = parseRetiredTables(wt);
+  assert.equal(rows.length, 2);
+  assert.equal(stripWikitext(rows[0].damagePhpRaw ?? ""), "₱100");
+  assert.equal(stripWikitext(rows[1].damagePhpRaw ?? ""), "₱100");
+  assert.equal(parseDeaths(rows[1].deathsRaw).value, 7);
+  assert.equal(rows[0].ambiguous, false);
+});
+
+test("parseRetiredTables flags shared death counts", () => {
+  const wt = `
+{| class="wikitable"
+|-
+! Name !! Dates active !! Deaths !! Missing
+|-
+| [[Typhoon A|Aaa (Alpha)]] || {{sort|20250101|x}} || rowspan=2|{{nts|159}} || {{nts|1}}
+|-
+| [[Typhoon B|Bbb (Beta)]] || {{sort|20250201|y}} || {{nts|2}}
+|}`;
+  const rows = parseRetiredTables(wt);
+  assert.equal(rows[0].ambiguous, true);
+  assert.equal(rows[1].ambiguous, true);
 });
 
 test("parsePagasaNames skips unused names", () => {

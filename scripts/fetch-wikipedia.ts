@@ -1,7 +1,7 @@
 // Wikipedia (MediaWiki API, no HTML scraping) ->
 //   data/pagasa-names.csv   sid, intl_name, pagasa_name, year, source_url, match
 //   data/damage.csv         sid, deaths, damage_usd, damage_year, raw_text, needs_review, source_url
-//   data/retired-names.csv  pagasa_name, intl_name, year, sid, deaths_listed, damage_php, article_url, source_url
+//   data/retired-names.csv  pagasa_name, intl_name, year, sid, deaths_listed, deaths_ambiguous, damage_php, article_url, source_url
 // Raw API responses are cached in data/raw/wikipedia/ (use --force to re-download).
 // Run: npx tsx scripts/fetch-wikipedia.ts
 import fs from "node:fs";
@@ -229,6 +229,7 @@ async function main() {
         year: r.year ?? "",
         sid: storm?.sid ?? "",
         deaths_listed: parseDeaths(r.deathsRaw).value ?? "",
+        deaths_ambiguous: r.ambiguous ? "true" : "false",
         damage_php: r.damagePhpRaw ? stripWikitext(r.damagePhpRaw) : "",
         article_url: r.article ? wikiUrl(r.article) : "",
         source_url: wikiUrl(RETIRED_PAGE),
@@ -298,7 +299,10 @@ async function main() {
   );
   fs.writeFileSync(
     path.join(DATA_DIR, "retired-names.csv"),
-    toCsv(["pagasa_name", "intl_name", "year", "sid", "deaths_listed", "damage_php", "article_url", "source_url"], retiredRows),
+    toCsv(
+      ["pagasa_name", "intl_name", "year", "sid", "deaths_listed", "deaths_ambiguous", "damage_php", "article_url", "source_url"],
+      retiredRows,
+    ),
   );
   fs.writeFileSync(path.join(RAW_DIR, "wikipedia-unmatched.txt"), unmatched.join("\n") + "\n");
 

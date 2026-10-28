@@ -157,3 +157,15 @@ Open http://localhost:3000. For the production build: `npm run build`, then `npm
 **How to test**
 - Open `/bagyo`, pick "Bohol" in the province filter: 71 storms; pick a decade to see their tracks.
 - Open `/bagyo/2013306N07162` (Yolanda): the provinces card lists Leyte, Samar, etc., and they're shaded on the map.
+
+### Step 11: Retired names page (2026-10-29)
+**Done**
+- `/bagyo/retired`: all 92 retired PAGASA names, grouped by decade (newest first): local name (international name) linking to the storm page, year, peak strength chip + km/h, deaths in PH and damage in pesos as listed. TD Winnie 2004 is listed but has no storm page (not in IBTrACS).
+- `build-typhoons.ts` now writes `public/data/typhoons/retired.json` (20 KB).
+- Fixed the retired-table parser for `rowspan` cells (one value spread over several rows) and unquoted cell attributes (`rowspan=2|`). This changed three curated numbers, corrected by hand in `data/overrides.csv`: **Nando 2025 → 4** and **Opong 2025 → 42** (the old values were their "missing" counts), and **Kristine 2024 removed** from the curated list because the table gives one combined count for Kristine + Leon. Combined counts are marked with * on the page (new `deaths_ambiguous` column in `retired-names.csv`).
+- Links to the page from `/bagyo` ("Retired names →") and the "Retired name" badge on storm pages.
+- 11 parser unit tests now (`npm run test:scripts`).
+
+**How to test**
+- Open `/bagyo/retired`: Yolanda 2013 shows 6,300 deaths and ₱95.5 billion; Kristine/Leon 2024 show 159*.
+- Click "Yolanda": opens the Haiyan storm page.

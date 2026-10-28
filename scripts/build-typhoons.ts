@@ -16,6 +16,7 @@ import {
   type Damage,
   type DecadeTracks,
   type ProvinceInfo,
+  type RetiredName,
   type TrackPoint,
   type TyphoonDetail,
   type TyphoonIndex,
@@ -91,7 +92,8 @@ async function main() {
   // ---- joins (all optional; each later step adds one) ----
   const localNames = new Map(readCsvIfExists("pagasa-names.csv").map((r) => [r.sid, r]));
   const damageRows = new Map(readCsvIfExists("damage.csv").map((r) => [r.sid, r]));
-  const retiredSids = new Set(readCsvIfExists("retired-names.csv").map((r) => r.sid).filter(Boolean));
+  const retiredRows = readCsvIfExists("retired-names.csv");
+  const retiredSids = new Set(retiredRows.map((r) => r.sid).filter(Boolean));
   const affectedFile = path.join(DATA_DIR, "affected-provinces.json");
   const affected: Record<string, string[]> = fs.existsSync(affectedFile) ? readJson(affectedFile) : {};
   const overrides = new Map<string, Map<string, string>>();
@@ -214,6 +216,26 @@ async function main() {
   };
   checkSize("typhoons/index.json", writeJson(path.join(OUT_DIR, "index.json"), index));
   console.log(`  ${details.length} storm files (largest ${biggest} KB)`);
+
+  const byId = new Map(details.map((d) => [d.id, d]));
+  const retired: RetiredName[] = retiredRows
+    .map((r) => {
+      const d = r.sid ? byId.get(r.sid) : undefined;
+      return {
+        local: r.pagasa_name,
+        intl: strOrNull(r.intl_name),
+        year: d?.season ?? numOrNull(r.year) ?? 0,
+        id: d?.id ?? null,
+        cat: d?.cat ?? "UNK",
+        kmh: d?.kmh ?? null,
+        deathsListed: numOrNull(r.deaths_listed),
+        deathsShared: isTrue(r.deaths_ambiguous),
+        damagePhp: strOrNull(r.damage_php),
+        articleUrl: strOrNull(r.article_url),
+      };
+    })
+    .sort((a, b) => a.year - b.year || a.local.localeCompare(b.local));
+  checkSize("typhoons/retired.json", writeJson(path.join(OUT_DIR, "retired.json"), retired));
 
   const byCat = summaries.reduce<Record<string, number>>((m, s) => ((m[s.cat] = (m[s.cat] ?? 0) + 1), m), {});
   console.log(`Storms that entered PAR since ${index.firstSeason}: ${summaries.length}`, byCat);
