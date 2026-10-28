@@ -267,15 +267,25 @@ function numbersIn(text: string): number[] {
 /** "6,352 total" -> 6352 (clean); "1,292–2,546" -> 1292 (review); "None" -> 0. */
 export function parseDeaths(raw: string | null): Parsed {
   if (!raw) return { value: null, needsReview: false };
-  const text = stripWikitext(raw);
+  let text = stripWikitext(raw);
   if (!text) return { value: null, needsReview: false };
-  if (/^(none|no deaths?|0)$/i.test(text.trim())) return { value: 0, needsReview: false };
+  if (/^(none|no deaths?|0)( reported)?$/i.test(text.trim())) return { value: 0, needsReview: false };
+  // "67 direct, 4 indirect (71 total)" -> 71: an explicit total wins.
+  const total = text.match(/(\d[\d,]*)\s*total/i);
+  if (total && numbersIn(text).length > 1) return { value: Number(total[1].replace(/,/g, "")), needsReview: true };
+  // "61 (51 direct, 10 indirect)" -> 61: numbers in brackets are a breakdown of the number outside.
+  const outside = text.replace(/\([^)]*\)/g, " ");
+  if (numbersIn(outside).length >= 1 && numbersIn(outside).length < numbersIn(text).length) {
+    const inner = parseDeaths(outside);
+    return { value: inner.value, needsReview: true };
+  }
   const nums = numbersIn(text);
   if (nums.length === 0) return { value: null, needsReview: true };
   if (nums.length > 1) {
     const isRange = /\d\s*(–|-|to)\s*\d/.test(text);
     return { value: isRange ? nums[0] : nums.reduce((a, b) => a + b, 0), needsReview: true };
   }
+  text = text.trim();
   const rest = text.replace(/\d[\d,]*/, "").replace(/\b(total|confirmed|direct|reported|deaths?|people|killed|fatalities)\b/gi, "");
   return { value: nums[0], needsReview: QUALIFIER.test(rest) || /[a-z]{3,}/i.test(rest.replace(/\s|[(),.;:]/g, "")) };
 }
@@ -295,6 +305,11 @@ export function parseDamage(raw: string | null, prefix: string | null): Parsed &
     return { value: null, needsReview: !/^none$/i.test(text), year: yearOut };
   }
   const body = text.replace(/\(\d{4}\s*US\$?D?\)/i, "");
+  // "22630000+11100000": per-country amounts added up on the page -> sum them.
+  if (/^[>≥~\s$]*\d[\d,.]*(\s*\+\s*\$?\d[\d,.]*)+\s*$/.test(body)) {
+    const sum = numbersIn(body).reduce((a, b) => a + b, 0);
+    return { value: Math.round(sum), needsReview: true, year: yearOut };
+  }
   const m = body.match(/(\d[\d,]*(?:\.\d+)?)\s*(thousand|million|billion|trillion)?/i);
   if (!m) return { value: null, needsReview: true, year: yearOut };
   // In "$10–20 million" the scale word belongs to both numbers.

@@ -11,6 +11,7 @@ sid,deaths,damage_usd,damage_year,raw_text,needs_review,source_url
 1987188N10151,138,272000000,1987,fatalities: 138 | damages: 272000000,false,https://en.wikipedia.org/wiki/Typhoon_Thelma_(1987)
 1987219N08134,92,100000000,1987,fatalities: 92 | damages: 100000000,false,https://en.wikipedia.org/wiki/Typhoon_Betty_(1987)
 1987320N03171,1036,84500000,1987,"fatalities: 1,036 total | damages: ≥ 84500000",true,https://en.wikipedia.org/wiki/Typhoon_Nina_(1987)
+1988295N10138,288,311000000,1988,fatalities: 288 total | damages: 311000000,false,https://en.wikipedia.org/wiki/Typhoon_Ruby_(1988)
 1988308N09140,237,131800000,1988,fatalities: 237 total | damages: 131800000,false,https://en.wikipedia.org/wiki/Typhoon_Skip
 1990166N06141,96,207000000,1990,fatalities: 96 confirmed | damages: 207000000,false,https://en.wikipedia.org/wiki/Typhoon_Ofelia
 1990171N11148,27,425650000,1990,fatalities: 27 total | damages: 425650000,false,https://en.wikipedia.org/wiki/Typhoon_Percy_(1990)
@@ -32,7 +33,7 @@ sid,deaths,damage_usd,damage_year,raw_text,needs_review,source_url
 1991289N06156,82,150700000,1991,fatalities: 82 | damages: 150700000,false,https://en.wikipedia.org/wiki/Typhoon_Ruth_(1991)
 1991304N08140,5081,27670000,1991,"fatalities: 5,081 total | damages: 27670000",false,https://en.wikipedia.org/wiki/Tropical_Storm_Thelma
 1992172N07144,0,27200000,1992,fatalities: None | damages: 27200000,false,https://en.wikipedia.org/wiki/Typhoon_Bobbie
-1992174N13126,44,40500000,1992,fatalities: 22 total (21 in Vietnam and 1 in Hainan) | damages: 40500000,true,https://en.wikipedia.org/wiki/Typhoon_Chuck
+1992174N13126,22,40500000,1992,fatalities: 22 total (21 in Vietnam and 1 in Hainan) | damages: 40500000,true,https://en.wikipedia.org/wiki/Typhoon_Chuck
 1992188N07156,4,273000000,1992,fatalities: 4 total | damages: 273000000,false,https://en.wikipedia.org/wiki/Typhoon_Eli
 1992198N13135,62,1108500000,1992,fatalities: 62 | damages: 1108500000,false,https://en.wikipedia.org/wiki/Tropical_Storm_Gary_(1992)
 1992212N05154,13,584000000,1992,fatalities: 13 confirmed | damages: 584000000,false,https://en.wikipedia.org/wiki/Typhoon_Janis
@@ -80,7 +81,7 @@ sid,deaths,damage_usd,damage_year,raw_text,needs_review,source_url
 2000232N12116,141,21550000,2000,fatalities: >141 | damages: 21550000,true,https://en.wikipedia.org/wiki/Tropical_Storm_Kaemi_(2000)
 2000237N08138,75,6140000000,2000,fatalities: 75 total | damages: 6140000000,false,https://en.wikipedia.org/wiki/Typhoon_Prapiroon_(2000)
 2000245N14157,28,9240000000,2000,fatalities: >28 | damages: 9240000000,true,https://en.wikipedia.org/wiki/Typhoon_Saomai_(2000)
-2000299N08139,276,527450000,2000,fatalities: 187 total (including 83 aboard Singapore Airlines Flight 006) | damages: 527450000,true,https://en.wikipedia.org/wiki/Typhoon_Xangsane_(2000)
+2000299N08139,187,527450000,2000,fatalities: 187 total (including 83 aboard Singapore Airlines Flight 006) | damages: 527450000,true,https://en.wikipedia.org/wiki/Typhoon_Xangsane_(2000)
 2000332N08133,48,1000000,2000,fatalities: 48 | damages: 1000000,false,https://en.wikipedia.org/wiki/Tropical_Storm_Rumbia_(2000)
 2001170N11138,464,471000000,2001,fatalities: 464 total | damages: 471000000,false,https://en.wikipedia.org/wiki/Typhoon_Chebi_(2001)
 2001180N15118,97,449000000,2001,fatalities: 97 total | damages: 449000000,false,https://en.wikipedia.org/wiki/Tropical_Storm_Durian_(2001)
@@ -96,7 +97,7 @@ sid,deaths,damage_usd,damage_year,raw_text,needs_review,source_url
 2002214N19120,153,509000000,2002,fatalities: 153 | damages: 509000000,false,https://en.wikipedia.org/wiki/Tropical_Storm_Kammuri_(2002)
 2002227N14115,44,86000000,2002,fatalities: 44 total | damages: 86000000,false,https://en.wikipedia.org/wiki/Tropical_Storm_Vongfong_(2002)
 2003196N05150,85,383000000,2003,fatalities: 85 | damages: 383000000,false,https://en.wikipedia.org/wiki/Typhoon_Imbudo
-2004093N07154,,14000000,2004,fatalities: None reported | damages: 14000000,true,https://en.wikipedia.org/wiki/Typhoon_Sudal
+2004093N07154,0,14000000,2004,fatalities: None reported | damages: 14000000,false,https://en.wikipedia.org/wiki/Typhoon_Sudal
 2004134N07132,31,1300000,2004,fatalities: 31 direct | damages: 1300000,false,https://en.wikipedia.org/wiki/Typhoon_Nida_(2004)
 2004156N16117,2,14900000,2004,fatalities: ≥ 2 total | damages: 14900000,true,https://en.wikipedia.org/wiki/Typhoon_Conson_(2004)
 2004158N07142,38,7900000,2004,fatalities: 38 | damages: 7900000,false,https://en.wikipedia.org/wiki/Tropical_Storm_Chanthu_(2004)
@@ -140,10 +141,10 @@ sid,deaths,damage_usd,damage_year,raw_text,needs_review,source_url
 2007272N17125,110,131000000,2007,fatalities: 110 total | damages: 131000000,false,https://en.wikipedia.org/wiki/Tropical_Storm_Lekima_(2007)
 2007274N18131,5,1700000000,2007,fatalities: 5 total | damages: 1700000000,false,https://en.wikipedia.org/wiki/Typhoon_Krosa_(2007)
 2007298N18136,1,1500000,2007,fatalities: 1 direct | damages: 1500000,false,https://en.wikipedia.org/wiki/Tropical_Storm_Faxai_(2007)
-2007324N10140,142,19790000,2007,"fatalities: 67 direct, 4 indirect (71 total) | damages: 19790000",true,https://en.wikipedia.org/wiki/Typhoon_Mitag_(2007)
+2007324N10140,71,19790000,2007,"fatalities: 67 direct, 4 indirect (71 total) | damages: 19790000",true,https://en.wikipedia.org/wiki/Typhoon_Mitag_(2007)
 2008104N08128,26,65000000,2008,fatalities: 26 total | damages: 65000000,false,https://en.wikipedia.org/wiki/Typhoon_Neoguri_(2008)
 2008128N07134,4,9600000,2008,fatalities: 4 direct | damages: 9600000,false,https://en.wikipedia.org/wiki/Typhoon_Rammasun_(2008)
-2008135N12116,122,100000000,2008,"fatalities: 61 (51 direct, 10 indirect) | damages: 100000000",true,https://en.wikipedia.org/wiki/Tropical_Storm_Halong_(2008)
+2008135N12116,61,100000000,2008,"fatalities: 61 (51 direct, 10 indirect) | damages: 100000000",true,https://en.wikipedia.org/wiki/Tropical_Storm_Halong_(2008)
 2008169N08135,1371,480000000,2008,"fatalities: 1,371 total | damages: 480000000",false,https://en.wikipedia.org/wiki/Typhoon_Fengshen
 2008193N20126,25,332300000,2008,fatalities: 25 | damages: 332300000,false,https://en.wikipedia.org/wiki/Typhoon_Kalmaegi_(2008)
 2008206N22133,23,541000000,2008,fatalities: 23 direct | damages: 541000000,false,https://en.wikipedia.org/wiki/Typhoon_Fung-wong_(2008)
@@ -261,7 +262,7 @@ sid,deaths,damage_usd,damage_year,raw_text,needs_review,source_url
 2016355N07146,13,123000000,2016,fatalities: 13 | damages: 123000000,false,https://en.wikipedia.org/wiki/Typhoon_Nock-ten
 2017008N08128,11,5400000,2017,fatalities: 11 total | damages: 5400000,false,https://en.wikipedia.org/wiki/Tropical_Depression_Auring_(2017)
 2017104N11130,10,1700000,2017,fatalities: 10 total | damages: 1700000,false,https://en.wikipedia.org/wiki/Tropical_Depression_Crising_(2017)
-2017161N13119,,88300000,2017,fatalities: None reported | damages: 88300000,true,https://en.wikipedia.org/wiki/Tropical_Storm_Merbok_(2017)
+2017161N13119,0,88300000,2017,fatalities: None reported | damages: 88300000,false,https://en.wikipedia.org/wiki/Tropical_Storm_Merbok_(2017)
 2017182N15132,42,1680000000,2017,fatalities: 42 total | damages: 1680000000,false,https://en.wikipedia.org/wiki/Tropical_Storm_Nanmadol_(2017)
 2017202N16116,37,313000000,2017,fatalities: 37 total | damages: 313000000,false,https://en.wikipedia.org/wiki/Tropical_Storm_Sonca_(2017)
 2017206N13129,3,282300000,2017,fatalities: 3 total | damages: 282300000,false,https://en.wikipedia.org/wiki/Typhoon_Nesat_(2017)
@@ -310,7 +311,7 @@ sid,deaths,damage_usd,damage_year,raw_text,needs_review,source_url
 2020129N07134,5,50000000,2020,fatalities: 5 | damages: 50000000,false,https://en.wikipedia.org/wiki/Typhoon_Vongfong_(2020)
 2020211N14124,4,12940000,2020,fatalities: 4 total | damages: 12940000,false,https://en.wikipedia.org/wiki/Tropical_Storm_Sinlaku_(2020)
 2020213N15131,17,1500000000,2020,fatalities: 17 total | damages: 1500000000,false,https://en.wikipedia.org/wiki/Typhoon_Hagupit_(2020)
-2020222N15117,,159000000,2020,fatalities: None reported | damages: 159000000,true,https://en.wikipedia.org/wiki/Tropical_Storm_Mekkhala_(2020)
+2020222N15117,0,159000000,2020,fatalities: None reported | damages: 159000000,false,https://en.wikipedia.org/wiki/Tropical_Storm_Mekkhala_(2020)
 2020229N18123,7,142000000,2020,fatalities: 7 | damages: ≥ 142000000,true,https://en.wikipedia.org/wiki/Tropical_Storm_Higos_(2020)
 2020234N19123,1,11700000,2020,fatalities: 1 total | damages: 11700000,false,https://en.wikipedia.org/wiki/Typhoon_Bavi_(2020)
 2020239N13134,46,100000000,2020,fatalities: 46 total | damages: 100000000,false,https://en.wikipedia.org/wiki/Typhoon_Maysak_(2020)
@@ -358,11 +359,11 @@ sid,deaths,damage_usd,damage_year,raw_text,needs_review,source_url
 2024244N09137,844,,,"fatalities: 844–1,009 | damages: ",true,https://en.wikipedia.org/wiki/Typhoon_Yagi
 2024253N11148,8,1420000000,2024,fatalities: 8 | damages: $1.42 billion (2024 USD),false,https://en.wikipedia.org/wiki/Typhoon_Bebinca
 2024259N12145,17,4150000,2024,fatalities: 17 | damages: 4150000,false,https://en.wikipedia.org/wiki/Tropical_Storm_Pulasan
-2024259N17126,29,22630000,2024,fatalities: 29 | damages: 22630000+11100000,true,https://en.wikipedia.org/wiki/Tropical_Storm_Soulik_(2024)
-2024270N24128,18,31930000,2024,fatalities: 18 | damages: > 31930000.00 + 19855541.99,true,https://en.wikipedia.org/wiki/Typhoon_Krathon
+2024259N17126,29,33730000,2024,fatalities: 29 | damages: 22630000+11100000,true,https://en.wikipedia.org/wiki/Tropical_Storm_Soulik_(2024)
+2024270N24128,18,51785542,2024,fatalities: 18 | damages: > 31930000.00 + 19855541.99,true,https://en.wikipedia.org/wiki/Typhoon_Krathon
 2024293N13141,179,404600000,2024,fatalities: 179 | damages: 404600000,false,https://en.wikipedia.org/wiki/Tropical_Storm_Trami
 2024298N13150,3,167000000,2024,fatalities: 3 | damages: 167000000,false,https://en.wikipedia.org/wiki/Typhoon_Kong-rey_(2024)
-2024307N06143,1,6050000,2024,fatalities: 1 | damages: > 6050000.00 + 3580000.00,true,https://en.wikipedia.org/wiki/Typhoon_Yinxing
+2024307N06143,1,9630000,2024,fatalities: 1 | damages: > 6050000.00 + 3580000.00,true,https://en.wikipedia.org/wiki/Typhoon_Yinxing
 2024312N14145,4,7760000,2024,fatalities: 4 | damages: $7.76 – 73.78 million (2024 USD),true,https://en.wikipedia.org/wiki/Typhoon_Toraji_(2024)
 2024313N10169,14,65000000,2024,fatalities: 14 | damages: 65000000,false,https://en.wikipedia.org/wiki/Typhoon_Man-yi
 2024314N07151,0,9560000,2024,fatalities: None | damages: $9.56 – 73.78 million (2024 USD),true,https://en.wikipedia.org/wiki/Typhoon_Usagi_(2024)
@@ -370,17 +371,17 @@ sid,deaths,damage_usd,damage_year,raw_text,needs_review,source_url
 2025184N20122,10,243210008,2025,fatalities: 10 | damages: > 243210007.5,true,https://en.wikipedia.org/wiki/Typhoon_Danas_(2025)
 2025197N14131,20,717400000,2025,fatalities: 20–54 | damages: > 717400000,true,https://en.wikipedia.org/wiki/Tropical_Storm_Wipha
 2025203N20124,29,42895800,2025,fatalities: 29 | damages: > 42895800,true,https://en.wikipedia.org/wiki/Tropical_Storm_Co-May
-2025218N19149,2,18500000,2025,fatalities: 2 | damages: > 18500000+313000000,true,https://en.wikipedia.org/wiki/Typhoon_Podul
+2025218N19149,2,331500000,2025,fatalities: 2 | damages: > 18500000+313000000,true,https://en.wikipedia.org/wiki/Typhoon_Podul
 2025233N15126,17,385740000,2025,fatalities: 17 | damages: 385740000,false,https://en.wikipedia.org/wiki/Typhoon_Kajiki_(2025)
-2025240N15117,1,12076,2025,fatalities: 1 | damages: 12076 + 3580000,true,https://en.wikipedia.org/wiki/Tropical_Storm_Nongfa
+2025240N15117,1,3592076,2025,fatalities: 1 | damages: 12076 + 3580000,true,https://en.wikipedia.org/wiki/Tropical_Storm_Nongfa
 2025245N19129,1,150000000,2025,fatalities: 1 | damages: 150000000,false,https://en.wikipedia.org/wiki/Tropical_Storm_Peipah_(2025)
 2025248N18120,4,,,fatalities: 4 | damages: Unknown,true,https://en.wikipedia.org/wiki/Tropical_Storm_Tapah_(2025)
 2025259N13126,3,101500000,2025,fatalities: 3 indirect | damages: 101500000,true,https://en.wikipedia.org/wiki/Tropical_Storm_Mitag_(2025)
 2025260N13138,40,2860350000,2025,fatalities: 40 | damages: > 2860350000,true,https://en.wikipedia.org/wiki/Typhoon_Ragasa
 2025266N11137,94,950000000,2025,fatalities: 94+ | damages: > 950000000,true,https://en.wikipedia.org/wiki/Typhoon_Bualoi
-2025274N14133,39,2330000000,2025,fatalities: 39+ | damages: 2330000000+836500000+1892267.81,true,https://en.wikipedia.org/wiki/Typhoon_Matmo_(2025)
+2025274N14133,39,3168392268,2025,fatalities: 39+ | damages: 2330000000+836500000+1892267.81,true,https://en.wikipedia.org/wiki/Typhoon_Matmo_(2025)
 2025289N13140,54,390900000,2025,fatalities: 54 | damages: 390900000,false,https://en.wikipedia.org/wiki/Tropical_Storm_Fengshen_(2025)
-2025305N08140,288,66200000,2025,fatalities: 288 | damages: ≥ 66200000 + 521400000,true,https://en.wikipedia.org/wiki/Typhoon_Kalmaegi
+2025305N08140,288,587600000,2025,fatalities: 288 | damages: ≥ 66200000 + 521400000,true,https://en.wikipedia.org/wiki/Typhoon_Kalmaegi
 2025308N09145,34,104341147,2025,fatalities: 34 | damages: ≥ 104341147,true,https://en.wikipedia.org/wiki/Typhoon_Fung-wong_(2025)
 2025328N07132,2,9600000,2025,fatalities: 2 | damages: 9600000,false,https://en.wikipedia.org/wiki/Typhoon_Koto
 2026014N08133,2,24000,2026,fatalities: 2 | damages: 24000,false,https://en.wikipedia.org/wiki/Tropical_Storm_Nokaen

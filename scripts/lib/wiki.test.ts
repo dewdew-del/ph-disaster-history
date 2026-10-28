@@ -86,6 +86,11 @@ test("parseDeaths", () => {
   assert.deepEqual(parseDeaths("Unknown"), { value: null, needsReview: true });
   assert.deepEqual(parseDeaths("2 direct, 1 indirect"), { value: 3, needsReview: true });
   assert.deepEqual(parseDeaths(null), { value: null, needsReview: false });
+  assert.deepEqual(parseDeaths("None reported"), { value: 0, needsReview: false });
+  assert.deepEqual(parseDeaths("22 total (21 in Vietnam and 1 in Hainan)"), { value: 22, needsReview: true });
+  assert.deepEqual(parseDeaths("67 direct, 4 indirect (71 total)"), { value: 71, needsReview: true });
+  assert.deepEqual(parseDeaths("61 (51 direct, 10 indirect)"), { value: 61, needsReview: true });
+  assert.deepEqual(parseDeaths("187 total (including 83 aboard Singapore Airlines Flight 006)"), { value: 187, needsReview: true });
 });
 
 test("parseDamage", () => {
@@ -95,6 +100,8 @@ test("parseDamage", () => {
   assert.deepEqual(parseDamage("{{ntsp|31000000||₱}}", null), { value: null, needsReview: true, year: null });
   assert.deepEqual(parseDamage("Minimal", null), { value: null, needsReview: true, year: null });
   assert.deepEqual(parseDamage("$10–20 million", null), { value: 10000000, needsReview: true, year: null });
+  assert.deepEqual(parseDamage("22630000+11100000", null), { value: 33730000, needsReview: true, year: null });
+  assert.deepEqual(parseDamage("> 31930000.00 + 19855541.99", null), { value: 51785542, needsReview: true, year: null });
 });
 
 test("parseRetiredTables", () => {

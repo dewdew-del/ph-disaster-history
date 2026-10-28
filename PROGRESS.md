@@ -4,6 +4,8 @@ Build follows the Build Order in `PLAN.md`. Each step: `npm run build` passes, o
 
 ## Needs Dewdew
 - **Vercel deploy (Steps 1 and 3 say "deploy" / "ship it").** Skipped on purpose: the project rule is no deploys unless you ask. When you're ready: push to GitHub, then import the repo on vercel.com (Framework: Next.js, no settings to change). The site is a static export, so the free Hobby plan is enough.
+- **Optional data check (Step 9), not blocking.** 3 retired storms list more PH deaths than Wikipedia's all-areas total, so I left them out of the curated deadliest list: Ruby/Hagupit 2014 (24 vs 18), Nika/Toraji 2024 (17 vs 4), Crising/Wipha 2025 (36 vs 20). If you find the right NDRRMC number, add a `ph_deaths` + `ph_source_url` row for it in `data/overrides.csv`.
+- **Ulysses (Vamco) 2020 death count.** Sources disagree: the retired-names table says 51 (PAGASA report), the Vamco article cites NDRRMC 98 (Jan 13, 2021). I used **98 (NDRRMC)**. Change it in `data/overrides.csv` if you prefer the other.
 
 ## How to run it
 ```bash
@@ -125,3 +127,19 @@ Open http://localhost:3000. For the production build: `npm run build`, then `npm
 **How to test**
 - `npm run build && npm run preview`, open `/bagyo/2013306N07162` (Yolanda): 230 km/h, 895 hPa, 6,352 deaths, >$2.98 billion (2013 USD) marked approximate.
 - Click "Details →" on any storm in `/bagyo`, then use the ← / → links at the bottom.
+
+### Step 9: Spot-check + overrides (2026-10-29)
+**Done**
+- Reviewed all 78 `needs_review` rows. Most are real approximations (ranges, "at least", ">" prefixes) and stay marked "approximate". Fixed the parser (not the CSV) where it was wrong, with new unit tests:
+  - breakdowns were being added up: "22 total (21 in Vietnam and 1 in Hainan)" gave 44 → now 22; "67 direct, 4 indirect (71 total)" → 71; "61 (51 direct, 10 indirect)" → 61; "187 total (including 83 aboard…)" → 187.
+  - "None reported" → 0.
+  - per-country damage sums like "22630000+11100000" → added up (marked approximate).
+- Fixed retired-name matching: some rows list the year the name was retired (Julian/Krathon was matched to a wrong 2023 storm), and footnote rows were read as names. Now 91 of 92 retired names match (the missing one is TD Winnie 2004, not in IBTrACS).
+- Famous storms checked: Yolanda, Odette, Ondoy, Sendong, Pablo, Rolly, Ulysses, Pepeng (plus Uring, Reming, Frank, Glenda, Kristine, Carina, Agaton, Paeng). Names, dates, winds and infobox numbers all line up.
+- **Curated PH-only deaths** (for the deadliest list) are in `data/overrides.csv` as `ph_deaths` + `ph_source_url` rows (82 storms). Source: the "List of retired Philippine typhoon names" table (each row cites PAGASA / NDRRMC / NDCC), kept only where the number is plausible next to the all-areas total; Ulysses uses the NDRRMC figure from its own article (see "Needs Dewdew").
+- Deadliest in PH now: 1. Yolanda 2013 (6,300) · 2. Uring 1991 (5,101) · 3. Sendong 2011 (1,268) · 4. Pablo 2012 (1,067) · 5. Rosing 1995 (936) · 6. Nitang 1984 (900) · 7. Undang 1984 (895) · 8. Sisang 1987 (808) · 9. Reming 2006 (734) · 10. Titang 1970 (631).
+- Storm pages show "Deaths in the Philippines" (curated, with source) above the all-areas totals.
+
+**How to test**
+- `/bagyo` → **Stats** tab → "Deadliest in the Philippines" shows the list above.
+- `/bagyo/2013306N07162`: "Deaths in the Philippines 6,300" plus "Deaths, total all areas 6,352".
