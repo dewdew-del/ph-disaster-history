@@ -206,3 +206,16 @@ Open http://localhost:3000. For the production build: `npm run build`, then `npm
 
 ## Summary
 All 13 steps of the Build Order are done and committed. What's left is in **Needs Dewdew** at the top: GitHub push, Vercel deploy, the demo video, your edit of the "Problem I solved" note, and two optional follow-ups (map-page Lighthouse score, three death counts to check).
+
+## Next: UI/UX redesign (planned 2026-10-29, not started)
+Dewdew's answers: everything feels messy (map pages, navigation, storm/province pages, phone). Full redesign, clean and light style, same data and URLs.
+1. Design system: light by default (dark still available), bigger type, fewer borders, one accent; keep the orange strength ramp.
+2. Navigation: clearer header, site-wide storm/province search, breadcrumbs everywhere, simpler phone menu.
+3. Map pages: map first and full width, one filter-chip bar above it, advanced filters in a drawer, small legend chip, charts and lists below the map, side panel for a selected storm/quake.
+4. Storm page: one big summary line, then map, then details.
+5. Province page: same pattern (summary, map, top lists).
+6. Phone pass on every page.
+7. Check: build, design inspector at 3 widths, Lighthouse, before/after screenshots, then commit + push.
+Show Dewdew screenshots after steps 1–3 before continuing.
+
+Live site: https://ph-disaster-history.vercel.app (auto-deploys on push to main). Still to do from earlier: add the live link to README and project-ideas.md.
