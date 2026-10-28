@@ -1,15 +1,18 @@
 // IBTrACS Western Pacific CSV -> storms that entered the PAR (1945+), with PAGASA-scale winds.
-// The parsed result is cached in data/raw/ibtracs/par-storms.json (rebuilt when the CSV changes).
+// "Entered the PAR" = the IBTrACS track has a point inside the PAR polygon, OR PAGASA gave the
+// storm a local name (data/pagasa-names.csv): agencies' positions differ a little near the edge.
+// The parsed result (all 1945+ storms) is cached in data/raw/ibtracs/storms.json.
 import fs from "node:fs";
 import path from "node:path";
 import readline from "node:readline";
-import { RAW_DIR } from "./paths";
+import { parseCsv as parseCsvText } from "./csv";
+import { DATA_DIR, RAW_DIR } from "./paths";
 
 export const IBTRACS_FILE = path.join(RAW_DIR, "ibtracs", "ibtracs.WP.list.v04r01.csv");
 export const IBTRACS_URL =
   "https://www.ncei.noaa.gov/data/international-best-track-archive-for-climate-stewardship-ibtracs/v04r01/access/csv/ibtracs.WP.list.v04r01.csv";
-const CACHE_FILE = path.join(RAW_DIR, "ibtracs", "par-storms.json");
-const CACHE_VERSION = 2;
+const CACHE_FILE = path.join(RAW_DIR, "ibtracs", "storms.json");
+const CACHE_VERSION = 3;
 
 export const FIRST_SEASON = 1945;
 const KEEP_TRACK_TYPES = new Set(["main", "PROVISIONAL", "US-PROVISIONAL"]);
@@ -141,13 +144,13 @@ async function parseCsv(): Promise<Storm[]> {
     });
   }
 
-  const par = [...storms.values()].filter((s) => s.points.some((p) => p.par));
-  for (const s of par) s.points.sort((a, b) => a.t - b.t);
-  return par.sort((a, b) => a.points[0].t - b.points[0].t);
+  const all = [...storms.values()].filter((s) => s.points.length > 0);
+  for (const s of all) s.points.sort((a, b) => a.t - b.t);
+  return all.sort((a, b) => a.points[0].t - b.points[0].t);
 }
 
-/** All PAR storms 1945+ (cached after the first parse). */
-export async function loadParStorms(): Promise<Storm[]> {
+/** Every 1945+ Western Pacific storm (cached after the first parse). */
+export async function loadAllStorms(): Promise<Storm[]> {
   if (!fs.existsSync(IBTRACS_FILE)) throw new Error("IBTrACS CSV missing: run `npx tsx scripts/fetch-ibtracs.ts` first.");
   const csvTime = fs.statSync(IBTRACS_FILE).mtimeMs;
   if (fs.existsSync(CACHE_FILE)) {
@@ -157,6 +160,22 @@ export async function loadParStorms(): Promise<Storm[]> {
   const storms = await parseCsv();
   fs.writeFileSync(CACHE_FILE, JSON.stringify({ v: CACHE_VERSION, csvTime, storms }));
   return storms;
+}
+
+export const trackEntersPar = (s: Storm) => s.points.some((p) => p.par);
+
+/** Track comes within ~2.5° of the PAR (for matching PAGASA-named storms whose track misses the polygon). */
+export const trackNearPar = (s: Storm) =>
+  s.points.some((p) => p.lat >= 2.5 && p.lat <= 27.5 && p.lon >= 112.5 && p.lon <= 137.5);
+
+/** Storms that entered the PAR: track inside the polygon, or named by PAGASA (data/pagasa-names.csv). */
+export async function loadParStorms(): Promise<Storm[]> {
+  const all = await loadAllStorms();
+  const namesFile = path.join(DATA_DIR, "pagasa-names.csv");
+  const named = new Set(
+    fs.existsSync(namesFile) ? parseCsvText(fs.readFileSync(namesFile, "utf8")).map((r) => r.sid) : [],
+  );
+  return all.filter((s) => trackEntersPar(s) || named.has(s.sid));
 }
 
 const titleCase = (s: string) => s.toLowerCase().replace(/(^|[\s-])([a-z])/g, (_, a: string, b: string) => a + b.toUpperCase());
