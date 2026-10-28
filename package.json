@@ -7,6 +7,7 @@
     "build": "next build",
     "preview": "serve out",
     "lint": "eslint",
+    "data:provinces": "tsx scripts/build-provinces.ts",
     "data:quakes": "tsx scripts/fetch-earthquakes.ts && tsx scripts/build-earthquakes.ts"
   },
   "dependencies": {

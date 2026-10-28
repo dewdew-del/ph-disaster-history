@@ -1,5 +1,17 @@
 // Shared data shapes: written by the scripts in /scripts, read by the site.
 
+// ---------- Provinces ----------
+
+export type ProvinceInfo = {
+  slug: string;
+  name: string;
+  region: string;
+  /** [west, south, east, north] */
+  bbox: [number, number, number, number];
+  /** [lat, lon], a point inside the province */
+  center: [number, number];
+};
+
 // ---------- Earthquakes ----------
 
 /** Where a quake is, relative to PH provinces. */

@@ -54,3 +54,17 @@ Open http://localhost:3000. For the production build: `npm run build`, then `npm
 - Drag the magnitude "From" slider to 6.0: the count drops to 664 and only big quakes remain.
 - Click any circle: a popup shows the date in PHT and a USGS link.
 - Shrink the browser to phone width: the "Filters" button opens the bottom sheet.
+
+### Step 4: Linog extras + province tagging (2026-10-28)
+**Done**
+- `scripts/build-provinces.ts`: downloads PSGC province boundaries (faeldon/philippines-json-maps, MIT), merges the 4 NCR districts into **Metro Manila** and the City of Isabela into **Basilan** (84 units: 82 provinces + Metro Manila + BARMM Special Geographic Area). Writes `public/data/provinces.json` (simplified with mapshaper, 323 KB), `public/data/provinces-index.json` (names, regions, centers) and a more detailed copy in `data/raw/` for the scripts.
+- `scripts/lib/provinces.ts`: point-in-province lookup (turf) + fast nearest-province search.
+- `build-earthquakes.ts` now tags every quake: 2,643 on land, 10,879 offshore near a province (≤ 100 km), 2,256 Outside PH. Spot-checked: 2013 Bohol M7.1 → Bohol, 1990 Luzon M7.7 → Nueva Ecija, 2019 M6.8 → Davao del Sur, 2023 M7.6 → offshore Surigao del Sur, all 46 Malaysia quakes → Outside PH. Top provinces: Davao Oriental, Surigao del Sur, Surigao del Norte (Philippine Trench).
+- `/linog` extras: Dots/Heatmap toggle (leaflet.heat, same orange ramp), side panel tabs with charts (quakes per year, top 10 provinces, by magnitude; each with a "Show numbers" table) and the Strongest 20 list (click one → map flies there and opens its popup). Popups now show the province ("Bohol" / "Offshore, near X" / "Outside PH").
+- Charts update with the filters.
+- New npm script: `npm run data:provinces` (run before `data:quakes`).
+
+**How to test**
+- Open http://localhost:3000/linog, click **Heatmap**: bright spots east of Mindanao and around Luzon.
+- Open the **Strongest 20** tab, click "M8.3 Aug 15, 1918": the map flies to the Celebes Sea and the popup says "Offshore, near Sultan Kudarat".
+- Set years to 2000–2026 in the filters: the charts redraw for that range.
