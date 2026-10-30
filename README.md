@@ -1,18 +1,26 @@
-# PH Disaster History: Linog Map + Bagyo Archive
+# PH Disaster History: Linog · Earthquakes + Bagyo · Typhoons
 
 A free, fully static website that maps where strong earthquakes hit the Philippines most often, and the history of every typhoon that entered the Philippine Area of Responsibility (PAR) since 1945, with its PAGASA local name, track, strength, deaths and damage.
 
 *Linog* = earthquake, *bagyo* = typhoon.
 
-![Landing page](docs/screenshots/home.png)
+**Live:** https://ph-disaster-history.vercel.app
 
-| Linog Map | Bagyo Archive |
-| --- | --- |
-| ![Linog Map](docs/screenshots/linog.png) | ![Bagyo Archive](docs/screenshots/bagyo.png) |
+![Home page](docs/screenshots/home.jpg)
 
-| Storm page (Yolanda / Haiyan, 2013) | My Place (Leyte) |
+| Linog · Earthquakes | Bagyo · Typhoons |
 | --- | --- |
-| ![Storm page](docs/screenshots/storm-yolanda.png) | ![Province page](docs/screenshots/lugar-leyte.png) |
+| ![Earthquake map](docs/screenshots/linog.jpg) | ![Typhoon map](docs/screenshots/bagyo.jpg) |
+
+| Storm page (Yolanda / Haiyan, 2013) | My Province (Leyte) |
+| --- | --- |
+| ![Storm page](docs/screenshots/storm.jpg) | ![Province page](docs/screenshots/province.jpg) |
+
+| Phone: home | Phone: typhoon map |
+| --- | --- |
+| <img src="docs/screenshots/home-phone.jpg" width="300" alt="Home page on a phone"> | <img src="docs/screenshots/bagyo-phone.jpg" width="300" alt="Typhoon map on a phone"> |
+
+Before the October 2026 redesign: [old screenshots](docs/screenshots/before/).
 
 ## What's in it
 

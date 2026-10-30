@@ -38,9 +38,9 @@ Portfolio project (see `..\project-ideas.md`). Build phase: **Phase 3 (Data + Ma
 - Keep generated JSON small (split or simplify anything over ~2 MB)
 
 ## Done checklist
-- [ ] Live link
+- [x] Live link (https://ph-disaster-history.vercel.app)
 - [ ] README with screenshots
 - [ ] 30-second demo video
 - [ ] "Problem I solved" note for the portfolio
 - [ ] Sources and credits shown
-- [ ] Pushed to GitHub
+- [x] Pushed to GitHub (github.com/dewdew-del/ph-disaster-history)
