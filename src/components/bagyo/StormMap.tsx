@@ -26,7 +26,7 @@ export default function StormMap({ id, label, track, dark, provinces }: Props) {
   );
   const first = track[0];
   const last = track[track.length - 1];
-  const highlight = dark ? "#5eead4" : "#0f766e";
+  const highlight = dark ? "#f1f2f4" : "#15171a";
 
   return (
     <BaseMap bounds={[[3, 112], [27, 138]]}>

@@ -219,3 +219,18 @@ Dewdew's answers: everything feels messy (map pages, navigation, storm/province 
 Show Dewdew screenshots after steps 1–3 before continuing.
 
 Live site: https://ph-disaster-history.vercel.app (auto-deploys on push to main). Still to do from earlier: add the live link to README and project-ideas.md.
+
+### Redesign step 1: look, feel, navigation (2026-10-30)
+Mockup approved by Dewdew first (artifact canvas: storm page, phone, search, colours, home).
+**Done**
+- **Colours and type** (`src/app/globals.css`): white page, soft grey panels, ink text, one orange accent (#c2410c / #fb923c dark); true neutral dark mode instead of navy. Body text 17px, nothing under 14px (Tailwind `text-xs/sm/base` raised). Old teal map highlights now ink.
+- **Light by default** (`src/app/layout.tsx`): dark only if the visitor picks it.
+- **Header** (`src/components/SiteHeader.tsx`, `src/components/nav/`): logo mark, bilingual nav (Linog · Earthquakes, Bagyo · Typhoons, My Province, Sources) with a grey pill on the current section, and a **search for typhoons and provinces** (type, arrow keys, Enter; "/" focuses it). Index built at `/search-index.json` (80 KB, loaded only when you use search).
+- **Phone**: search icon opens a full-screen search; **bottom tab bar** (Quakes, Typhoons, My Province, Sources).
+- **Footer**: one short line of sources + "All sources →".
+- Storm page breadcrumb removed (Dewdew's call). Section names renamed everywhere.
+
+**How to test**
+- `npm run build && npm run preview`, open any page: type "sa" in the search → Samar provinces + storms; Enter opens one.
+- Phone width (375px): tab bar at the bottom, search icon opens full-screen search, no page scrolls sideways (checked on 8 pages).
+- Next: step 2 (map pages), then storm/province pages and the new home page from the mockup.

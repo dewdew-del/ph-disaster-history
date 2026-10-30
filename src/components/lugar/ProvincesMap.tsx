@@ -26,7 +26,7 @@ export function classOf(v: number, breaks: number[]): number {
 
 export default function ProvincesMap({ provinces, values, breaks, label, dark, onPick }: Props) {
   const key = useMemo(() => `${label}-${dark}`, [label, dark]);
-  const border = dark ? "#0b1220" : "#ffffff";
+  const border = dark ? "#0e0f11" : "#ffffff";
 
   return (
     <BaseMap>
@@ -46,7 +46,7 @@ export default function ProvincesMap({ provinces, values, breaks, label, dark, o
           });
           layer.on({
             click: () => onPick(slug),
-            mouseover: (e: LeafletMouseEvent) => (e.target as Path).setStyle({ weight: 2.5, color: dark ? "#5eead4" : "#0f766e" }),
+            mouseover: (e: LeafletMouseEvent) => (e.target as Path).setStyle({ weight: 2.5, color: dark ? "#f1f2f4" : "#15171a" }),
             mouseout: (e: LeafletMouseEvent) => (e.target as Path).setStyle({ weight: 0.8, color: border }),
           });
         }}

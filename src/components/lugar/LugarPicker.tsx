@@ -72,7 +72,7 @@ export default function LugarPicker({ provinces, counts }: Props) {
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-6">
-      <h1 className="text-3xl font-bold tracking-tight">My Place</h1>
+      <h1 className="text-3xl font-bold tracking-tight">My Province</h1>
       <p className="mt-2 max-w-2xl text-muted">
         Pick a province to see its earthquakes and the typhoons whose path passed over or near it.
       </p>

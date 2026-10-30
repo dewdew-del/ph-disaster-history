@@ -1,31 +1,20 @@
 import Link from "next/link";
 import ThemeToggle from "./ThemeToggle";
-
-const NAV = [
-  { href: "/linog", label: "Linog Map" },
-  { href: "/bagyo", label: "Bagyo Archive" },
-  { href: "/lugar", label: "My Place" },
-  { href: "/sources", label: "Sources" },
-];
+import MainNav from "./nav/MainNav";
+import SiteSearch from "./nav/SiteSearch";
+import { Mark } from "./nav/Icons";
 
 export default function SiteHeader() {
   return (
-    <header className="sticky top-0 z-[1100] bg-card">
-      <div className="mx-auto flex h-14 max-w-[1440px] items-center gap-3 px-5 md:px-8">
-        <Link href="/" className="shrink-0 font-semibold tracking-tight">
-          PH Disaster History
+    <header className="sticky top-0 z-[1100] border-b border-border bg-background">
+      <div className="mx-auto flex h-14 max-w-[1440px] items-center gap-2 pl-4 pr-2 md:px-8 lg:gap-6">
+        <Link href="/" className="flex shrink-0 items-center gap-2.5 font-semibold tracking-tight">
+          <Mark size={26} />
+          <span>PH Disaster History</span>
         </Link>
-        <nav className="no-scrollbar flex flex-1 gap-1 overflow-x-auto text-sm" aria-label="Main">
-          {NAV.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className="whitespace-nowrap rounded-md px-2.5 py-1.5 text-muted hover:bg-foreground/5 hover:text-foreground"
-            >
-              {item.label}
-            </Link>
-          ))}
-        </nav>
+        <MainNav />
+        <div className="flex-1" />
+        <SiteSearch />
         <ThemeToggle />
       </div>
     </header>

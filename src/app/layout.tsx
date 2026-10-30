@@ -3,10 +3,11 @@ import "leaflet/dist/leaflet.css";
 import "./globals.css";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
+import MobileTabBar from "@/components/nav/MobileTabBar";
 
 export const metadata: Metadata = {
   title: {
-    default: "PH Disaster History: Linog Map + Bagyo Archive",
+    default: "PH Disaster History: Philippine earthquakes and typhoons",
     template: "%s | PH Disaster History",
   },
   description:
@@ -16,14 +17,11 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#f8fafc" },
-    { media: "(prefers-color-scheme: dark)", color: "#0b1220" },
-  ],
+  themeColor: "#ffffff",
 };
 
-// Runs before paint so the page doesn't flash the wrong theme.
-const themeScript = `(function(){try{var t=localStorage.getItem('theme');var d=t?t==='dark':window.matchMedia('(prefers-color-scheme: dark)').matches;if(d)document.documentElement.classList.add('dark');}catch(e){}})();`;
+// Light by default; dark only when the visitor picked it. Runs before paint so the page doesn't flash.
+const themeScript = `(function(){try{if(localStorage.getItem('theme')==='dark')document.documentElement.classList.add('dark');}catch(e){}})();`;
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
@@ -31,10 +29,11 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
-      <body className="flex min-h-full flex-col">
+      <body className="flex min-h-full flex-col pb-[calc(4rem+env(safe-area-inset-bottom))] lg:pb-0">
         <SiteHeader />
         <main className="flex-1">{children}</main>
         <SiteFooter />
+        <MobileTabBar />
       </body>
     </html>
   );

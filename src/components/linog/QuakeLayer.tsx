@@ -29,7 +29,7 @@ type Props = {
 
 const markerStyle = (q: Quake, dark: boolean): L.CircleMarkerOptions => ({
   radius: magRadius(q.mag),
-  color: dark ? "#0b1220" : "#431407",
+  color: dark ? "#0e0f11" : "#431407",
   weight: 0.6,
   opacity: 0.7,
   fillColor: magColor(q.mag, dark),
