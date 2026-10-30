@@ -5,7 +5,7 @@ import type { Damage } from "@/lib/types";
 export default function DamageCard({ damage }: { damage: Damage | null }) {
   if (!damage) {
     return (
-      <section className="rounded-xl border border-border bg-card p-4">
+      <section className="rounded-2xl bg-surface p-4">
         <h2 className="text-sm font-semibold">Deaths and damage</h2>
         <p className="mt-2 text-sm text-muted">No damage data yet.</p>
       </section>
@@ -18,7 +18,7 @@ export default function DamageCard({ damage }: { damage: Damage | null }) {
   ) : null;
 
   return (
-    <section className="rounded-xl border border-border bg-card p-4">
+    <section className="rounded-2xl bg-surface p-4">
       <h2 className="text-sm font-semibold">Deaths and damage</h2>
       <dl className="mt-3 grid grid-cols-2 gap-3">
         {damage.phDeaths !== null && (

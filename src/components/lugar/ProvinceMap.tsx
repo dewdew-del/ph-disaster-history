@@ -7,6 +7,7 @@ import { GeoJSON } from "react-leaflet";
 import type { Feature } from "geojson";
 import BaseMap from "@/components/map/BaseMap";
 import QuakeLayer from "@/components/linog/QuakeLayer";
+import TrackLayer, { type TrackInput } from "@/components/bagyo/TrackLayer";
 import { toQuake, type QuakeRow } from "@/lib/types";
 
 type Props = {
@@ -14,12 +15,14 @@ type Props = {
   /** [west, south, east, north] */
   bbox: [number, number, number, number];
   rows: QuakeRow[];
+  /** Storm tracks drawn under the quakes */
+  tracks?: TrackInput[];
   dark: boolean;
   offshoreLabel: string;
   landLabel: string;
 };
 
-export default function ProvinceMap({ feature, bbox, rows, dark, offshoreLabel, landLabel }: Props) {
+export default function ProvinceMap({ feature, bbox, rows, tracks = [], dark, offshoreLabel, landLabel }: Props) {
   const quakes = useMemo(() => rows.map(toQuake), [rows]);
   const highlight = dark ? "#f1f2f4" : "#15171a";
   const label = useMemo(() => (q: { where: number }) => (q.where === 0 ? landLabel : offshoreLabel), [landLabel, offshoreLabel]);
@@ -42,6 +45,7 @@ export default function ProvinceMap({ feature, bbox, rows, dark, offshoreLabel, 
         interactive={false}
         style={{ color: highlight, weight: 2, fillColor: highlight, fillOpacity: dark ? 0.18 : 0.12 }}
       />
+      <TrackLayer tracks={tracks} dark={dark} weight={3} />
       <QuakeLayer quakes={quakes} dark={dark} provinceLabel={label} />
     </BaseMap>
   );
