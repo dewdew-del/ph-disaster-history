@@ -32,7 +32,7 @@ export default function SourcesPage() {
 
   return (
     <div className="mx-auto max-w-[1440px] px-5 py-10 md:px-8">
-      <h1 className="text-[clamp(2.25rem,1.6rem+3vw,4.5rem)] font-bold leading-none tracking-[-0.03em]">Sources &amp; credits</h1>
+      <h1 className="text-3xl font-bold tracking-tight md:text-[2.125rem]">Sources &amp; credits</h1>
       <p className="mt-4 max-w-3xl text-lg">
         Everything on this site comes from open data, prepared by scripts into small static files. Data last built:{" "}
         {quakes.generated} (earthquakes) and {storms.generated} (typhoons).

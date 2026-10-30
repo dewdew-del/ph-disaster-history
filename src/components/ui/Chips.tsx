@@ -22,7 +22,11 @@ export function Chip({ on, onClick, children }: { on: boolean; onClick: () => vo
         on ? "bg-foreground font-semibold text-background" : "border border-control bg-background hover:bg-surface"
       }`}
     >
-      {on && <span aria-hidden>✓</span>}
+      {on && (
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+          <path d="M5 12l5 5 9-10" />
+        </svg>
+      )}
       {children}
     </button>
   );

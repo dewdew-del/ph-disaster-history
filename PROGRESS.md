@@ -276,3 +276,9 @@ Built from the approved home mockup.
 
 **How to test**
 - `/`: type "yol" in the big search → Yolanda and Yoling; tap a deadliest card to open the storm.
+
+### Redesign step 5: checks (2026-10-30)
+**Done**
+- **Design inspector** (design-taste skill, app rules, 1440/768/390 px) on home, Linog, Bagyo, storm, Leyte, Sources. Fixed: the ✓ in chips (now a drawn tick), chart labels touching the screen edge, the old 69px Sources title. Kept on purpose: system font (no font download), the fixed phone tab bar that scrolls over content, colourful maps, the 56px home headline. Two remaining "edge text" flags are false: Recharts' hidden measuring box (20,000 px off-screen) and the sideways-scrolling chip row.
+- **Lighthouse** (mobile, local build): home 93, Linog 58 (was 52), Bagyo 72 (was 57), storm page 92 (was 64), Leyte 63. Accessibility 97–100. Map pages are still held back by the OpenStreetMap tiles loading after Leaflet.
+- **Screenshots**: new ones in `docs/screenshots/` (desktop + phone) in the README, old ones kept in `docs/screenshots/before/`. Live link added to the README; CLAUDE.md checklist: Live link and Pushed to GitHub ticked.

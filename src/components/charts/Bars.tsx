@@ -33,7 +33,7 @@ export function ColumnChart({ data, dark, color, height = 160, unit, ticks }: Co
   const c = chrome(dark);
   return (
     <ResponsiveContainer width="100%" height={height}>
-      <BarChart data={data} margin={{ top: 4, right: 18, bottom: 0, left: -18 }} barCategoryGap={1}>
+      <BarChart data={data} margin={{ top: 4, right: 18, bottom: 0, left: 4 }} barCategoryGap={1}>
         <CartesianGrid vertical={false} stroke={c.grid} strokeWidth={0.5} />
         <XAxis
           dataKey="label"
@@ -66,7 +66,7 @@ export function HorizontalBarChart({ data, dark, color, unit, labelWidth = 118 }
   const height = Math.max(80, data.length * 24 + 16);
   return (
     <ResponsiveContainer width="100%" height={height}>
-      <BarChart data={data} layout="vertical" margin={{ top: 0, right: 28, bottom: 0, left: 0 }} barCategoryGap={4}>
+      <BarChart data={data} layout="vertical" margin={{ top: 0, right: 28, bottom: 0, left: 8 }} barCategoryGap={4}>
         <XAxis type="number" hide />
         <YAxis
           type="category"

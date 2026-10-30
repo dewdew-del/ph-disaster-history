@@ -23,7 +23,7 @@ export default function WindChart({ track }: { track: TrackPoint[] }) {
   return (
     <div>
       <ResponsiveContainer width="100%" height={220}>
-        <LineChart data={data} margin={{ top: 8, right: 36, bottom: 0, left: -12 }}>
+        <LineChart data={data} margin={{ top: 8, right: 36, bottom: 0, left: 4 }}>
           <CartesianGrid vertical={false} stroke={grid} strokeWidth={0.5} />
           <XAxis
             dataKey="t"
