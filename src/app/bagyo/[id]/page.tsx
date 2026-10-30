@@ -4,10 +4,11 @@ import CategoryBadge from "@/components/bagyo/CategoryBadge";
 import DamageCard from "@/components/bagyo/DamageCard";
 import StormMapView from "@/components/bagyo/StormMapView";
 import WindChartLazy from "@/components/bagyo/WindChartLazy";
-import { getProvinceIndex, getTyphoonDetail, getTyphoonIndex } from "@/lib/data-server";
+import { getProvinceIndex, getSatellitePhotos, getTyphoonDetail, getTyphoonIndex } from "@/lib/data-server";
 import { formatDateRangePH, formatDateTimePH } from "@/lib/format";
 import { categoryName } from "@/lib/scales";
 import { stormLabel } from "@/lib/types";
+import type { SatellitePhoto } from "@/lib/data-server";
 
 export const dynamicParams = false;
 
@@ -37,12 +38,37 @@ function Stat({ label, value, note }: { label: string; value: string; note?: str
   );
 }
 
+function SatelliteFigure({ photo, label }: { photo: SatellitePhoto; label: string }) {
+  const date = new Date(`${photo.date}T00:00:00Z`).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric", timeZone: "UTC" });
+  const credit = photo.file.startsWith("/images/satellite/")
+    ? `https://worldview.earthdata.nasa.gov/?t=${photo.date}`
+    : "/sources#pictures";
+  return (
+    <figure className="relative overflow-hidden rounded-xl bg-[#0b1530]">
+      {/* eslint-disable-next-line @next/next/no-img-element -- static export, image already sized */}
+      <img
+        src={photo.file}
+        alt={`Satellite photo of ${label} on ${date}`}
+        className="block aspect-[6/5] w-full object-cover sm:aspect-[12/7]"
+        loading="eager"
+      />
+      <figcaption className="absolute bottom-3 left-3 rounded-full bg-black/60 px-3 py-1 text-sm text-white">
+        {date} ·{" "}
+        <a href={credit} className="underline">
+          {photo.source}
+        </a>
+      </figcaption>
+    </figure>
+  );
+}
+
 export default async function StormPage({ params }: PageProps<"/bagyo/[id]">) {
   const { id } = await params;
   const s = getTyphoonDetail(id);
   const provinces = getProvinceIndex();
   const provinceNames = new Map(provinces.map((p) => [p.slug, p.name]));
   const label = stormLabel(s);
+  const photo = getSatellitePhotos()[s.id];
   const parDays = s.parIn !== null && s.parOut !== null ? (s.parOut - s.parIn) / 86400 : null;
   const ibtracsUrl = `https://ncics.org/ibtracs/index.php?name=v04r01-${s.id}`;
 
@@ -75,6 +101,7 @@ export default async function StormPage({ params }: PageProps<"/bagyo/[id]">) {
 
       <div className="mt-6 grid gap-6 lg:grid-cols-[1fr_340px]">
         <div className="space-y-6">
+          {photo && <SatelliteFigure photo={photo} label={label} />}
           <StormMapView id={s.id} label={`${label}, ${s.season}`} track={s.track} provinceSlugs={s.provinces} />
           <section>
             <h2 className="mb-2 text-sm font-semibold">Wind speed over time</h2>

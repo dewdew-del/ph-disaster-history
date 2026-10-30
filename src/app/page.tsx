@@ -1,6 +1,6 @@
 import Link from "next/link";
 import ProvinceTeller, { type ProvinceFacts } from "@/components/home/ProvinceTeller";
-import { getProvinceIndex, getQuakes, getQuakesSummary, getTyphoonDetail, getTyphoonIndex } from "@/lib/data-server";
+import { getProvinceIndex, getQuakes, getQuakesSummary, getTyphoonDetail, getTyphoonIndex, getSatellitePhotos } from "@/lib/data-server";
 import { fastYearPH, formatDatePH, formatNumber } from "@/lib/format";
 import { provinceCounts, provinceQuakes, provinceStorms } from "@/lib/province-stats";
 import { THUMB_H, THUMB_W, outlinePath, project, trackRuns, windArea } from "@/lib/thumbs";
@@ -138,6 +138,7 @@ export default function Home() {
   const counts = provinceCounts();
   const provinces = getProvinceIndex();
   const mostHit = [...provinces].sort((a, b) => (counts[b.slug]?.storms ?? 0) - (counts[a.slug]?.storms ?? 0))[0];
+  const photos = getSatellitePhotos();
   const deadliest = typhoons.storms
     .filter((s) => s.phDeaths !== null)
     .sort((a, b) => (b.phDeaths ?? 0) - (a.phDeaths ?? 0))
@@ -301,24 +302,32 @@ export default function Home() {
           <h2 className="text-[clamp(1.75rem,1.2rem+2.4vw,3.25rem)] font-bold leading-none tracking-[-0.03em]">
             Deadliest typhoons
           </h2>
-          <ol className="mt-8">
-            {deadliest.map((s) => (
-              <li key={s.id} className="rise-view odd:bg-surface">
-                <Link href={`/bagyo/${s.id}`} className="flex items-baseline justify-between gap-4 px-3 py-3 hover:text-accent">
-                  <span className="text-lg font-medium">
-                    {stormLabel(s)} <span className="text-muted">{s.season}</span>
-                  </span>
-                  <span className="text-lg tabular-nums">{formatNumber(s.phDeaths ?? 0)}</span>
-                </Link>
-              </li>
-            ))}
+          <ol className="mt-8 grid gap-3 sm:grid-cols-2">
+            {deadliest.slice(0, 8).map((s) => {
+              const photo = photos[s.id];
+              return (
+                <li key={s.id} className="rise-view">
+                  <Link href={`/bagyo/${s.id}`} className="flex items-center gap-4 rounded-2xl bg-surface p-3 hover:bg-raised">
+                    {photo ? (
+                      // eslint-disable-next-line @next/next/no-img-element -- static export, image already sized
+                      <img src={photo.file} alt="" loading="lazy" className="h-28 w-24 shrink-0 rounded-xl object-cover" />
+                    ) : (
+                      <span className="h-28 w-24 shrink-0 rounded-xl bg-raised" />
+                    )}
+                    <span>
+                      <span className="block text-xl font-semibold leading-tight">{s.local ?? stormLabel(s)}</span>
+                      <span className="block text-sm text-muted">{s.season}</span>
+                      <span className="mt-2 block text-2xl font-bold leading-none tabular-nums">{formatNumber(s.phDeaths ?? 0)}</span>
+                      <span className="block text-xs text-muted">dead in PH</span>
+                    </span>
+                  </Link>
+                </li>
+              );
+            })}
           </ol>
-          <p className="mt-4 text-sm text-muted">
-            Deaths in the Philippines, from the retired-names list (PAGASA, NDRRMC).{" "}
-            <Link href="/bagyo/retired" className="text-accent underline">
-              All retired names
-            </Link>
-          </p>
+          <Link href="/bagyo/retired" className="mt-4 inline-block font-semibold text-accent hover:underline">
+            View more →
+          </Link>
         </div>
       </section>
 
