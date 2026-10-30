@@ -131,7 +131,7 @@ export default function BagyoExplorer() {
   return (
     <div className="flex flex-col lg:h-[calc(100dvh-3.5rem)] lg:flex-row">
       <div className="px-4 pb-3 pt-4 lg:hidden">
-        <h1 className="text-2xl font-bold tracking-tight">Bagyo Archive</h1>
+        <h1 className="text-2xl font-bold tracking-tight">Bagyo · Typhoons</h1>
         <p className="mt-1 text-sm text-muted">Every storm that entered the PAR since 1945 (IBTrACS).</p>
         <p className="mt-2 flex items-baseline justify-between gap-2 text-sm">
           <span aria-live="polite">{countLine}</span>
@@ -168,7 +168,7 @@ export default function BagyoExplorer() {
 
       <aside className="border-border px-4 py-4 lg:order-1 lg:w-[26rem] lg:shrink-0 lg:overflow-y-auto lg:border-r">
         <div className="hidden lg:block">
-          <h1 className="text-2xl font-bold tracking-tight">Bagyo Archive</h1>
+          <h1 className="text-2xl font-bold tracking-tight">Bagyo · Typhoons</h1>
           <p className="mt-1 text-sm text-muted">
             Every storm that entered the Philippine Area of Responsibility since 1945, from IBTrACS.
           </p>

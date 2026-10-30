@@ -87,7 +87,7 @@ export default async function ProvincePage({ params }: PageProps<"/lugar/[provin
     <article className="mx-auto max-w-6xl px-4 py-6">
       <nav className="text-sm text-muted" aria-label="Breadcrumb">
         <Link href="/lugar" className="hover:underline">
-          My Place
+          My Province
         </Link>{" "}
         › {info.region}
       </nav>
@@ -204,7 +204,7 @@ export default async function ProvincePage({ params }: PageProps<"/lugar/[provin
             </ul>
             {storms.length > 0 && (
               <Link href={`/bagyo?province=${province}`} className="mt-2 inline-block text-sm text-accent underline">
-                All {formatNumber(storms.length)} storms in the Bagyo Archive →
+                All {formatNumber(storms.length)} storms in Bagyo · Typhoons →
               </Link>
             )}
           </section>

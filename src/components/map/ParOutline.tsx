@@ -17,7 +17,7 @@ export default function ParOutline({ dark }: { dark: boolean }) {
     <Polygon
       positions={PAR}
       interactive={false}
-      pathOptions={{ color: dark ? "#5eead4" : "#0f766e", weight: 1.2, dashArray: "6 5", fill: false, opacity: 0.8 }}
+      pathOptions={{ color: dark ? "#f1f2f4" : "#15171a", weight: 1.2, dashArray: "6 5", fill: false, opacity: 0.8 }}
     />
   );
 }

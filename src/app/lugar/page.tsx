@@ -4,7 +4,7 @@ import { getProvinceIndex } from "@/lib/data-server";
 import { provinceCounts } from "@/lib/province-stats";
 
 export const metadata: Metadata = {
-  title: "My Place",
+  title: "My Province",
   description: "Pick a Philippine province to see its earthquake and typhoon history.",
 };
 

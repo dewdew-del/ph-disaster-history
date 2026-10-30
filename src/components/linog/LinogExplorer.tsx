@@ -94,7 +94,7 @@ export default function LinogExplorer() {
   return (
     <div className="flex flex-col lg:h-[calc(100dvh-3.5rem)] lg:flex-row">
       <div className="px-4 pb-3 pt-4 lg:hidden">
-        <h1 className="text-2xl font-bold tracking-tight">Linog Map</h1>
+        <h1 className="text-2xl font-bold tracking-tight">Linog · Earthquakes</h1>
         <p className="mt-1 text-sm text-muted">Earthquakes M4.5+ in and around the Philippines since 1900 (USGS).</p>
         <p className="mt-2 text-sm" aria-live="polite">
           {countLine}
@@ -142,7 +142,7 @@ export default function LinogExplorer() {
 
       <aside className="border-border px-4 py-4 lg:order-1 lg:w-96 lg:shrink-0 lg:overflow-y-auto lg:border-r">
         <div className="hidden lg:block">
-          <h1 className="text-2xl font-bold tracking-tight">Linog Map</h1>
+          <h1 className="text-2xl font-bold tracking-tight">Linog · Earthquakes</h1>
           <p className="mt-1 text-sm text-muted">
             Earthquakes M4.5+ in and around the Philippines since 1900, from the USGS catalog.
           </p>

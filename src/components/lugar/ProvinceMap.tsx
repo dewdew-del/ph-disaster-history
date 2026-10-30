@@ -21,7 +21,7 @@ type Props = {
 
 export default function ProvinceMap({ feature, bbox, rows, dark, offshoreLabel, landLabel }: Props) {
   const quakes = useMemo(() => rows.map(toQuake), [rows]);
-  const highlight = dark ? "#5eead4" : "#0f766e";
+  const highlight = dark ? "#f1f2f4" : "#15171a";
   const label = useMemo(() => (q: { where: number }) => (q.where === 0 ? landLabel : offshoreLabel), [landLabel, offshoreLabel]);
   // Province box plus ~half its size around it, so nearby offshore quakes are in view too.
   const bounds: LatLngBoundsExpression = useMemo(() => {

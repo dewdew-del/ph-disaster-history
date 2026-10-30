@@ -90,7 +90,7 @@ export default function TrackLayer({
     const renderer = L.canvas({ padding: 0.3 });
     const group = L.layerGroup();
     const latlngs = t.points.map((p) => [p[0], p[1]] as L.LatLngTuple);
-    group.addLayer(L.polyline(latlngs, { renderer, color: dark ? "#0b1220" : "#ffffff", weight: 8, opacity: 0.9, interactive: false }));
+    group.addLayer(L.polyline(latlngs, { renderer, color: dark ? "#0e0f11" : "#ffffff", weight: 8, opacity: 0.9, interactive: false }));
     for (const run of colorRuns(t.points, dark)) {
       if (run.latlngs.length > 1) {
         group.addLayer(L.polyline(run.latlngs, { renderer, color: run.color, weight: 4.5, opacity: 1, interactive: false }));

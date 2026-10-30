@@ -48,17 +48,7 @@ export default async function StormPage({ params }: PageProps<"/bagyo/[id]">) {
 
   return (
     <article className="mx-auto max-w-6xl px-4 py-6">
-      <nav className="text-sm text-muted" aria-label="Breadcrumb">
-        <Link href="/bagyo" className="hover:underline">
-          Bagyo Archive
-        </Link>{" "}
-        ›{" "}
-        <Link href={`/bagyo?decade=${Math.floor(s.season / 10) * 10}`} className="hover:underline">
-          {Math.floor(s.season / 10) * 10}s
-        </Link>
-      </nav>
-
-      <header className="mt-2">
+      <header>
         <h1 className="text-3xl font-bold tracking-tight">
           {label}, {s.season}
         </h1>

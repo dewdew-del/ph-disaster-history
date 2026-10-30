@@ -21,7 +21,7 @@ export default function RetiredPage() {
     <div className="mx-auto max-w-5xl px-4 py-8">
       <nav className="text-sm text-muted" aria-label="Breadcrumb">
         <Link href="/bagyo" className="hover:underline">
-          Bagyo Archive
+          Bagyo · Typhoons
         </Link>{" "}
         › Retired names
       </nav>

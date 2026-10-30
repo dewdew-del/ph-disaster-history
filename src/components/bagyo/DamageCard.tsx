@@ -12,7 +12,7 @@ export default function DamageCard({ damage }: { damage: Damage | null }) {
     );
   }
   const approx = damage.approximate ? (
-    <span className="ml-1.5 rounded bg-foreground/10 px-1.5 py-0.5 align-middle text-[10px] font-medium uppercase tracking-wide text-muted">
+    <span className="ml-1.5 rounded bg-raised px-1.5 py-0.5 align-middle text-xs font-medium text-muted">
       approximate
     </span>
   ) : null;

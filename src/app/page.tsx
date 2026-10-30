@@ -190,9 +190,9 @@ export default function Home() {
         </a>
         <div className="mt-10 grid gap-x-8 gap-y-6 sm:grid-cols-2 lg:grid-cols-4">
           {[
-            ["/linog", "Linog Map", `${formatNumber(summary.total)} earthquakes since 1900 on one map, with a heatmap of where they hit most.`],
-            ["/bagyo", "Bagyo Archive", `${formatNumber(typhoons.count)} storms with tracks, winds, local names, deaths and damage.`],
-            ["/lugar", "My Place", `${provinces.length} provinces, each with its own quake and typhoon history.`],
+            ["/linog", "Linog · Earthquakes", `${formatNumber(summary.total)} earthquakes since 1900 on one map, with a heatmap of where they hit most.`],
+            ["/bagyo", "Bagyo · Typhoons", `${formatNumber(typhoons.count)} storms with tracks, winds, local names, deaths and damage.`],
+            ["/lugar", "My Province", `${provinces.length} provinces, each with its own quake and typhoon history.`],
             ["/bagyo/retired", "Retired names", "The names PAGASA will never use again, and why."],
           ].map(([href, title, text], i) => (
             <Link key={href} href={href} className="rise group block" style={{ ["--i" as string]: i + 3 }}>
@@ -279,7 +279,7 @@ export default function Home() {
         <noscript>
           <p className="mt-4">
             <Link href="/lugar" className="text-accent underline">
-              Pick your province on the My Place page
+              Pick your province on the My Province page
             </Link>
           </p>
         </noscript>

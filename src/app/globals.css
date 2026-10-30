@@ -4,13 +4,16 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 :root {
-  --background: #f8fafc;
-  --foreground: #0f172a;
-  --muted: #475569;
+  /* Light by default: white page, soft grey panels, ink text, one orange accent. */
+  --background: #ffffff;
+  --foreground: #15171a;
+  --muted: #5b6068;
   --card: #ffffff;
-  --border: #e2e8f0;
-  --accent: #0f766e;
-  --surface: #eef2f6;
+  --border: #e4e6ea;
+  --accent: #c2410c;
+  --surface: #f4f5f7;
+  --raised: #eceef1;
+  --control: #d3d7dd;
   /* Intensity ramp (same as src/lib/scales.ts): weak -> strong */
   --cat-0: #fb923c;
   --cat-1: #ea580c;
@@ -21,13 +24,15 @@
 }
 
 .dark {
-  --background: #0b1220;
-  --foreground: #e2e8f0;
-  --muted: #94a3b8;
-  --card: #111a2e;
-  --border: #1e293b;
-  --accent: #2dd4bf;
-  --surface: #131d33;
+  --background: #0e0f11;
+  --foreground: #f1f2f4;
+  --muted: #a3a8b0;
+  --card: #17191c;
+  --border: #2a2d32;
+  --accent: #fb923c;
+  --surface: #17191c;
+  --raised: #24272b;
+  --control: #3a3e44;
   --cat-0: #c2410c;
   --cat-1: #ea580c;
   --cat-2: #fb923c;
@@ -43,6 +48,15 @@
   --color-border: var(--border);
   --color-accent: var(--accent);
   --color-surface: var(--surface);
+  --color-raised: var(--raised);
+  --color-control: var(--control);
+  /* Bigger type: nothing under 14px, body text 17px. */
+  --text-xs: 0.875rem;
+  --text-xs--line-height: 1.35;
+  --text-sm: 0.9375rem;
+  --text-sm--line-height: 1.45;
+  --text-base: 1.0625rem;
+  --text-base--line-height: 1.55;
   --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
 
@@ -58,6 +72,8 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-sans);
+  font-size: 1.0625rem;
+  line-height: 1.55;
 }
 
 /* Leaflet: darken the OSM tiles in dark mode (no extra tile provider needed). */
@@ -66,28 +82,28 @@ body {
 }
 
 .dark .leaflet-container {
-  background: #0b1220;
+  background: #0e0f11;
 }
 
 .dark .leaflet-popup-content-wrapper,
 .dark .leaflet-popup-tip {
-  background: #111a2e;
-  color: #e2e8f0;
+  background: #17191c;
+  color: #f1f2f4;
 }
 
 .dark .leaflet-control-attribution {
-  background: rgba(17, 26, 46, 0.85);
-  color: #94a3b8;
+  background: rgba(23, 25, 28, 0.85);
+  color: #a3a8b0;
 }
 
 .dark .leaflet-control-attribution a {
-  color: #5eead4;
+  color: #fb923c;
 }
 
 .dark .leaflet-bar a {
-  background: #111a2e;
-  color: #e2e8f0;
-  border-color: #1e293b;
+  background: #17191c;
+  color: #f1f2f4;
+  border-color: #2a2d32;
 }
 
 .leaflet-container {
