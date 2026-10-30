@@ -26,7 +26,7 @@ export default function StormMapView({ id, label, track, provinceSlugs }: Props)
   }, [provinceSlugs]);
 
   return (
-    <div className="relative h-[380px] overflow-hidden rounded-xl border border-border sm:h-[460px]">
+    <div className="relative h-[340px] overflow-hidden rounded-2xl bg-surface sm:h-[440px]">
       <StormMap id={id} label={label} track={track} dark={dark} provinces={provinces} />
       <div className="pointer-events-none absolute bottom-6 left-2 z-[1000] max-w-[calc(100%-1rem)]">
         <CategoryLegend dark={dark} showUnknown={track.some((p) => p[5] < 0)} />

@@ -256,3 +256,14 @@ Mockup approved by Dewdew first (canvas "Step 2 · Map pages").
 - `/bagyo`: tap "Super typhoons" → 21 storms; tap Odette in the list (or its track) → panel with the Dec 16, 2021 NASA photo, 195 km/h, 405 dead in PH.
 - `/linog`: tap "Strong (M6.5+)" → 236 quakes; click the 1918 M8.3 → panel, ring on the map.
 - Phone width: chips scroll sideways, the panel is a bottom sheet above the tab bar, no sideways page scroll.
+
+### Redesign step 3: storm and province pages (2026-10-30)
+Mockup approved by Dewdew first (canvas "Step 3 · Storm + province pages").
+**Done**
+- **Storm page** (`src/app/bagyo/[id]/page.tsx`): name + category + retired chips, 4 big numbers (deaths, peak wind, damage, dates), satellite photo next to the map, wind chart, province chips, pressure / time in PAR, deaths & damage card, sources line, "Other deadly storms that hit these provinces" (photo cards), big previous / next buttons.
+- **Province page** (`src/app/lugar/[province]/page.tsx`): name + region + "Change province" picker, 4 big numbers, map with a **Both / Quakes / Typhoons** switch that also draws the deadliest storms' tracks, deadliest typhoons (with photos) and strongest earthquakes lists, per-decade charts.
+
+**How to test**
+- `/bagyo/2013306N07162` (Yolanda): 6,300 · 230 km/h · $2.98B · Nov 2 – Nov 11; related cards at the bottom.
+- `/lugar/leyte`: 135 · 89 · M7.1 · Yolanda; switch the map between Both, Quakes, Typhoons; pick another province from "Change province".
+- Phone width: no page scrolls sideways.
