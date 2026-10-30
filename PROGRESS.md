@@ -234,3 +234,12 @@ Mockup approved by Dewdew first (artifact canvas: storm page, phone, search, col
 - `npm run build && npm run preview`, open any page: type "sa" in the search → Samar provinces + storms; Enter opens one.
 - Phone width (375px): tab bar at the bottom, search icon opens full-screen search, no page scrolls sideways (checked on 8 pages).
 - Next: step 2 (map pages), then storm/province pages and the new home page from the mockup.
+
+### Real satellite photos of storms (2026-10-30)
+**Done**
+- `scripts/fetch-satellite.ts` (`npm run data:satellite`): NASA Worldview Snapshots API (MODIS Terra/Aqua, public domain, no key). For every storm since 2000 that was a typhoon, deadly or retired (272), it tries its strongest days on both satellites, centres the photo on the storm's position at the satellite pass, and skips photos where the storm sits in a gap between passes. 269 found, 3 without a clear photo. 15 MB in `public/images/satellite/`, list in `public/data/typhoons/satellite.json`.
+- Older deadly storms (Uring 1991, Rosing 1995, Nitang 1984, Undang 1984, Sisang 1987): NOAA/NASA photos from Wikimedia Commons, credited in `public/images/archive/credits.json`.
+- Storm page: photo above the map with date and satellite. Home: deadliest typhoons are now 8 photo cards + "View more". Sources page credits NASA Worldview.
+
+**How to test**
+- Open `/bagyo/2013306N07162` (Yolanda): the eye is in the middle of the photo. Home: scroll to "Deadliest typhoons".

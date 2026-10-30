@@ -111,7 +111,11 @@ export default function SourcesPage() {
         </Block>
 
         <Block id="pictures" title="Pictures">
-          <p>From Wikimedia Commons. The satellite images show each storm itself; the photographs show the earthquakes&apos; damage.</p>
+          <p>
+            Storm photos from 2000 on: <A href="https://worldview.earthdata.nasa.gov/">NASA Worldview</A> (MODIS on the Terra
+            and Aqua satellites, public domain), picked automatically on the storm&apos;s strongest days. Older storm photos
+            and the damage photos: Wikimedia Commons, listed below.
+          </p>
           <ul className="space-y-2">
             {credits.map((c) => (
               <li key={c.file}>
