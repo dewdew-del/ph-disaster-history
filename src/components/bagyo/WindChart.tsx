@@ -31,12 +31,12 @@ export default function WindChart({ track }: { track: TrackPoint[] }) {
             domain={["dataMin", "dataMax"]}
             scale="time"
             tickFormatter={(t: number) => dayFmt.format(new Date(t * 1000))}
-            tick={{ fontSize: 11, fill: axis }}
+            tick={{ fontSize: 14, fill: axis }}
             tickLine={false}
             axisLine={{ stroke: grid }}
             minTickGap={24}
           />
-          <YAxis tick={{ fontSize: 11, fill: axis }} tickLine={false} axisLine={false} unit="" width={48} />
+          <YAxis tick={{ fontSize: 14, fill: axis }} tickLine={false} axisLine={false} unit="" width={48} />
           {thresholds.map((c) => (
             <ReferenceLine
               key={c.code}
@@ -44,7 +44,7 @@ export default function WindChart({ track }: { track: TrackPoint[] }) {
               stroke={axis}
               strokeDasharray="3 4"
               strokeWidth={0.75}
-              label={{ value: c.code, position: "right", fontSize: 10, fill: axis }}
+              label={{ value: c.code, position: "right", fontSize: 14, fill: axis }}
             />
           ))}
           <Tooltip
@@ -52,7 +52,7 @@ export default function WindChart({ track }: { track: TrackPoint[] }) {
               background: dark ? "#111a2e" : "#ffffff",
               border: `1px solid ${grid}`,
               borderRadius: 8,
-              fontSize: 12,
+              fontSize: 14,
               color: dark ? "#e2e8f0" : "#0f172a",
             }}
             labelFormatter={(t) => formatDateTimePH(Number(t))}

@@ -22,7 +22,7 @@ function chrome(dark: boolean) {
       background: dark ? "#111a2e" : "#ffffff",
       border: `1px solid ${dark ? "#1e293b" : "#e2e8f0"}`,
       borderRadius: 8,
-      fontSize: 12,
+      fontSize: 14,
       color: dark ? "#e2e8f0" : "#0f172a",
     },
   };
@@ -38,12 +38,12 @@ export function ColumnChart({ data, dark, color, height = 160, unit, ticks }: Co
         <XAxis
           dataKey="label"
           ticks={ticks}
-          tick={{ fontSize: 11, fill: c.axis }}
+          tick={{ fontSize: 14, fill: c.axis }}
           tickLine={false}
           axisLine={{ stroke: c.grid }}
           interval={ticks ? 0 : "preserveStartEnd"}
         />
-        <YAxis tick={{ fontSize: 11, fill: c.axis }} tickLine={false} axisLine={false} allowDecimals={false} />
+        <YAxis tick={{ fontSize: 14, fill: c.axis }} tickLine={false} axisLine={false} allowDecimals={false} />
         <Tooltip
           cursor={{ fill: dark ? "rgba(255,255,255,0.06)" : "rgba(15,23,42,0.06)" }}
           contentStyle={c.tooltip}
@@ -72,7 +72,7 @@ export function HorizontalBarChart({ data, dark, color, unit, labelWidth = 118 }
           type="category"
           dataKey="label"
           width={labelWidth}
-          tick={{ fontSize: 11, fill: c.axis }}
+          tick={{ fontSize: 14, fill: c.axis }}
           tickLine={false}
           axisLine={false}
         />
@@ -87,7 +87,7 @@ export function HorizontalBarChart({ data, dark, color, unit, labelWidth = 118 }
           fill={color}
           radius={[0, 4, 4, 0]}
           isAnimationActive={false}
-          label={{ position: "right", fontSize: 11, fill: c.axis }}
+          label={{ position: "right", fontSize: 14, fill: c.axis }}
         >
           {data.map((d) => (
             <Cell key={d.label} fill={d.color ?? color} />

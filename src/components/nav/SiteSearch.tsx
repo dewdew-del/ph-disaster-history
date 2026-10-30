@@ -44,8 +44,12 @@ function stormTitle(r: Extract<Result, { kind: "storm" }>) {
   return { main: r.local ?? r.name ?? "Unnamed storm", sub: null };
 }
 
-/** Header search for storms and provinces. Inline box on large screens, full-screen sheet on phones. */
-export default function SiteSearch() {
+/**
+ * Search for storms and provinces. "header": inline box on large screens, full-screen sheet on phones.
+ * "hero": one big inline box at every width (home page).
+ */
+export default function SiteSearch({ variant = "header" }: { variant?: "header" | "hero" }) {
+  const hero = variant === "hero";
   const router = useRouter();
   const dark = useIsDark();
   const listId = useId();
@@ -88,8 +92,9 @@ export default function SiteSearch() {
     }
   }
 
-  // "/" jumps to the search box on large screens.
+  // "/" jumps to the header search box on large screens.
   useEffect(() => {
+    if (hero) return;
     function onSlash(e: KeyboardEvent) {
       const t = e.target as HTMLElement;
       if (e.key !== "/" || t.isContentEditable || ["INPUT", "TEXTAREA", "SELECT"].includes(t.tagName)) return;
@@ -98,7 +103,7 @@ export default function SiteSearch() {
     }
     window.addEventListener("keydown", onSlash);
     return () => window.removeEventListener("keydown", onSlash);
-  }, []);
+  }, [hero]);
 
   // Close the dropdown when clicking elsewhere.
   useEffect(() => {
@@ -150,6 +155,21 @@ export default function SiteSearch() {
     },
     onKeyDown: onKey,
   };
+
+  if (hero)
+    return (
+      <div ref={boxRef} className="relative w-full">
+        <label className="flex h-14 items-center gap-3 rounded-2xl border border-control bg-surface px-5 text-muted focus-within:border-foreground md:h-[60px]">
+          <Icon name="search" size={22} />
+          <input ref={inputRef} {...inputProps} className="min-w-0 flex-1 bg-transparent text-lg text-foreground outline-none placeholder:text-muted" />
+        </label>
+        {open && query.trim() && (
+          <div className="absolute inset-x-0 top-[calc(100%+8px)] z-[1300] max-h-[60dvh] overflow-y-auto rounded-xl border border-border bg-background py-2 shadow-[0_12px_32px_rgba(0,0,0,0.12)]">
+            {list}
+          </div>
+        )}
+      </div>
+    );
 
   return (
     <>

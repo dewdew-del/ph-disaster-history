@@ -267,3 +267,12 @@ Mockup approved by Dewdew first (canvas "Step 3 · Storm + province pages").
 - `/bagyo/2013306N07162` (Yolanda): 6,300 · 230 km/h · $2.98B · Nov 2 – Nov 11; related cards at the bottom.
 - `/lugar/leyte`: 135 · 89 · M7.1 · Yolanda; switch the map between Both, Quakes, Typhoons; pick another province from "Change province".
 - Phone width: no page scrolls sideways.
+
+### Redesign step 4: home page + phone pass (2026-10-30)
+Built from the approved home mockup.
+**Done**
+- **Home** (`src/app/page.tsx`): headline "Philippine quakes and typhoons", a big search box (same search as the header, `SiteSearch variant="hero"`), Explore earthquakes / Explore typhoons, two big numbers, the Tacloban damage photo (Wikimedia Commons, DFID, CC BY 2.0, credited in `public/images/archive/credits.json`), and 8 deadliest-typhoon photo cards with "View more". The old contact sheet, province teller, "In numbers" and "About" sections are gone (`ProvinceTeller.tsx`, `lib/thumbs.ts` and the landing CSS removed).
+- **Phone pass**: all 10 main pages checked at 375 px: no page scrolls sideways; chart text raised to 14px. Only the small OpenStreetMap credit in the map corner stays at 12px.
+
+**How to test**
+- `/`: type "yol" in the big search → Yolanda and Yoling; tap a deadliest card to open the storm.
