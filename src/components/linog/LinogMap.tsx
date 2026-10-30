@@ -14,13 +14,15 @@ type Props = {
   mode: MapMode;
   provinceLabel?: (q: Quake) => string | undefined;
   focus?: { id: string; n: number } | null;
+  onSelect?: (q: Quake) => void;
+  selectedId?: string | null;
 };
 
-export default function LinogMap({ quakes, dark, mode, provinceLabel, focus }: Props) {
+export default function LinogMap({ quakes, dark, mode, provinceLabel, focus, onSelect, selectedId }: Props) {
   return (
     <BaseMap>
       {mode === "dots" ? (
-        <QuakeLayer quakes={quakes} dark={dark} provinceLabel={provinceLabel} focus={focus} />
+        <QuakeLayer quakes={quakes} dark={dark} provinceLabel={provinceLabel} focus={focus} onSelect={onSelect} selectedId={selectedId} />
       ) : (
         <HeatLayer quakes={quakes} dark={dark} />
       )}

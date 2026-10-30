@@ -9,10 +9,14 @@ export type StormFilter = {
   cats: CatCode[];
   /** Province slug, or "" for any */
   province: string;
+  /** Only storms with a death count */
+  deadly: boolean;
+  /** Only storms whose local name PAGASA retired */
+  retired: boolean;
 };
 
 export function defaultStormFilter(latestDecade: number): StormFilter {
-  return { q: "", decade: latestDecade, year: "all", cats: [...ALL_CATS], province: "" };
+  return { q: "", decade: latestDecade, year: "all", cats: [...ALL_CATS], province: "", deadly: false, retired: false };
 }
 
 export const normalize = (s: string) =>
@@ -29,6 +33,8 @@ export function applyStormFilter(storms: TyphoonSummary[], f: StormFilter, provi
   return storms.filter((s) => {
     if (!cats.has(s.cat)) return false;
     if (provinceIndex >= 0 && !s.prov.includes(provinceIndex)) return false;
+    if (f.deadly && !(s.phDeaths || s.deaths)) return false;
+    if (f.retired && !s.retired) return false;
     if (q) {
       const hay = normalize(`${s.local ?? ""} ${s.name ?? ""} ${s.jtwc ?? ""} ${s.season}`);
       return q.split(/\s+/).every((w) => hay.includes(w));

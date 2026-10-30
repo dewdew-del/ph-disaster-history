@@ -1,5 +1,5 @@
 import { depthKey, type DepthKey } from "@/lib/scales";
-import type { Quake } from "@/lib/types";
+import { WHERE_LAND, type Quake } from "@/lib/types";
 
 export type QuakeWithYear = Quake & { year: number };
 
@@ -9,6 +9,8 @@ export type QuakeFilter = {
   yearFrom: number;
   yearTo: number;
   depths: Record<DepthKey, boolean>;
+  /** Only quakes inside a PH province */
+  landOnly: boolean;
 };
 
 export const MAG_LIMITS = { min: 4.5, max: 9 };
@@ -20,6 +22,7 @@ export function defaultFilter(firstYear: number, lastYear: number): QuakeFilter 
     yearFrom: firstYear,
     yearTo: lastYear,
     depths: { shallow: true, intermediate: true, deep: true },
+    landOnly: false,
   };
 }
 
@@ -30,6 +33,7 @@ export function applyFilter(quakes: QuakeWithYear[], f: QuakeFilter): QuakeWithY
       q.mag <= f.magMax &&
       q.year >= f.yearFrom &&
       q.year <= f.yearTo &&
-      f.depths[depthKey(q.depth)],
+      f.depths[depthKey(q.depth)] &&
+      (!f.landOnly || q.where === WHERE_LAND),
   );
 }
