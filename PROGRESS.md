@@ -243,3 +243,16 @@ Mockup approved by Dewdew first (artifact canvas: storm page, phone, search, col
 
 **How to test**
 - Open `/bagyo/2013306N07162` (Yolanda): the eye is in the middle of the photo. Home: scroll to "Deadliest typhoons".
+
+### Redesign step 2: map pages (2026-10-30)
+Mockup approved by Dewdew first (canvas "Step 2 · Map pages").
+**Done**
+- `/linog` and `/bagyo` rebuilt: title + count, one row of filter chips, the map full width, charts and lists below. No more sidebar.
+- **Chips** (`src/components/ui/Chips.tsx`): quakes = Strong (M6.5+), Last 50 years, Shallow, On land only; storms = latest decade, Super typhoons, Deadly, Retired names, Hit my province. "More filters" opens a drawer with all sliders/selects (`FilterDrawer.tsx`); "Clear" resets. New filters: `landOnly`, `deadly`, `retired`.
+- **Click a quake or storm** → side panel on the map (bottom sheet on phones, `MapSidePanel.tsx`) with big facts and "Open on USGS" / "Open full page". Storms show their NASA/NOAA satellite photo. Popups removed on these maps; the selected quake gets a ring.
+- Legends are one small pill in the map corner.
+
+**How to test**
+- `/bagyo`: tap "Super typhoons" → 21 storms; tap Odette in the list (or its track) → panel with the Dec 16, 2021 NASA photo, 195 km/h, 405 dead in PH.
+- `/linog`: tap "Strong (M6.5+)" → 236 quakes; click the 1918 M8.3 → panel, ring on the map.
+- Phone width: chips scroll sideways, the panel is a bottom sheet above the tab bar, no sideways page scroll.

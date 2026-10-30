@@ -21,7 +21,7 @@ export default function BagyoMap({ tracks, dark, selectedId, onSelect }: Props) 
   return (
     <BaseMap bounds={WIDE_BOUNDS}>
       <ParOutline dark={dark} />
-      <TrackLayer tracks={tracks} dark={dark} selectedId={selectedId} onSelect={onSelect} fitSelected />
+      <TrackLayer tracks={tracks} dark={dark} selectedId={selectedId} onSelect={onSelect} fitSelected linkPopups={false} weight={2.5} />
     </BaseMap>
   );
 }

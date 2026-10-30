@@ -23,8 +23,11 @@ type Props = {
   quakes: Quake[];
   dark: boolean;
   provinceLabel?: (q: Quake) => string | undefined;
-  /** When set, the map flies to this quake and opens its popup. `n` changes on every click. */
+  /** When set, the map flies to this quake. `n` changes on every click. */
   focus?: { id: string; n: number } | null;
+  /** Clicking a dot calls this instead of opening a popup. */
+  onSelect?: (q: Quake) => void;
+  selectedId?: string | null;
 };
 
 const markerStyle = (q: Quake, dark: boolean): L.CircleMarkerOptions => ({
@@ -40,7 +43,7 @@ const markerStyle = (q: Quake, dark: boolean): L.CircleMarkerOptions => ({
  * Draws quakes as canvas circle markers. Markers are created once and cached;
  * a filter change only adds/removes the markers that changed, so sliders stay smooth.
  */
-export default function QuakeLayer({ quakes, dark, provinceLabel, focus }: Props) {
+export default function QuakeLayer({ quakes, dark, provinceLabel, focus, onSelect, selectedId }: Props) {
   const map = useMap();
   const groupRef = useRef<L.LayerGroup | null>(null);
   const rendererRef = useRef<L.Canvas | null>(null);
@@ -48,9 +51,11 @@ export default function QuakeLayer({ quakes, dark, provinceLabel, focus }: Props
   const shownRef = useRef(new Set<string>());
   const darkRef = useRef(dark);
   const labelRef = useRef(provinceLabel);
+  const selectRef = useRef(onSelect);
   useEffect(() => {
     labelRef.current = provinceLabel;
-  }, [provinceLabel]);
+    selectRef.current = onSelect;
+  }, [provinceLabel, onSelect]);
 
   // Create the layer group once per map.
   useEffect(() => {
@@ -93,7 +98,8 @@ export default function QuakeLayer({ quakes, dark, provinceLabel, focus }: Props
         let m = markersRef.current.get(q.id);
         if (!m) {
           m = L.circleMarker([q.lat, q.lon], { renderer, ...markerStyle(q, darkRef.current) });
-          m.bindPopup(() => quakePopupHtml(q, labelRef.current?.(q)));
+          if (selectRef.current) m.on("click", () => selectRef.current?.(q));
+          else m.bindPopup(() => quakePopupHtml(q, labelRef.current?.(q)));
           markersRef.current.set(q.id, m);
         }
         group.addLayer(m);
@@ -122,8 +128,24 @@ export default function QuakeLayer({ quakes, dark, provinceLabel, focus }: Props
     const marker = markersRef.current.get(focus.id);
     if (!marker) return;
     map.flyTo(marker.getLatLng(), Math.max(map.getZoom(), 7), { duration: 0.8 });
-    map.once("moveend", () => marker.openPopup());
+    if (!selectRef.current) map.once("moveend", () => marker.openPopup());
   }, [focus, map]);
+
+  // Ring around the selected quake.
+  useEffect(() => {
+    const q = selectedId ? quakes.find((x) => x.id === selectedId) : undefined;
+    if (!q) return;
+    const ring = L.circleMarker([q.lat, q.lon], {
+      radius: magRadius(q.mag) + 6,
+      color: dark ? "#f1f2f4" : "#15171a",
+      weight: 3,
+      fill: false,
+      interactive: false,
+    }).addTo(map);
+    return () => {
+      ring.remove();
+    };
+  }, [selectedId, quakes, dark, map]);
 
   return null;
 }
