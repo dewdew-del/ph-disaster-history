@@ -196,7 +196,7 @@ Uses the official MediaWiki API (`en.wikipedia.org/w/api.php`), no scraping of H
 - [ ] Sources and credits page complete
 - [ ] Lighthouse mobile score checked (aim for 85+)
 
-## Rules for Claude Code
+## Build rules
 - Give complete file replacements, never partial snippets
 - Keep everything static; no database, no API keys
 - Commit generated `public/data/` JSON so Vercel builds don't need to rerun scripts

@@ -27,7 +27,7 @@ Open http://localhost:3000. For the production build: `npm run build`, then `npm
 - Site header with nav (Linog Map, Bagyo Archive, My Place, Sources), dark/light toggle (remembers your choice, defaults to your system setting), footer with sources on every page.
 - Dark mode darkens the OpenStreetMap tiles with a CSS filter.
 - `.gitignore` keeps `data/raw/` (big downloads) out of git.
-- Locked your answers into `CLAUDE.md` and `PLAN.md` (typhoons from 1945, PAGASA scale, quake box to 128°E, curated deadliest list, Metro Manila merged, GitHub URL as Wikipedia contact).
+- Locked your answers into `PLAN.md` (typhoons from 1945, PAGASA scale, quake box to 128°E, curated deadliest list, Metro Manila merged, GitHub URL as Wikipedia contact).
 
 **How to test**
 - `npm run dev`, open http://localhost:3000: you should see the two cards and a map of the Philippines.
@@ -281,4 +281,4 @@ Built from the approved home mockup.
 **Done**
 - **Design inspector** (design-taste skill, app rules, 1440/768/390 px) on home, Linog, Bagyo, storm, Leyte, Sources. Fixed: the ✓ in chips (now a drawn tick), chart labels touching the screen edge, the old 69px Sources title. Kept on purpose: system font (no font download), the fixed phone tab bar that scrolls over content, colourful maps, the 56px home headline. Two remaining "edge text" flags are false: Recharts' hidden measuring box (20,000 px off-screen) and the sideways-scrolling chip row.
 - **Lighthouse** (mobile, local build): home 93, Linog 58 (was 52), Bagyo 72 (was 57), storm page 92 (was 64), Leyte 63. Accessibility 97–100. Map pages are still held back by the OpenStreetMap tiles loading after Leaflet.
-- **Screenshots**: new ones in `docs/screenshots/` (desktop + phone) in the README, old ones kept in `docs/screenshots/before/`. Live link added to the README; CLAUDE.md checklist: Live link and Pushed to GitHub ticked.
+- **Screenshots**: new ones in `docs/screenshots/` (desktop + phone) in the README, old ones kept in `docs/screenshots/before/`. Live link added to the README; Done checklist: Live link and Pushed to GitHub ticked.

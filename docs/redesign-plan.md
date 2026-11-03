@@ -1,6 +1,6 @@
 # UI/UX redesign plan (2026-10-30)
 
-Goal: clean, light, easy to use. Same data, same URLs, same locked decisions (CLAUDE.md).
+Goal: clean, light, easy to use. Same data, same URLs, same locked decisions (PLAN.md).
 
 ## Rules for every page
 - **Show, don't tell.** Maps, numbers and charts carry the page; text is short labels, not paragraphs.
