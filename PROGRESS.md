@@ -319,3 +319,12 @@ Plan: `docs/minimal-redesign-plan.md`. Mockup approved by Dewdew first (artifact
 **How to test**
 - `/bagyo/2013306N07162` (Yolanda): 6,300 · 230 km/h · $2.98B · Nov 2 – Nov 11; sections listed above; no sideways scroll.
 - `/lugar/leyte`: 135 · 89 · M7.1 · Yolanda; the map toggle still works; "All 135 storms on the map →" opens `/bagyo?province=leyte`.
+
+### Minimal step 4: home page (2026-11-06)
+**Done**
+- **Home** (`src/app/page.tsx`): one headline, 2 big serif numbers, 3 text links (Earthquake map, Typhoon map, My province), and a dot map of every M5+ quake since 1900. Deadliest typhoons as a plain top-5 ranked list + "All retired names →". The hero photo, search box and photo cards are gone (search is the header icon).
+- The dot map (`src/components/home/QuakeDotsMap.tsx`) is an SVG drawn at build time from `quakes.json` + `ph-outline.json`: one path per magnitude band, no Leaflet and no quake download on the home page.
+
+**How to test**
+- `/`: 15,778 · 1,805; click the map → `/linog`; top of the list is Yolanda 6,300.
+- Phone width: headline, numbers, links, then the map; no sideways scroll.
