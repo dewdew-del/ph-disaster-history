@@ -20,7 +20,7 @@ A free, fully static website that maps where strong earthquakes hit the Philippi
 | --- | --- |
 | <img src="docs/screenshots/home-phone.jpg" width="300" alt="Home page on a phone"> | <img src="docs/screenshots/bagyo-phone.jpg" width="300" alt="Typhoon map on a phone"> |
 
-Before the October 2026 redesign: [old screenshots](docs/screenshots/before/).
+Earlier looks: [October 2026 design](docs/screenshots/before-minimal/) · [first version](docs/screenshots/before/).
 
 ## What's in it
 

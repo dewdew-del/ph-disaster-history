@@ -71,16 +71,16 @@ export default function LugarPicker({ provinces, counts }: Props) {
   }));
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-6">
-      <h1 className="text-3xl font-bold tracking-tight">My Province</h1>
-      <p className="mt-2 max-w-2xl text-muted">
-        Pick a province to see its earthquakes and the typhoons whose path passed over or near it.
+    <div className="mx-auto max-w-[1280px] px-4 pb-16 pt-8 md:px-8 md:pt-12">
+      <h1 className="text-[3rem] leading-none md:text-[3.75rem]">My Province</h1>
+      <p className="mt-3 max-w-2xl text-muted">
+        Pick a province, or tap one on the map.
       </p>
 
       <label className="mt-4 block max-w-md">
-        <span className="text-sm font-medium">Province</span>
+        <span className="text-sm text-muted">Province</span>
         <select
-          className="mt-1 w-full rounded-md border border-border bg-card px-2 py-2"
+          className="mt-1 h-11 w-full rounded-lg border border-control bg-background px-3"
           defaultValue=""
           onChange={(e) => e.target.value && router.push(`/lugar/${e.target.value}`)}
         >
@@ -102,22 +102,22 @@ export default function LugarPicker({ provinces, counts }: Props) {
       <div className="mt-6 grid gap-6 lg:grid-cols-[1fr_380px]">
         <section>
           <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
-            <p className="text-sm text-muted">Or tap a province on the map.</p>
-            <div className="flex overflow-hidden rounded-lg border border-border text-sm" role="group" aria-label="Color by">
+            <p className="text-sm text-muted">Color by</p>
+            <div className="flex rounded-full border border-control p-0.5 text-sm" role="group" aria-label="Color by">
               {(["storms", "quakes"] as const).map((m) => (
                 <button
                   key={m}
                   type="button"
                   aria-pressed={metric === m}
                   onClick={() => setMetric(m)}
-                  className={`px-3 py-1.5 ${metric === m ? "bg-accent text-white dark:text-slate-900" : "hover:bg-foreground/5"}`}
+                  className={`rounded-full px-3.5 py-1.5 ${metric === m ? "bg-foreground font-semibold text-background" : "text-muted hover:text-foreground"}`}
                 >
                   {m === "storms" ? "Typhoons" : "Earthquakes"}
                 </button>
               ))}
             </div>
           </div>
-          <div className="relative h-[70dvh] min-h-[420px] overflow-hidden rounded-xl border border-border">
+          <div className="relative h-[70dvh] min-h-[420px] overflow-hidden rounded-xl bg-surface">
             {geo ? (
               <ProvincesMap
                 provinces={geo}
@@ -130,7 +130,7 @@ export default function LugarPicker({ provinces, counts }: Props) {
             ) : (
               <MapLoading />
             )}
-            <div className="pointer-events-none absolute bottom-6 left-2 z-[1000] rounded-lg border border-border bg-card/95 px-3 py-2 text-xs shadow-sm">
+            <div className="pointer-events-none absolute bottom-6 left-2 z-[1000] rounded-lg border border-border bg-background/95 px-3 py-2 text-xs">
               <div className="mb-1 font-medium">{metric === "storms" ? "Storms in path area, 1945–now" : "Quakes M4.5+, 1900–now"}</div>
               <ul className="space-y-0.5">
                 {legend.map((l) => (
@@ -147,10 +147,10 @@ export default function LugarPicker({ provinces, counts }: Props) {
         </section>
 
         <section>
-          <h2 className="text-sm font-semibold">All provinces</h2>
-          <div className="mt-2 max-h-[70dvh] overflow-y-auto rounded-xl border border-border">
+          <h2 className="text-[1.75rem] leading-tight">All provinces</h2>
+          <div className="mt-2 max-h-[70dvh] overflow-y-auto border-y border-border">
             <table className="w-full text-sm">
-              <thead className="sticky top-0 bg-card text-left text-xs text-muted">
+              <thead className="sticky top-0 bg-background text-left text-xs text-muted">
                 <tr>
                   {(
                     [

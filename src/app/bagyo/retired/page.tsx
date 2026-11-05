@@ -25,19 +25,17 @@ export default function RetiredPage() {
         </Link>{" "}
         › Retired names
       </nav>
-      <h1 className="mt-2 text-3xl font-bold tracking-tight">Retired PAGASA names</h1>
-      <p className="mt-2 max-w-3xl text-muted">
-        PAGASA removes a local name from its list when a storm was especially deadly or destructive (in recent decades,
-        usually at least 300 deaths or ₱1 billion in damage). The name is never used again, so &quot;Yolanda&quot;
-        always means the 2013 super typhoon. {rows.length} names are listed here.
+      <h1 className="mt-2 text-[3rem] leading-none md:text-[3.75rem]">Retired PAGASA names</h1>
+      <p className="mt-3 max-w-2xl text-muted">
+        PAGASA retires a local name after an especially deadly or destructive storm. {rows.length} names, never used again.
       </p>
 
       {decades.map((decade) => {
         const list = rows.filter((r) => Math.floor(r.year / 10) * 10 === decade).sort((a, b) => b.year - a.year);
         return (
           <section key={decade} className="mt-8">
-            <h2 className="text-lg font-semibold">{decade}s</h2>
-            <div className="mt-2 overflow-x-auto rounded-xl border border-border">
+            <h2 className="text-[1.75rem] leading-tight">{decade}s</h2>
+            <div className="mt-2 overflow-x-auto border-t border-border">
               <table className="w-full min-w-[640px] text-sm">
                 <thead className="bg-foreground/5 text-left text-xs text-muted">
                   <tr>

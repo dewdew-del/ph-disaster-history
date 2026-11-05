@@ -328,3 +328,14 @@ Plan: `docs/minimal-redesign-plan.md`. Mockup approved by Dewdew first (artifact
 **How to test**
 - `/`: 15,778 · 1,805; click the map → `/linog`; top of the list is Yolanda 6,300.
 - Phone width: headline, numbers, links, then the map; no sideways scroll.
+
+### Minimal step 5: other pages, checks, screenshots (2026-11-06)
+**Done**
+- Retired names, Sources and My Province got the big serif titles, hairline tables/lists and one-line intros. My Province "Color by" is the same pill switch as the maps. Unused `BottomSheet.tsx` removed.
+- Dark mode checked on home, My Province and the map pages; light mode checked everywhere. No page scrolls sideways at 375 px or desktop.
+- Home HTML is 55 KB gzipped (dot map coordinates rounded to whole pixels).
+- New README screenshots in `docs/screenshots/` (desktop 1440×900, phone 390×844); the October 2026 ones moved to `docs/screenshots/before-minimal/`.
+
+**How to test**
+- `/bagyo/retired`, `/sources`, `/lugar`: serif title, short intro, nothing boxed.
+- Theme toggle (moon icon) on any page: everything stays readable in dark mode.

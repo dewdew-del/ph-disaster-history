@@ -12,8 +12,8 @@ const W = 600;
 const S = W / ((LON1 - LON0) * K);
 const H = Math.round((LAT1 - LAT0) * S);
 
-const x = (lon: number) => Math.round((lon - LON0) * K * S * 10) / 10;
-const y = (lat: number) => Math.round((LAT1 - lat) * S * 10) / 10;
+const x = (lon: number) => Math.round((lon - LON0) * K * S);
+const y = (lat: number) => Math.round((LAT1 - lat) * S);
 
 type Geometry = { type: "Polygon"; coordinates: number[][][] } | { type: "MultiPolygon"; coordinates: number[][][][] };
 
