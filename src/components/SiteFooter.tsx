@@ -1,29 +1,29 @@
 import Link from "next/link";
 
-const A = ({ href, children }: { href: string; children: React.ReactNode }) => (
-  <a className="underline hover:text-foreground" href={href}>
-    {children}
-  </a>
-);
-
+/** One quiet line: where the data comes from, where to get real warnings, and the full sources page. */
 export default function SiteFooter() {
   return (
-    <footer className="bg-surface text-sm text-muted">
-      <div className="mx-auto flex max-w-[1440px] flex-wrap items-baseline gap-x-8 gap-y-2 px-4 py-6 md:px-8">
-        <span className="font-semibold text-foreground">PH Disaster History</span>
+    <footer className="border-t border-border text-sm text-muted">
+      <div className="mx-auto flex max-w-[1440px] flex-wrap items-baseline gap-x-6 gap-y-2 px-4 py-5 md:px-8">
+        <span>Data: USGS, IBTrACS, PAGASA, Wikipedia · Map © OpenStreetMap</span>
         <span>
-          Data: <A href="https://earthquake.usgs.gov/fdsnws/event/1/">USGS</A> ·{" "}
-          <A href="https://www.ncei.noaa.gov/products/international-best-track-archive">IBTrACS</A> ·{" "}
-          <A href="https://en.wikipedia.org/">Wikipedia</A> · <A href="https://github.com/faeldon/philippines-json-maps">PSGC</A> ·
-          Map © <A href="https://www.openstreetmap.org/copyright">OpenStreetMap</A>
+          Not official. Warnings:{" "}
+          <a className="underline hover:text-foreground" href="https://www.phivolcs.dost.gov.ph/">
+            PHIVOLCS
+          </a>
+          ,{" "}
+          <a className="underline hover:text-foreground" href="https://www.pagasa.dost.gov.ph/">
+            PAGASA
+          </a>
         </span>
-        <span>
-          Not official. Warnings: <A href="https://www.phivolcs.dost.gov.ph/">PHIVOLCS</A>,{" "}
-          <A href="https://www.pagasa.dost.gov.ph/">PAGASA</A>
+        <span className="flex gap-6 sm:ml-auto">
+          <Link className="text-foreground underline underline-offset-4 hover:no-underline" href="/sources">
+            Sources
+          </Link>
+          <Link className="text-foreground underline underline-offset-4 hover:no-underline" href="/bagyo/retired">
+            Retired names
+          </Link>
         </span>
-        <Link className="font-semibold text-accent hover:underline sm:ml-auto" href="/sources">
-          All sources →
-        </Link>
       </div>
     </footer>
   );

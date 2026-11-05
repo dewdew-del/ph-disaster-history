@@ -1,5 +1,5 @@
 // Small outline icons used in the navigation and search.
-type Props = { name: "quake" | "storm" | "pin" | "book" | "search"; size?: number };
+type Props = { name: "home" | "quake" | "storm" | "pin" | "book" | "search"; size?: number };
 
 export default function Icon({ name, size = 22 }: Props) {
   const common = {
@@ -14,6 +14,13 @@ export default function Icon({ name, size = 22 }: Props) {
     "aria-hidden": true,
   };
   switch (name) {
+    case "home":
+      return (
+        <svg {...common}>
+          <path d="M4 10.5 12 4l8 6.5V20H4z" />
+          <path d="M10 20v-5h4v5" />
+        </svg>
+      );
     case "quake":
       return (
         <svg {...common}>
@@ -49,15 +56,4 @@ export default function Icon({ name, size = 22 }: Props) {
         </svg>
       );
   }
-}
-
-/** The site mark: an epicentre / storm eye in the accent colour. */
-export function Mark({ size = 28 }: { size?: number }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 28 28" aria-hidden className="text-accent">
-      <circle cx="14" cy="14" r="3.5" fill="currentColor" />
-      <circle cx="14" cy="14" r="8" fill="none" stroke="currentColor" strokeWidth="2" opacity="0.6" />
-      <circle cx="14" cy="14" r="12.5" fill="none" stroke="currentColor" strokeWidth="2" opacity="0.3" />
-    </svg>
-  );
 }

@@ -282,3 +282,17 @@ Built from the approved home mockup.
 - **Design inspector** (design-taste skill, app rules, 1440/768/390 px) on home, Linog, Bagyo, storm, Leyte, Sources. Fixed: the ✓ in chips (now a drawn tick), chart labels touching the screen edge, the old 69px Sources title. Kept on purpose: system font (no font download), the fixed phone tab bar that scrolls over content, colourful maps, the 56px home headline. Two remaining "edge text" flags are false: Recharts' hidden measuring box (20,000 px off-screen) and the sideways-scrolling chip row.
 - **Lighthouse** (mobile, local build): home 93, Linog 58 (was 52), Bagyo 72 (was 57), storm page 92 (was 64), Leyte 63. Accessibility 97–100. Map pages are still held back by the OpenStreetMap tiles loading after Leaflet.
 - **Screenshots**: new ones in `docs/screenshots/` (desktop + phone) in the README, old ones kept in `docs/screenshots/before/`. Live link added to the README; Done checklist: Live link and Pushed to GitHub ticked.
+
+## Minimal redesign, "Quiet atlas" (2026-11-06)
+Plan: `docs/minimal-redesign-plan.md`. Mockup approved by Dewdew first (artifact "PH Disaster History minimal mockup").
+
+### Minimal step 1: look, header, search, footer (2026-11-06)
+**Done**
+- New theme in `src/app/globals.css`: cool grey paper, ink is the only UI color (the old orange accent now only shows on data), hairline borders. Instrument Serif for all h1/h2 and big numbers (`.num`), Public Sans for text, self-hosted with next/font (`src/app/layout.tsx`).
+- Header (`SiteHeader.tsx`, `MainNav.tsx`): serif wordmark, Linog · Bagyo · My Province as plain text, search icon, theme toggle. Sources moved to the footer.
+- Search (`SiteSearch.tsx`): one icon at every width; opens an overlay (full screen on phones, centred panel on desktop). "/" opens it. The home-page search box is gone (the same search is one click away in the header).
+- Footer (`SiteFooter.tsx`): one line of credits + Sources + Retired names. Phone tab bar: Home · Quakes · Typhoons · My Province.
+
+**How to test**
+- Any page: press "/", type "yol" → Yolanda and Yoling; Esc or Close shuts it. On a phone width the search fills the screen.
+- Footer → Sources still opens `/sources`.

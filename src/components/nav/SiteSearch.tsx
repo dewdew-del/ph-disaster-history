@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useId, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useId, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { useRouter } from "next/navigation";
 import { loadJson } from "@/lib/data-client";
@@ -45,33 +45,32 @@ function stormTitle(r: Extract<Result, { kind: "storm" }>) {
 }
 
 /**
- * Search for storms and provinces. "header": inline box on large screens, full-screen sheet on phones.
- * "hero": one big inline box at every width (home page).
+ * Search for storms and provinces: one icon in the header that opens a search overlay
+ * (full screen on phones, a centred panel on large screens). "/" opens it too.
  */
-export default function SiteSearch({ variant = "header" }: { variant?: "header" | "hero" }) {
-  const hero = variant === "hero";
+export default function SiteSearch() {
   const router = useRouter();
   const dark = useIsDark();
   const listId = useId();
   const [index, setIndex] = useState<Index | null>(null);
   const [query, setQuery] = useState("");
-  const [open, setOpen] = useState(false);
   const [sheet, setSheet] = useState(false);
   const [cursor, setCursor] = useState(0);
-  const boxRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
-  const sheetInputRef = useRef<HTMLInputElement>(null);
 
   const results = useMemo(() => (index ? search(index, query) : []), [index, query]);
 
-  function warm() {
-    if (!index) loadIndex().then(setIndex).catch(() => {});
+  const warm = useCallback(() => {
+    loadIndex().then(setIndex).catch(() => {});
+  }, []);
+
+  function close() {
+    setSheet(false);
+    setQuery("");
   }
 
   function go(r: Result) {
-    setOpen(false);
-    setSheet(false);
-    setQuery("");
+    close();
     router.push(r.href);
   }
 
@@ -86,132 +85,94 @@ export default function SiteSearch({ variant = "header" }: { variant?: "header" 
       e.preventDefault();
       go(results[cursor]);
     } else if (e.key === "Escape") {
-      setOpen(false);
-      setSheet(false);
-      e.currentTarget.blur();
+      close();
     }
   }
 
-  // "/" jumps to the header search box on large screens.
+  // "/" opens the search from anywhere.
   useEffect(() => {
-    if (hero) return;
     function onSlash(e: KeyboardEvent) {
       const t = e.target as HTMLElement;
       if (e.key !== "/" || t.isContentEditable || ["INPUT", "TEXTAREA", "SELECT"].includes(t.tagName)) return;
       e.preventDefault();
-      inputRef.current?.focus();
+      warm();
+      setSheet(true);
     }
     window.addEventListener("keydown", onSlash);
     return () => window.removeEventListener("keydown", onSlash);
-  }, [hero]);
-
-  // Close the dropdown when clicking elsewhere.
-  useEffect(() => {
-    if (!open) return;
-    function onDown(e: MouseEvent) {
-      if (!boxRef.current?.contains(e.target as Node)) setOpen(false);
-    }
-    document.addEventListener("mousedown", onDown);
-    return () => document.removeEventListener("mousedown", onDown);
-  }, [open]);
+  }, [warm]);
 
   useEffect(() => {
-    if (sheet) sheetInputRef.current?.focus();
+    if (sheet) inputRef.current?.focus();
   }, [sheet]);
-
-  const list = (
-    <Results
-      id={listId}
-      results={results}
-      cursor={cursor}
-      query={query}
-      loading={!index && !!query}
-      dark={dark}
-      onPick={go}
-      onHover={setCursor}
-    />
-  );
-
-  const inputProps = {
-    type: "search" as const,
-    value: query,
-    placeholder: "Search a typhoon or province",
-    "aria-label": "Search a typhoon or province",
-    role: "combobox" as const,
-    "aria-expanded": results.length > 0,
-    "aria-controls": listId,
-    "aria-autocomplete": "list" as const,
-    autoComplete: "off",
-    spellCheck: false,
-    onFocus: () => {
-      warm();
-      setOpen(true);
-    },
-    onChange: (e: React.ChangeEvent<HTMLInputElement>) => {
-      warm();
-      setQuery(e.target.value);
-      setCursor(0);
-      setOpen(true);
-    },
-    onKeyDown: onKey,
-  };
-
-  if (hero)
-    return (
-      <div ref={boxRef} className="relative w-full">
-        <label className="flex h-14 items-center gap-3 rounded-2xl border border-control bg-surface px-5 text-muted focus-within:border-foreground md:h-[60px]">
-          <Icon name="search" size={22} />
-          <input ref={inputRef} {...inputProps} className="min-w-0 flex-1 bg-transparent text-lg text-foreground outline-none placeholder:text-muted" />
-        </label>
-        {open && query.trim() && (
-          <div className="absolute inset-x-0 top-[calc(100%+8px)] z-[1300] max-h-[60dvh] overflow-y-auto rounded-xl border border-border bg-background py-2 shadow-[0_12px_32px_rgba(0,0,0,0.12)]">
-            {list}
-          </div>
-        )}
-      </div>
-    );
 
   return (
     <>
-      {/* Large screens: inline box with a dropdown */}
-      <div ref={boxRef} className="relative hidden w-[clamp(240px,26vw,400px)] lg:block">
-        <label className="flex h-11 items-center gap-2.5 rounded-xl border border-control bg-surface px-3.5 text-muted focus-within:border-foreground">
-          <Icon name="search" size={18} />
-          <input ref={inputRef} {...inputProps} className="min-w-0 flex-1 bg-transparent text-base text-foreground outline-none placeholder:text-muted" />
-        </label>
-        {open && query.trim() && (
-          <div className="absolute right-0 top-[52px] z-[1300] w-[460px] max-w-[90vw] rounded-xl border border-border bg-background py-2 shadow-[0_12px_32px_rgba(0,0,0,0.12)]">
-            {list}
-          </div>
-        )}
-      </div>
-
-      {/* Phones: icon button that opens a full-screen search */}
       <button
         type="button"
         onClick={() => {
           warm();
           setSheet(true);
         }}
-        className="flex h-11 w-11 items-center justify-center rounded-full hover:bg-surface lg:hidden"
+        className="flex h-11 w-11 items-center justify-center rounded-full text-muted hover:text-foreground"
         aria-label="Search a typhoon or province"
+        title="Search (/)"
       >
-        <Icon name="search" size={22} />
+        <Icon name="search" size={20} />
       </button>
       {sheet &&
         createPortal(
-        <div className="fixed inset-0 z-[1300] flex flex-col bg-background lg:hidden" role="dialog" aria-modal="true" aria-label="Search">
-          <div className="flex h-16 items-center gap-2 border-b border-border pl-3 pr-2">
-            <label className="flex h-11 min-w-0 flex-1 items-center gap-2.5 rounded-xl border border-control bg-surface px-3 text-muted">
-              <Icon name="search" size={20} />
-              <input ref={sheetInputRef} {...inputProps} placeholder="Typhoon or province" className="min-w-0 flex-1 bg-transparent text-base text-foreground outline-none placeholder:text-muted" />
-            </label>
-            <button type="button" onClick={() => setSheet(false)} className="h-11 px-3 font-semibold text-accent">
-              Cancel
-            </button>
-          </div>
-          <div className="flex-1 overflow-y-auto pb-8">{list}</div>
-        </div>,
+          <div
+            className="fixed inset-0 z-[1300] bg-background lg:bg-black/30 lg:pt-[12vh]"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Search"
+            onMouseDown={(e) => {
+              if (e.target === e.currentTarget) close();
+            }}
+          >
+            <div className="flex h-full flex-col bg-background lg:mx-auto lg:h-auto lg:max-h-[70vh] lg:max-w-xl lg:rounded-xl lg:shadow-[0_20px_60px_rgba(0,0,0,0.25)]">
+              <div className="flex h-16 shrink-0 items-center gap-3 border-b border-border pl-4 pr-2">
+                <span className="text-muted">
+                  <Icon name="search" size={20} />
+                </span>
+                <input
+                  ref={inputRef}
+                  type="search"
+                  value={query}
+                  placeholder="Search a typhoon or province"
+                  aria-label="Search a typhoon or province"
+                  role="combobox"
+                  aria-expanded={results.length > 0}
+                  aria-controls={listId}
+                  aria-autocomplete="list"
+                  autoComplete="off"
+                  spellCheck={false}
+                  onChange={(e) => {
+                    setQuery(e.target.value);
+                    setCursor(0);
+                  }}
+                  onKeyDown={onKey}
+                  className="min-w-0 flex-1 bg-transparent text-lg text-foreground outline-none placeholder:text-muted"
+                />
+                <button type="button" onClick={close} className="h-11 px-3 text-sm font-semibold">
+                  Close
+                </button>
+              </div>
+              <div className="flex-1 overflow-y-auto pb-6 lg:pb-2">
+                <Results
+                  id={listId}
+                  results={results}
+                  cursor={cursor}
+                  query={query}
+                  loading={!index && !!query}
+                  dark={dark}
+                  onPick={go}
+                  onHover={setCursor}
+                />
+              </div>
+            </div>
+          </div>,
           document.body,
         )}
     </>

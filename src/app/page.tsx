@@ -1,5 +1,4 @@
 import Link from "next/link";
-import SiteSearch from "@/components/nav/SiteSearch";
 import { getQuakesSummary, getSatellitePhotos, getTyphoonIndex } from "@/lib/data-server";
 import { formatNumber } from "@/lib/format";
 import { stormLabel } from "@/lib/types";
@@ -20,9 +19,6 @@ export default function Home() {
           <h1 className="text-[clamp(2.1rem,1.3rem+3.6vw,3.5rem)] font-bold leading-[1.05] tracking-[-0.03em]">
             Philippine quakes and typhoons
           </h1>
-          <div className="mt-6 md:mt-8">
-            <SiteSearch variant="hero" />
-          </div>
           <div className="mt-4 grid grid-cols-2 gap-3 sm:flex">
             <Link href="/linog" className="rounded-full bg-foreground px-6 py-3 text-center font-semibold text-background hover:opacity-90">
               <span className="sm:hidden">Earthquakes</span>
