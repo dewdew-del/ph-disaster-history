@@ -3,74 +3,61 @@ import type { Damage } from "@/lib/types";
 
 /** Deaths and damage as Wikipedia lists them (totals for all areas), plus the curated PH-only count. */
 export default function DamageCard({ damage }: { damage: Damage | null }) {
-  if (!damage) {
-    return (
-      <section className="rounded-2xl bg-surface p-4">
-        <h2 className="text-sm font-semibold">Deaths and damage</h2>
-        <p className="mt-2 text-sm text-muted">No damage data yet.</p>
-      </section>
-    );
-  }
-  const approx = damage.approximate ? (
-    <span className="ml-1.5 rounded bg-raised px-1.5 py-0.5 align-middle text-xs font-medium text-muted">
-      approximate
-    </span>
-  ) : null;
+  if (!damage) return <p className="text-muted">No damage data yet.</p>;
+
+  const approx = damage.approximate ? <span className="ml-1.5 align-middle text-xs text-muted">(approximate)</span> : null;
 
   return (
-    <section className="rounded-2xl bg-surface p-4">
-      <h2 className="text-sm font-semibold">Deaths and damage</h2>
-      <dl className="mt-3 grid grid-cols-2 gap-3">
+    <div>
+      <dl className="grid grid-cols-2 gap-6 md:grid-cols-3">
         {damage.phDeaths !== null && (
-          <div className="col-span-2">
-            <dt className="text-xs text-muted">Deaths in the Philippines</dt>
-            <dd className="text-2xl font-semibold tabular-nums">{formatNumber(damage.phDeaths)}</dd>
-            {damage.phSourceUrl && (
-              <a href={damage.phSourceUrl} className="text-xs text-accent underline" target="_blank" rel="noopener noreferrer">
-                Source ↗
-              </a>
-            )}
+          <div>
+            <dd className="num text-[2rem]">{formatNumber(damage.phDeaths)}</dd>
+            <dt className="mt-1 text-sm text-muted">
+              Dead in the Philippines
+              {damage.phSourceUrl && (
+                <>
+                  {" · "}
+                  <a href={damage.phSourceUrl} className="underline" target="_blank" rel="noopener noreferrer">
+                    source
+                  </a>
+                </>
+              )}
+            </dt>
           </div>
         )}
         <div>
-          <dt className="text-xs text-muted">Deaths, total all areas</dt>
-          <dd className="text-lg font-semibold tabular-nums">
+          <dd className="num text-[2rem]">
             {damage.deaths !== null ? formatNumber(damage.deaths) : "—"}
             {damage.deaths !== null && approx}
           </dd>
+          <dt className="mt-1 text-sm text-muted">Dead, total all areas</dt>
         </div>
         <div>
-          <dt className="text-xs text-muted">Damage, total all areas</dt>
-          <dd className="text-lg font-semibold">
-            {damage.damageUsd !== null ? (
-              <>
-                {formatUsd(damage.damageUsd)}
-                <span className="text-sm font-normal text-muted"> ({damage.damageYear ?? "?"} USD)</span>
-                {approx}
-              </>
-            ) : (
-              "—"
-            )}
+          <dd className="num text-[2rem]">
+            {damage.damageUsd !== null ? formatUsd(damage.damageUsd).replace(" billion", "B").replace(" million", "M") : "—"}
+            {damage.damageUsd !== null && approx}
           </dd>
+          <dt className="mt-1 text-sm text-muted">Damage, all areas{damage.damageUsd !== null ? ` (${damage.damageYear ?? "?"} USD)` : ""}</dt>
         </div>
       </dl>
-      <p className="mt-3 text-xs text-muted">
+      <p className="mt-5 text-sm text-muted">
         Totals as listed on Wikipedia, for every country the storm hit. USD as listed, not adjusted for inflation.
         {damage.sourceUrl && (
           <>
             {" "}
-            <a href={damage.sourceUrl} className="text-accent underline" target="_blank" rel="noopener noreferrer">
-              Wikipedia source ↗
+            <a href={damage.sourceUrl} className="underline" target="_blank" rel="noopener noreferrer">
+              Wikipedia source
             </a>
           </>
         )}
       </p>
       {damage.rawText && (
-        <details className="mt-2 text-xs text-muted">
+        <details className="mt-2 text-sm text-muted">
           <summary className="cursor-pointer">As written on Wikipedia</summary>
           <p className="mt-1">{damage.rawText}</p>
         </details>
       )}
-    </section>
+    </div>
   );
 }

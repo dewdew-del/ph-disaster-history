@@ -3,6 +3,7 @@ import Link from "next/link";
 import DamageCard from "@/components/bagyo/DamageCard";
 import StormMapView from "@/components/bagyo/StormMapView";
 import WindChartLazy from "@/components/bagyo/WindChartLazy";
+import Row, { Facts } from "@/components/ui/Row";
 import { getProvinceIndex, getSatellitePhotos, getTyphoonDetail, getTyphoonIndex } from "@/lib/data-server";
 import type { SatellitePhoto } from "@/lib/data-server";
 import { formatDateRangePH, formatDateTimePH, formatNumber, formatUsd } from "@/lib/format";
@@ -33,7 +34,7 @@ const photoDate = (date: string) =>
 function SatelliteFigure({ photo, label }: { photo: SatellitePhoto; label: string }) {
   const credit = photo.file.startsWith("/images/satellite/") ? `https://worldview.earthdata.nasa.gov/?t=${photo.date}` : "/sources#pictures";
   return (
-    <figure className="relative h-[300px] overflow-hidden rounded-2xl bg-[#0b1530] sm:h-[440px]">
+    <figure className="relative h-[300px] overflow-hidden rounded-xl bg-[#0b1530] sm:h-[440px]">
       {/* eslint-disable-next-line @next/next/no-img-element -- static export, image already sized */}
       <img src={photo.file} alt={`Satellite photo of ${label} on ${photoDate(photo.date)}`} className="h-full w-full object-cover" />
       <figcaption className="absolute bottom-3 left-3 rounded-full bg-black/60 px-3 py-1 text-sm text-white">
@@ -43,20 +44,6 @@ function SatelliteFigure({ photo, label }: { photo: SatellitePhoto; label: strin
         </a>
       </figcaption>
     </figure>
-  );
-}
-
-/** Up to four big numbers in one grey strip (two columns on phones). */
-function Facts({ items }: { items: [string, string][] }) {
-  return (
-    <dl className="grid grid-cols-2 overflow-hidden rounded-2xl bg-surface md:grid-cols-4">
-      {items.map(([value, label], i) => (
-        <div key={label} className={`px-5 py-4 ${i % 2 ? "border-l border-border" : ""} ${i >= 2 ? "border-t border-border md:border-t-0" : ""} ${i === 2 ? "md:border-l" : ""}`}>
-          <dd className="text-2xl font-bold leading-tight tabular-nums md:text-[2rem]">{value}</dd>
-          <dt className="text-sm text-muted">{label}</dt>
-        </div>
-      ))}
-    </dl>
   );
 }
 
@@ -92,80 +79,108 @@ export default async function StormPage({ params }: PageProps<"/bagyo/[id]">) {
     [formatDateRangePH(s.start, s.end).replace(/,\s*\d{4}$/, ""), `${s.season}, PH time`],
   ];
 
+  const title = s.local ?? s.name ?? label;
+  const english = s.local && s.name ? s.name : null;
+
   return (
-    <article className="mx-auto max-w-[1440px] px-4 pb-12 pt-6 md:px-8">
-      <header className="flex flex-wrap items-center gap-3">
-        <h1 className="text-3xl font-bold tracking-tight md:text-[2.125rem]">
-          {label}, {s.season}
-        </h1>
-        <span className="inline-flex items-center gap-2 rounded-full bg-surface px-3 py-1 text-sm font-semibold">
-          <span aria-hidden className="h-2.5 w-2.5 rounded-[3px]" style={{ background: categoryColor(s.cat, false) }} />
-          {categoryName(s.cat)}
-        </span>
-        {s.retired && (
-          <Link href="/bagyo/retired" className="rounded-full bg-accent/10 px-3 py-1 text-sm font-semibold text-accent">
-            Retired name
-          </Link>
-        )}
-        {s.provisional && <span className="rounded-full bg-surface px-3 py-1 text-sm text-muted">Provisional data</span>}
+    <article className="mx-auto max-w-[1280px] px-4 pb-16 pt-8 md:px-8 md:pt-12">
+      <header>
+        <h1 className="text-[3.25rem] leading-none md:text-[4.5rem]">{title}</h1>
+        <p className="mt-3 flex flex-wrap items-center gap-x-2 gap-y-1 text-muted">
+          <span className="inline-flex items-center gap-2 font-semibold text-foreground">
+            <span aria-hidden className="h-2.5 w-2.5 rounded-[3px]" style={{ background: categoryColor(s.cat, false) }} />
+            {categoryName(s.cat)}
+          </span>
+          {english && <span>· {english}</span>}
+          <span>· {s.season}</span>
+          {s.retired && (
+            <>
+              ·{" "}
+              <Link href="/bagyo/retired" className="text-foreground underline underline-offset-4">
+                retired name
+              </Link>
+            </>
+          )}
+          {s.provisional && <span>· provisional data</span>}
+        </p>
       </header>
 
-      <div className="mt-5">
+      <div className="mt-8">
         <Facts items={facts} />
       </div>
 
-      <div className={`mt-5 grid gap-5 ${photo ? "lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]" : ""}`}>
-        {photo && <SatelliteFigure photo={photo} label={label} />}
+      <div className={`mt-8 grid gap-5 ${photo ? "lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]" : ""}`}>
         <StormMapView id={s.id} label={`${label}, ${s.season}`} track={s.track} provinceSlugs={s.provinces} />
+        {photo && <SatelliteFigure photo={photo} label={label} />}
       </div>
 
-      <div className="mt-10 grid gap-10 lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]">
-        <section>
-          <h2 className="text-xl font-semibold">Wind speed</h2>
-          <div className="mt-3">
-            <WindChartLazy track={s.track} />
-          </div>
-        </section>
-        <section className="space-y-6">
-          <div>
-            <h2 className="text-xl font-semibold">Provinces in its path</h2>
-            {s.provinces.length > 0 ? (
-              <ul className="mt-3 flex flex-wrap gap-2">
-                {s.provinces.map((slug) => (
-                  <li key={slug}>
-                    <Link href={`/lugar/${slug}`} className="inline-block rounded-full bg-surface px-3.5 py-1.5 text-sm hover:bg-raised">
-                      {provinceNames.get(slug) ?? slug}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <p className="mt-2 text-muted">Stayed more than 50 km from every province.</p>
-            )}
-          </div>
-          <dl className="grid grid-cols-2 gap-x-6 gap-y-3 text-sm">
+      <div className="mt-12">
+        <Row title="Wind over time">
+          <WindChartLazy track={s.track} />
+        </Row>
+
+        <Row title="Provinces in its path">
+          {s.provinces.length > 0 ? (
+            <p className="leading-relaxed">
+              {s.provinces.map((slug, i) => (
+                <span key={slug}>
+                  {i > 0 && <span className="text-muted"> · </span>}
+                  <Link href={`/lugar/${slug}`} className="underline decoration-control underline-offset-4 hover:decoration-foreground">
+                    {provinceNames.get(slug) ?? slug}
+                  </Link>
+                </span>
+              ))}
+            </p>
+          ) : (
+            <p className="text-muted">Stayed more than 50 km from every province.</p>
+          )}
+        </Row>
+
+        <Row title="In the PAR">
+          <dl className="grid grid-cols-2 gap-6 md:grid-cols-3">
             <div>
-              <dt className="text-muted">Lowest pressure</dt>
-              <dd className="text-lg font-semibold">{s.minPres !== null ? `${s.minPres} hPa` : "—"}</dd>
+              <dd className="num text-[2rem]">{parDays !== null ? `${parDays < 1 ? "<1" : Math.round(parDays * 10) / 10} days` : "Edge only"}</dd>
+              <dt className="mt-1 text-sm text-muted">Time inside PAR</dt>
             </div>
             <div>
-              <dt className="text-muted">Time inside PAR</dt>
-              <dd className="text-lg font-semibold">
-                {parDays !== null ? `${parDays < 1 ? "<1" : Math.round(parDays * 10) / 10} days` : "Edge only"}
-              </dd>
+              <dd className="num text-[2rem]">{s.minPres !== null ? `${s.minPres} hPa` : "—"}</dd>
+              <dt className="mt-1 text-sm text-muted">Lowest pressure</dt>
             </div>
             {s.parIn !== null && (
-              <div className="col-span-2">
-                <dt className="text-muted">Entered PAR</dt>
-                <dd>{formatDateTimePH(s.parIn)}</dd>
+              <div className="col-span-2 md:col-span-1">
+                <dd className="text-lg">{formatDateTimePH(s.parIn)}</dd>
+                <dt className="mt-1 text-sm text-muted">Entered PAR</dt>
               </div>
             )}
           </dl>
+        </Row>
+
+        <Row title="Deaths and damage">
           <DamageCard damage={s.damage} />
-          <p className="text-sm text-muted">
-            Sources:{" "}
+        </Row>
+
+        {related.length > 0 && (
+          <Row title="Same provinces, other deadly storms">
+            <ol>
+              {related.map((r) => (
+                <li key={r.id} className="border-b border-border last:border-b-0">
+                  <Link href={`/bagyo/${r.id}`} className="flex items-baseline gap-4 py-3 hover:text-muted">
+                    <span className="flex-1 text-lg font-medium">
+                      {r.local ?? stormLabel(r)} <span className="text-sm font-normal text-muted">{r.season}</span>
+                    </span>
+                    <span className="num text-2xl">{formatNumber(r.phDeaths ?? r.deaths ?? 0)}</span>
+                    <span className="w-24 text-xs text-muted">{r.phDeaths !== null ? "dead in PH" : "dead, all areas"}</span>
+                  </Link>
+                </li>
+              ))}
+            </ol>
+          </Row>
+        )}
+
+        <Row title="Sources">
+          <p className="text-muted">
             <a href={ibtracsUrl} className="underline" target="_blank" rel="noopener noreferrer">
-              IBTrACS
+              IBTrACS track
             </a>
             {s.wikiUrl && (
               <>
@@ -183,54 +198,27 @@ export default async function StormPage({ params }: PageProps<"/bagyo/[id]">) {
                 </a>
               </>
             )}
+            {" · "}
+            <Link href="/sources" className="underline">
+              All sources
+            </Link>
           </p>
-        </section>
+        </Row>
       </div>
 
-      {related.length > 0 && (
-        <section className="mt-12">
-          <h2 className="text-xl font-semibold">Other deadly storms that hit these provinces</h2>
-          <ul className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-            {related.map((r) => {
-              const p = photos[r.id];
-              return (
-                <li key={r.id}>
-                  <Link href={`/bagyo/${r.id}`} className="flex items-center gap-4 rounded-2xl bg-surface p-3 hover:bg-raised">
-                    {p ? (
-                      // eslint-disable-next-line @next/next/no-img-element -- static export, image already sized
-                      <img src={p.file} alt="" loading="lazy" className="h-24 w-20 shrink-0 rounded-xl object-cover" />
-                    ) : (
-                      <span className="h-24 w-20 shrink-0 rounded-xl bg-raised" />
-                    )}
-                    <span>
-                      <span className="block text-lg font-semibold leading-tight">{r.local ?? stormLabel(r)}</span>
-                      <span className="block text-sm text-muted">{r.season}</span>
-                      <span className="mt-1.5 block text-xl font-bold leading-none tabular-nums">
-                        {formatNumber(r.phDeaths ?? r.deaths ?? 0)}
-                      </span>
-                      <span className="block text-xs text-muted">{r.phDeaths !== null ? "dead in PH" : "dead, all areas"}</span>
-                    </span>
-                  </Link>
-                </li>
-              );
-            })}
-          </ul>
-        </section>
-      )}
-
-      <nav className="mt-10 grid gap-3 sm:grid-cols-2" aria-label="Previous and next storm">
+      <nav className="mt-4 grid grid-cols-2 gap-6 border-t border-border pt-6" aria-label="Previous and next storm">
         {s.prev ? (
-          <Link href={`/bagyo/${s.prev.id}`} className="rounded-2xl bg-surface px-5 py-4 hover:bg-raised">
-            <span className="text-sm text-muted">← Previous storm</span>
-            <span className="block text-lg font-semibold">{s.prev.label}</span>
+          <Link href={`/bagyo/${s.prev.id}`} className="group">
+            <span className="text-sm text-muted">← Previous</span>
+            <span className="block text-lg font-medium group-hover:underline">{s.prev.label}</span>
           </Link>
         ) : (
           <span />
         )}
         {s.next && (
-          <Link href={`/bagyo/${s.next.id}`} className="rounded-2xl bg-surface px-5 py-4 text-right hover:bg-raised">
-            <span className="text-sm text-muted">Next storm →</span>
-            <span className="block text-lg font-semibold">{s.next.label}</span>
+          <Link href={`/bagyo/${s.next.id}`} className="group text-right">
+            <span className="text-sm text-muted">Next →</span>
+            <span className="block text-lg font-medium group-hover:underline">{s.next.label}</span>
           </Link>
         )}
       </nav>

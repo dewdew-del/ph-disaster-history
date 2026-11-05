@@ -45,7 +45,7 @@ export default function ProvinceMapView({ feature, bbox, rows, name, storms }: P
   }, [storms]);
 
   return (
-    <div className="relative h-[360px] overflow-hidden rounded-2xl bg-surface sm:h-[520px]">
+    <div className="relative h-[360px] overflow-hidden rounded-xl bg-surface sm:h-[520px]">
       <ProvinceMap
         feature={feature}
         bbox={bbox}
@@ -55,14 +55,14 @@ export default function ProvinceMapView({ feature, bbox, rows, name, storms }: P
         landLabel={name}
         offshoreLabel={`Offshore, near ${name}`}
       />
-      <div className="absolute left-3 top-3 z-[1000] flex rounded-xl bg-background p-1 shadow-sm" role="group" aria-label="Show on map">
+      <div className="absolute left-3 top-3 z-[1000] flex rounded-full border border-border bg-background/95 p-0.5" role="group" aria-label="Show on map">
         {MODES.map(([m, label]) => (
           <button
             key={m}
             type="button"
             aria-pressed={mode === m}
             onClick={() => setMode(m)}
-            className={`rounded-lg px-3.5 py-1.5 text-sm ${mode === m ? "bg-foreground font-semibold text-background" : ""}`}
+            className={`rounded-full px-3.5 py-1.5 text-sm ${mode === m ? "bg-foreground font-semibold text-background" : ""}`}
           >
             {label}
           </button>

@@ -309,3 +309,13 @@ Plan: `docs/minimal-redesign-plan.md`. Mockup approved by Dewdew first (artifact
 - `/linog` → Filters → Heatmap → Show results: badge shows 1, legend says "Brighter = more quakes". Clear all → back to dots.
 - `/bagyo` → Filters → Super typhoons → pill shows "… storms · 2020s". Pick a province → pill adds "hit <province>" and switches to all years.
 - Phone width: pill left, Filters right, the panel slides up from the bottom.
+
+### Minimal step 3: storm and province pages (2026-11-06)
+**Done**
+- **Storm page** (`src/app/bagyo/[id]/page.tsx`): big serif name, one line under it (category · English name · season · retired name), 4 numbers in a hairline row, map + satellite photo side by side, then plain sections with a hairline above each (`src/components/ui/Row.tsx`): Wind over time, Provinces in its path (inline links), In the PAR, Deaths and damage, Same provinces / other deadly storms (plain ranked rows, no photo cards), Sources. Prev / next as two quiet links.
+- **Province page** (`src/app/lugar/[province]/page.tsx`): same pattern: serif name, region, Change province, numbers row, map (Both / Quakes / Typhoons pill), Deadliest typhoons, Strongest earthquakes, By decade, Sources.
+- `DamageCard.tsx` is no longer a grey box: three serif numbers + the Wikipedia note.
+
+**How to test**
+- `/bagyo/2013306N07162` (Yolanda): 6,300 · 230 km/h · $2.98B · Nov 2 – Nov 11; sections listed above; no sideways scroll.
+- `/lugar/leyte`: 135 · 89 · M7.1 · Yolanda; the map toggle still works; "All 135 storms on the map →" opens `/bagyo?province=leyte`.
