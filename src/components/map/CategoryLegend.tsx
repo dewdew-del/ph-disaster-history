@@ -6,7 +6,7 @@ type Props = { dark: boolean; showUnknown?: boolean; showPar?: boolean };
 
 export default function CategoryLegend({ dark, showUnknown = true, showPar = true }: Props) {
   return (
-    <div className="pointer-events-auto rounded-full bg-background px-3.5 py-1.5 text-xs shadow-sm" title="Strength, PAGASA scale">
+    <div className="pointer-events-auto rounded-full border border-border bg-background/95 px-3.5 py-1.5 text-xs" title="Strength, PAGASA scale">
       <ul className="flex flex-wrap items-center gap-x-3 gap-y-1">
         {CATEGORIES.map((c, i) => (
           <li key={c.code} className="flex items-center gap-1.5" title={c.name}>
@@ -22,7 +22,7 @@ export default function CategoryLegend({ dark, showUnknown = true, showPar = tru
         )}
         {showPar && (
           <li className="flex items-center gap-1.5" title="Philippine Area of Responsibility">
-            <span aria-hidden className="inline-block w-4 border-t-2 border-dashed border-accent" />
+            <span aria-hidden className="inline-block w-4 border-t-2 border-dashed border-muted" />
             <span className="text-muted">PAR</span>
           </li>
         )}

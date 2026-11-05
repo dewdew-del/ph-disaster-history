@@ -3,7 +3,7 @@
 // Only import this file through next/dynamic with { ssr: false }: Leaflet needs `window`.
 import type { ReactNode } from "react";
 import type { LatLngBoundsExpression } from "leaflet";
-import { MapContainer, TileLayer } from "react-leaflet";
+import { MapContainer, TileLayer, ZoomControl } from "react-leaflet";
 
 export const PH_BOUNDS: LatLngBoundsExpression = [
   [4.4, 116.5],
@@ -25,8 +25,10 @@ export default function BaseMap({ children, bounds = PH_BOUNDS, className = "h-f
       scrollWheelZoom={scrollWheelZoom}
       minZoom={4}
       worldCopyJump={false}
+      zoomControl={false}
       className={className}
     >
+      <ZoomControl position="bottomright" />
       <TileLayer
         url="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'

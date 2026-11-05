@@ -2,16 +2,17 @@
 
 import type { ReactNode } from "react";
 
-/** A row of filter chips: wraps on large screens, scrolls sideways on phones. */
-export function ChipBar({ children }: { children: ReactNode }) {
+/** A wrapping group of quick-pick chips (used inside the filters panel). */
+export function ChipGroup({ label, children }: { label: string; children: ReactNode }) {
   return (
-    <div className="no-scrollbar -mx-4 flex gap-2 overflow-x-auto px-4 lg:mx-0 lg:flex-wrap lg:overflow-visible lg:px-0" role="toolbar" aria-label="Filters">
-      {children}
-    </div>
+    <fieldset>
+      <legend className="mb-2 text-sm text-muted">{label}</legend>
+      <div className="flex flex-wrap gap-2">{children}</div>
+    </fieldset>
   );
 }
 
-/** Toggle chip: filled ink with a tick when on. */
+/** Toggle chip: filled ink with a tick when on, hairline outline when off. */
 export function Chip({ on, onClick, children }: { on: boolean; onClick: () => void; children: ReactNode }) {
   return (
     <button
@@ -19,7 +20,7 @@ export function Chip({ on, onClick, children }: { on: boolean; onClick: () => vo
       aria-pressed={on}
       onClick={onClick}
       className={`flex h-10 shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full px-4 text-sm transition-colors ${
-        on ? "bg-foreground font-semibold text-background" : "border border-control bg-background hover:bg-surface"
+        on ? "bg-foreground font-semibold text-background" : "border border-control hover:border-foreground"
       }`}
     >
       {on && (
@@ -32,18 +33,34 @@ export function Chip({ on, onClick, children }: { on: boolean; onClick: () => vo
   );
 }
 
-/** Grey chip that opens the full filter drawer; shows how many filters are on. */
-export function MoreFiltersChip({ count, onClick }: { count: number; onClick: () => void }) {
+/** Two or three options in one pill, e.g. Dots | Heatmap. */
+export function Segmented<T extends string>({
+  label,
+  options,
+  value,
+  onChange,
+}: {
+  label: string;
+  options: { value: T; label: string }[];
+  value: T;
+  onChange: (v: T) => void;
+}) {
   return (
-    <button
-      type="button"
-      onClick={onClick}
-      className="flex h-10 shrink-0 items-center gap-2 whitespace-nowrap rounded-full bg-surface px-4 text-sm font-semibold hover:bg-raised"
-    >
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden>
-        <path d="M4 6h16M7 12h10M10 18h4" />
-      </svg>
-      {count > 0 ? `Filters · ${count}` : "More filters"}
-    </button>
+    <fieldset>
+      <legend className="mb-2 text-sm text-muted">{label}</legend>
+      <div className="flex rounded-full border border-control p-0.5">
+        {options.map((o) => (
+          <button
+            key={o.value}
+            type="button"
+            aria-pressed={value === o.value}
+            onClick={() => onChange(o.value)}
+            className={`h-9 flex-1 rounded-full text-sm ${value === o.value ? "bg-foreground font-semibold text-background" : "text-muted hover:text-foreground"}`}
+          >
+            {o.label}
+          </button>
+        ))}
+      </div>
+    </fieldset>
   );
 }

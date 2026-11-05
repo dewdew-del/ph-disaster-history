@@ -6,7 +6,8 @@ import { useCallback, useDeferredValue, useEffect, useMemo, useState } from "rea
 import CategoryLegend from "@/components/map/CategoryLegend";
 import MapLoading from "@/components/map/MapLoading";
 import MapSidePanel, { FactStrip } from "@/components/map/MapSidePanel";
-import { Chip, ChipBar, MoreFiltersChip } from "@/components/ui/Chips";
+import { FULL_MAP, FiltersButton, MapPill, MapTopBar } from "@/components/map/MapControls";
+import { Chip, ChipGroup } from "@/components/ui/Chips";
 import FilterDrawer from "@/components/ui/FilterDrawer";
 import { loadDecadeTracks, loadJson, loadProvinceIndex, loadTyphoonIndex } from "@/lib/data-client";
 import { formatDateRangePH, formatNumber } from "@/lib/format";
@@ -125,25 +126,66 @@ export default function BagyoExplorer() {
   const changed = changedCount(filter, latest);
   const latestOn = filter.decade === latest && filter.year === "all";
 
-  return (
-    <div className="mx-auto max-w-[1440px] px-4 pb-12 pt-5 md:px-8">
-      <h1 className="text-2xl font-bold tracking-tight md:text-[1.75rem]">Bagyo · Typhoons</h1>
-      <p className="text-muted" aria-live="polite">
-        {index ? (
-          <>
-            <strong className="text-foreground tabular-nums">{formatNumber(filtered.length)}</strong> of{" "}
-            <span className="tabular-nums">{formatNumber(index.count)}</span> storms since 1945
-          </>
-        ) : error ? (
-          <span className="text-red-600">Could not load storm data: {error}</span>
-        ) : (
-          "Loading storms…"
-        )}
-      </p>
+  const provinceName = provinces.find((p) => p.slug === filter.province)?.name;
+  const scopeLabel = filter.q.trim()
+    ? `“${filter.q.trim()}”`
+    : [
+        filter.decade === "all" ? "1945–now" : filter.year !== "all" ? String(filter.year) : `${filter.decade}s`,
+        provinceName ? `hit ${provinceName}` : null,
+      ]
+        .filter(Boolean)
+        .join(" · ");
 
-      <div className="mt-4">
-        <ChipBar>
-          <MoreFiltersChip count={changed} onClick={() => setDrawerOpen(true)} />
+  return (
+    <div className="pb-12">
+      <h1 className="sr-only">Bagyo · Typhoons that entered the PAR since 1945</h1>
+      <section id="storm-map" className={`${FULL_MAP} scroll-mt-14 bg-surface`} aria-label="Typhoon track map">
+        <BagyoMap tracks={trackInputs} dark={dark} selectedId={selectedId} onSelect={select} />
+        <MapTopBar>
+          <MapPill>
+            {index ? (
+              <>
+                <strong className="font-semibold tabular-nums">{formatNumber(filtered.length)}</strong> storms
+                <span className="hidden text-muted sm:inline"> · {scopeLabel}</span>
+              </>
+            ) : error ? (
+              <span className="text-red-600">Could not load storms</span>
+            ) : (
+              "Loading storms…"
+            )}
+          </MapPill>
+          <FiltersButton count={changed} onClick={() => setDrawerOpen(true)} />
+        </MapTopBar>
+        <div className="pointer-events-none absolute bottom-6 left-3 z-[1000] max-w-[calc(100%-4.5rem)] lg:left-4">
+          <CategoryLegend dark={dark} />
+        </div>
+        {(tooMany || tracksLoading) && index && (
+          <div className="absolute left-1/2 top-16 z-[1000] w-max max-w-[90%] -translate-x-1/2 rounded-full border border-border bg-background/95 px-4 py-2 text-center text-sm">
+            {tooMany ? `${formatNumber(filtered.length)} storms: pick a decade in Filters to draw them` : "Loading tracks…"}
+          </div>
+        )}
+        {selected && (
+          <MapSidePanel label="Selected storm" onClose={() => setSelectedId(null)}>
+            <StormDetails s={selected} photo={photos[selected.id]} dark={dark} />
+          </MapSidePanel>
+        )}
+      </section>
+
+      <div className="mx-auto mt-12 grid max-w-[1440px] gap-12 px-4 md:px-8 lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]">
+        <section>
+          <h2 className="text-[2rem] leading-tight">Storms on the map</h2>
+          <div className="mt-3">
+            {index && <StormList key={JSON.stringify(deferredFilter)} storms={filtered} selectedId={selectedId} onSelect={selectFromList} />}
+          </div>
+        </section>
+        <section>
+          <h2 className="text-[2rem] leading-tight">Stats</h2>
+          <div className="mt-4">{index && <BagyoStats filtered={filtered} all={index.storms} dark={dark} />}</div>
+        </section>
+      </div>
+
+      <FilterDrawer open={drawerOpen} onClose={() => setDrawerOpen(false)} onClear={changed > 0 ? reset : undefined} title="Filters">
+        <ChipGroup label="Quick picks">
           <Chip on={latestOn} onClick={() => setFilter({ ...filter, decade: latestOn ? "all" : latest, year: "all" })}>
             {latest}s
           </Chip>
@@ -159,87 +201,19 @@ export default function BagyoExplorer() {
           <Chip on={filter.retired} onClick={() => setFilter({ ...filter, retired: !filter.retired })}>
             Retired names
           </Chip>
-          {provinces.length > 0 && (
-            <label
-              className={`relative flex h-10 shrink-0 items-center rounded-full pl-4 pr-9 text-sm ${
-                filter.province ? "bg-foreground font-semibold text-background" : "border border-control bg-background"
-              }`}
-            >
-              <span>{filter.province ? provinces.find((p) => p.slug === filter.province)?.name : "Hit my province"}</span>
-              <span aria-hidden className="pointer-events-none absolute right-3.5">
-                ▾
-              </span>
-              <select
-                aria-label="Show storms that hit a province"
-                value={filter.province}
-                onChange={(e) => setFilter({ ...filter, province: e.target.value, decade: e.target.value ? "all" : filter.decade })}
-                className="absolute inset-0 cursor-pointer opacity-0"
-              >
-                <option value="">Any province</option>
-                {provinces.map((p) => (
-                  <option key={p.slug} value={p.slug}>
-                    {p.name}
-                  </option>
-                ))}
-              </select>
-            </label>
-          )}
-          {changed > 0 && (
-            <button type="button" onClick={reset} className="shrink-0 px-2 text-sm text-muted underline lg:ml-auto">
-              Clear
-            </button>
-          )}
-        </ChipBar>
-      </div>
-
-      <section
-        id="storm-map"
-        className="relative mt-3 h-[60dvh] min-h-[380px] scroll-mt-16 overflow-hidden rounded-2xl bg-surface lg:h-[min(680px,calc(100dvh-15rem))]"
-        aria-label="Typhoon track map"
-      >
-        <BagyoMap tracks={trackInputs} dark={dark} selectedId={selectedId} onSelect={select} />
-        <div className="pointer-events-none absolute bottom-6 left-3 z-[1000] max-w-[calc(100%-1.5rem)]">
-          <CategoryLegend dark={dark} />
-        </div>
-        {(tooMany || tracksLoading) && index && (
-          <div className="absolute left-1/2 top-3 z-[1000] w-max max-w-[90%] -translate-x-1/2 rounded-full bg-background px-4 py-2 text-center text-sm shadow">
-            {tooMany ? `${formatNumber(filtered.length)} storms: pick a decade to draw them` : "Loading tracks…"}
-          </div>
-        )}
-        {selected && (
-          <MapSidePanel label="Selected storm" onClose={() => setSelectedId(null)}>
-            <StormDetails s={selected} photo={photos[selected.id]} dark={dark} />
-          </MapSidePanel>
-        )}
-      </section>
-
-      <div className="mt-10 grid gap-10 lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]">
-        <section>
-          <div className="flex items-baseline justify-between gap-4">
-            <h2 className="text-xl font-semibold">Storms on the map</h2>
-            <Link href="/bagyo/retired" className="text-sm font-semibold text-accent hover:underline">
-              Retired names →
-            </Link>
-          </div>
-          <div className="mt-3">
-            {index && <StormList key={JSON.stringify(deferredFilter)} storms={filtered} selectedId={selectedId} onSelect={selectFromList} />}
-          </div>
-        </section>
-        <section>
-          <h2 className="text-xl font-semibold">Stats</h2>
-          <div className="mt-4">{index && <BagyoStats filtered={filtered} all={index.storms} dark={dark} />}</div>
-        </section>
-      </div>
-
-      <FilterDrawer open={drawerOpen} onClose={() => setDrawerOpen(false)} title="Filter storms">
-        <StormFilters
-          filter={filter}
-          onChange={setFilter}
-          onReset={reset}
-          decades={index?.decades ?? []}
-          provinces={provinces.length ? provinces : undefined}
-        />
-        <p className="mt-6 text-sm text-muted">Strength uses the PAGASA scale. Details on the Sources page.</p>
+        </ChipGroup>
+        <StormFilters filter={filter} onChange={setFilter} decades={index?.decades ?? []} provinces={provinces.length ? provinces : undefined} />
+        <p className="text-sm text-muted">
+          Strength uses the PAGASA scale. See the{" "}
+          <Link href="/bagyo/retired" className="underline">
+            retired names
+          </Link>{" "}
+          or the{" "}
+          <Link href="/sources" className="underline">
+            sources
+          </Link>
+          .
+        </p>
       </FilterDrawer>
     </div>
   );
@@ -263,7 +237,7 @@ function StormDetails({ s, photo, dark }: { s: TyphoonSummary; photo?: Photo; da
       )}
       <div className="flex flex-1 flex-col gap-4 p-5">
         <div className="pr-10">
-          <div className="text-2xl font-bold leading-tight">
+          <div className="font-display text-[2rem] leading-tight">
             {s.local ?? s.name ?? "Unnamed storm"}{" "}
             {s.local && s.name && <span className="font-normal text-muted">({s.name})</span>}
           </div>

@@ -7,12 +7,11 @@ import { MAG_LIMITS, type QuakeFilter } from "./filters";
 type Props = {
   filter: QuakeFilter;
   onChange: (f: QuakeFilter) => void;
-  onReset: () => void;
   firstYear: number;
   lastYear: number;
 };
 
-export default function QuakeFilters({ filter, onChange, onReset, firstYear, lastYear }: Props) {
+export default function QuakeFilters({ filter, onChange, firstYear, lastYear }: Props) {
   return (
     <div className="space-y-5">
       <RangePair
@@ -35,12 +34,12 @@ export default function QuakeFilters({ filter, onChange, onReset, firstYear, las
         onChange={(yearFrom, yearTo) => onChange({ ...filter, yearFrom, yearTo })}
       />
       <fieldset>
-        <legend className="mb-1.5 text-sm font-medium">Depth</legend>
+        <legend className="mb-2 text-sm text-muted">Depth</legend>
         <div className="flex flex-wrap gap-2">
           {DEPTH_BANDS.map((d) => (
             <label
               key={d.key}
-              className="flex cursor-pointer items-center gap-1.5 rounded-md border border-border px-2 py-1 text-xs has-[:checked]:border-accent"
+              className="flex cursor-pointer items-center gap-1.5 rounded-full border border-control px-3 py-2 text-sm has-[:checked]:border-foreground"
             >
               <input
                 type="checkbox"
@@ -53,9 +52,6 @@ export default function QuakeFilters({ filter, onChange, onReset, firstYear, las
           ))}
         </div>
       </fieldset>
-      <button type="button" onClick={onReset} className="text-sm text-accent underline">
-        Reset filters
-      </button>
     </div>
   );
 }

@@ -94,9 +94,27 @@ body {
   line-height: 1.55;
 }
 
-/* Leaflet: darken the OSM tiles in dark mode (no extra tile provider needed). */
+/* Leaflet: quiet grey OSM tiles in light mode so the orange data stands out; darkened tiles in dark mode. */
+.leaflet-tile-pane {
+  filter: grayscale(0.9) contrast(0.92) brightness(1.04);
+}
+
+.leaflet-container {
+  background: #eef0f2;
+}
+
+.leaflet-bar,
+.leaflet-touch .leaflet-bar {
+  border: 1px solid var(--border) !important;
+  box-shadow: none !important;
+}
+
+.leaflet-bar a {
+  color: var(--foreground);
+}
+
 .dark .leaflet-tile-pane {
-  filter: invert(1) hue-rotate(180deg) brightness(0.9) contrast(0.9);
+  filter: grayscale(0.6) invert(1) hue-rotate(180deg) brightness(0.85) contrast(0.9);
 }
 
 .dark .leaflet-container {

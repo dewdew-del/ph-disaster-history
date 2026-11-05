@@ -6,7 +6,8 @@ import { useCallback, useDeferredValue, useEffect, useMemo, useState } from "rea
 import MapLoading from "@/components/map/MapLoading";
 import MagnitudeLegend from "@/components/map/MagnitudeLegend";
 import MapSidePanel, { FactStrip } from "@/components/map/MapSidePanel";
-import { Chip, ChipBar, MoreFiltersChip } from "@/components/ui/Chips";
+import { FULL_MAP, FiltersButton, MapPill, MapTopBar } from "@/components/map/MapControls";
+import { Chip, ChipGroup, Segmented } from "@/components/ui/Chips";
 import FilterDrawer from "@/components/ui/FilterDrawer";
 import LazyVisible from "@/components/ui/LazyVisible";
 import { loadQuakes } from "@/lib/data-client";
@@ -95,41 +96,92 @@ export default function LinogExplorer() {
   const changed = changedCount(filter);
 
   return (
-    <div className="mx-auto max-w-[1440px] px-4 pb-12 pt-5 md:px-8">
-      <div className="flex flex-wrap items-end gap-x-6 gap-y-3">
-        <div className="min-w-0 flex-1">
-          <h1 className="text-2xl font-bold tracking-tight md:text-[1.75rem]">Linog · Earthquakes</h1>
-          <p className="text-muted" aria-live="polite">
+    <div className="pb-12">
+      <h1 className="sr-only">Linog · Earthquakes of the Philippines since 1900</h1>
+      <section id="quake-map" className={`${FULL_MAP} scroll-mt-14 bg-surface`} aria-label="Earthquake map">
+        <LinogMap
+          quakes={filtered}
+          dark={dark}
+          mode={mode}
+          provinceLabel={provinceLabel}
+          focus={focus}
+          onSelect={select}
+          selectedId={selected?.id ?? null}
+        />
+        <MapTopBar>
+          <MapPill>
             {data ? (
               <>
-                <strong className="text-foreground tabular-nums">{formatNumber(filtered.length)}</strong> of{" "}
-                <span className="tabular-nums">{formatNumber(quakes.length)}</span> quakes since 1900
+                <strong className="font-semibold tabular-nums">{formatNumber(filtered.length)}</strong> earthquakes
+                <span className="hidden text-muted sm:inline">
+                  {" "}
+                  · {filter.yearFrom}–{filter.yearTo}
+                </span>
               </>
             ) : error ? (
-              <span className="text-red-600">Could not load quake data: {error}</span>
+              <span className="text-red-600">Could not load quakes</span>
             ) : (
               "Loading quakes…"
             )}
-          </p>
+          </MapPill>
+          <FiltersButton count={changed + Number(mode === "heat")} onClick={() => setDrawerOpen(true)} />
+        </MapTopBar>
+        <div className="pointer-events-none absolute bottom-6 left-3 z-[1000] max-w-[calc(100%-4.5rem)] lg:left-4">
+          {mode === "dots" ? (
+            <MagnitudeLegend dark={dark} />
+          ) : (
+            <div className="rounded-full border border-border bg-background/95 px-3.5 py-1.5 text-xs">Brighter = more quakes</div>
+          )}
         </div>
-        <div className="flex rounded-xl bg-surface p-1" role="group" aria-label="Map style">
-          {(["dots", "heat"] as const).map((m) => (
-            <button
-              key={m}
-              type="button"
-              onClick={() => setMode(m)}
-              aria-pressed={mode === m}
-              className={`rounded-lg px-4 py-1.5 text-sm ${mode === m ? "bg-background font-semibold shadow-sm" : "text-muted"}`}
-            >
-              {m === "dots" ? "Dots" : "Heatmap"}
-            </button>
-          ))}
-        </div>
+        {selected && (
+          <MapSidePanel label="Selected earthquake" onClose={() => setSelected(null)}>
+            <QuakeDetails q={selected} label={provinceLabel(selected)} slug={selected.prov >= 0 ? data?.provinces[selected.prov] : undefined} />
+          </MapSidePanel>
+        )}
+      </section>
+
+      <div className="mx-auto mt-12 grid max-w-[1440px] gap-12 px-4 md:px-8 lg:grid-cols-2">
+        <section>
+          <h2 className="text-[2rem] leading-tight">Strongest earthquakes</h2>
+          <div className="mt-3">{data && <StrongestList quakes={filtered} dark={dark} label={provinceLabel} onPick={pickFromList} />}</div>
+        </section>
+        <section>
+          <h2 className="text-[2rem] leading-tight">By year and province</h2>
+          <div className="mt-4">
+            {data && (
+              <LazyVisible minHeight={600}>
+                <QuakeCharts
+                  quakes={filtered}
+                  provinceNames={provinceNames}
+                  yearFrom={deferredFilter.yearFrom}
+                  yearTo={deferredFilter.yearTo}
+                  dark={dark}
+                />
+              </LazyVisible>
+            )}
+          </div>
+        </section>
       </div>
 
-      <div className="mt-4">
-        <ChipBar>
-          <MoreFiltersChip count={changed} onClick={() => setDrawerOpen(true)} />
+      <FilterDrawer
+        open={drawerOpen}
+        onClose={() => setDrawerOpen(false)}
+        onClear={changed > 0 || mode === "heat" ? () => {
+                reset();
+                setMode("dots");
+              } : undefined}
+        title="Filters"
+      >
+        <Segmented
+          label="Show as"
+          value={mode}
+          onChange={setMode}
+          options={[
+            { value: "dots", label: "Dots" },
+            { value: "heat", label: "Heatmap" },
+          ]}
+        />
+        <ChipGroup label="Quick picks">
           <Chip
             on={filter.magMin >= STRONG}
             onClick={() => setFilter({ ...filter, magMin: filter.magMin >= STRONG ? MAG_LIMITS.min : STRONG })}
@@ -158,68 +210,9 @@ export default function LinogExplorer() {
           <Chip on={filter.landOnly} onClick={() => setFilter({ ...filter, landOnly: !filter.landOnly })}>
             On land only
           </Chip>
-          {changed > 0 && (
-            <button type="button" onClick={reset} className="shrink-0 px-2 text-sm text-muted underline lg:ml-auto">
-              Clear
-            </button>
-          )}
-        </ChipBar>
-      </div>
-
-      <section
-        id="quake-map"
-        className="relative mt-3 h-[60dvh] min-h-[380px] scroll-mt-16 overflow-hidden rounded-2xl bg-surface lg:h-[min(680px,calc(100dvh-15rem))]"
-        aria-label="Earthquake map"
-      >
-        <LinogMap
-          quakes={filtered}
-          dark={dark}
-          mode={mode}
-          provinceLabel={provinceLabel}
-          focus={focus}
-          onSelect={select}
-          selectedId={selected?.id ?? null}
-        />
-        <div className="pointer-events-none absolute bottom-6 left-3 z-[1000] max-w-[calc(100%-1.5rem)]">
-          {mode === "dots" ? (
-            <MagnitudeLegend dark={dark} />
-          ) : (
-            <div className="rounded-full bg-background px-3.5 py-1.5 text-xs shadow-sm">Brighter = more quakes</div>
-          )}
-        </div>
-        {selected && (
-          <MapSidePanel label="Selected earthquake" onClose={() => setSelected(null)}>
-            <QuakeDetails q={selected} label={provinceLabel(selected)} slug={selected.prov >= 0 ? data?.provinces[selected.prov] : undefined} />
-          </MapSidePanel>
-        )}
-      </section>
-
-      <div className="mt-10 grid gap-10 lg:grid-cols-2">
-        <section>
-          <h2 className="text-xl font-semibold">Charts</h2>
-          <div className="mt-4">
-            {data && (
-              <LazyVisible minHeight={600}>
-                <QuakeCharts
-                  quakes={filtered}
-                  provinceNames={provinceNames}
-                  yearFrom={deferredFilter.yearFrom}
-                  yearTo={deferredFilter.yearTo}
-                  dark={dark}
-                />
-              </LazyVisible>
-            )}
-          </div>
-        </section>
-        <section>
-          <h2 className="text-xl font-semibold">Strongest earthquakes</h2>
-          <div className="mt-3">{data && <StrongestList quakes={filtered} dark={dark} label={provinceLabel} onPick={pickFromList} />}</div>
-        </section>
-      </div>
-
-      <FilterDrawer open={drawerOpen} onClose={() => setDrawerOpen(false)} title="Filter quakes">
-        <QuakeFilters filter={filter} onChange={setFilter} onReset={reset} firstYear={FIRST_YEAR} lastYear={THIS_YEAR} />
-        <p className="mt-6 text-sm text-muted">Before the 1970s only big quakes were recorded, so older years look quieter.</p>
+        </ChipGroup>
+        <QuakeFilters filter={filter} onChange={setFilter} firstYear={FIRST_YEAR} lastYear={THIS_YEAR} />
+        <p className="text-sm text-muted">Before the 1970s only big quakes were recorded, so older years look quieter.</p>
       </FilterDrawer>
     </div>
   );
@@ -231,7 +224,7 @@ function QuakeDetails({ q, label, slug }: { q: Quake; label: string; slug?: stri
   return (
     <div className="flex h-full flex-col gap-4 p-5 pt-4 lg:pt-5">
       <div className="pr-10">
-        <div className="text-4xl font-bold leading-none">{formatMag(q.mag)}</div>
+        <div className="num text-5xl">{formatMag(q.mag)}</div>
         <div className="mt-1.5 text-lg font-semibold leading-snug">{q.place || "Unknown location"}</div>
         <div className="text-sm text-muted">{label}</div>
       </div>
@@ -251,7 +244,7 @@ function QuakeDetails({ q, label, slug }: { q: Quake; label: string; slug?: stri
           Open on USGS →
         </a>
         {slug && (
-          <Link href={`/lugar/${slug}`} className="rounded-full bg-surface py-2.5 text-center font-semibold hover:bg-raised">
+          <Link href={`/lugar/${slug}`} className="rounded-full border border-control py-2.5 text-center font-semibold hover:border-foreground">
             {label.replace(/^Offshore, near /, "")} history
           </Link>
         )}

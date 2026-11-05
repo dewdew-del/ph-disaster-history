@@ -8,21 +8,20 @@ import { ALL_CATS, type StormFilter } from "./stormFilter";
 type Props = {
   filter: StormFilter;
   onChange: (f: StormFilter) => void;
-  onReset: () => void;
   decades: number[];
   provinces?: ProvinceInfo[];
 };
 
-const selectCls = "w-full rounded-md border border-border bg-card px-2 py-1.5 text-sm";
+const selectCls = "h-11 w-full rounded-lg border border-control bg-background px-3 text-base";
 
-export default function StormFilters({ filter, onChange, onReset, decades, provinces }: Props) {
+export default function StormFilters({ filter, onChange, decades, provinces }: Props) {
   const searching = filter.q.trim() !== "";
   const years = filter.decade === "all" ? [] : Array.from({ length: 10 }, (_, i) => (filter.decade as number) + i);
 
   return (
     <div className="space-y-4">
       <label className="block">
-        <span className="text-sm font-medium">Search name</span>
+        <span className="text-sm text-muted">Search name</span>
         <input
           type="search"
           value={filter.q}
@@ -35,7 +34,7 @@ export default function StormFilters({ filter, onChange, onReset, decades, provi
 
       <div className={`grid grid-cols-2 gap-2 ${searching ? "opacity-50" : ""}`}>
         <label className="block">
-          <span className="text-sm font-medium">Decade</span>
+          <span className="text-sm text-muted">Decade</span>
           <select
             className={`mt-1 ${selectCls}`}
             value={String(filter.decade)}
@@ -54,7 +53,7 @@ export default function StormFilters({ filter, onChange, onReset, decades, provi
           </select>
         </label>
         <label className="block">
-          <span className="text-sm font-medium">Year</span>
+          <span className="text-sm text-muted">Year</span>
           <select
             className={`mt-1 ${selectCls}`}
             value={String(filter.year)}
@@ -73,11 +72,11 @@ export default function StormFilters({ filter, onChange, onReset, decades, provi
 
       {provinces && provinces.length > 0 && (
         <label className="block">
-          <span className="text-sm font-medium">Province hit (approximate path area)</span>
+          <span className="text-sm text-muted">Province hit (approximate path area)</span>
           <select
             className={`mt-1 ${selectCls}`}
             value={filter.province}
-            onChange={(e) => onChange({ ...filter, province: e.target.value })}
+            onChange={(e) => onChange({ ...filter, province: e.target.value, decade: e.target.value ? "all" : filter.decade, year: "all" })}
           >
             <option value="">Any province</option>
             {provinces.map((p) => (
@@ -90,7 +89,7 @@ export default function StormFilters({ filter, onChange, onReset, decades, provi
       )}
 
       <fieldset>
-        <legend className="mb-1.5 text-sm font-medium">Peak strength</legend>
+        <legend className="mb-2 text-sm text-muted">Peak strength</legend>
         <div className="flex flex-wrap gap-1.5">
           {ALL_CATS.map((c) => {
             const on = filter.cats.includes(c);
@@ -111,10 +110,6 @@ export default function StormFilters({ filter, onChange, onReset, decades, provi
           })}
         </div>
       </fieldset>
-
-      <button type="button" onClick={onReset} className="text-sm text-accent underline">
-        Reset filters
-      </button>
     </div>
   );
 }

@@ -296,3 +296,16 @@ Plan: `docs/minimal-redesign-plan.md`. Mockup approved by Dewdew first (artifact
 **How to test**
 - Any page: press "/", type "yol" → Yolanda and Yoling; Esc or Close shuts it. On a phone width the search fills the screen.
 - Footer → Sources still opens `/sources`.
+
+### Minimal step 2: map pages (2026-11-06)
+**Done**
+- `/linog` and `/bagyo`: the map fills the screen under the header (above the tab bar on phones). On the map: a count pill ("15,778 earthquakes · 1900–2026", "128 storms · 2020s") and a **Filters** button with a count badge, a small legend bottom-left, zoom buttons bottom-right.
+- The chip row is gone from the page. Everything lives in the Filters panel (`FilterDrawer.tsx`, right panel / bottom sheet): Dots/Heatmap (`Segmented`), quick picks (the old chips), sliders, depth, decade/year, province, strength, "Clear all", "Show results".
+- New shared pieces: `src/components/map/MapControls.tsx` (pill, Filters button, full-screen map height), `ChipGroup` + `Segmented` in `Chips.tsx`. Side panel and fact strips use hairlines and serif numbers.
+- OSM tiles are shown in muted grey in light mode (CSS filter, same tiles) so the orange data stands out; zoom buttons moved to the bottom-right on every map.
+- Strongest list, charts, storm list and stats sit below the map with serif headings.
+
+**How to test**
+- `/linog` → Filters → Heatmap → Show results: badge shows 1, legend says "Brighter = more quakes". Clear all → back to dots.
+- `/bagyo` → Filters → Super typhoons → pill shows "… storms · 2020s". Pick a province → pill adds "hit <province>" and switches to all years.
+- Phone width: pill left, Filters right, the panel slides up from the bottom.
