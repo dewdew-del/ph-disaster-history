@@ -4,7 +4,7 @@ A free, fully static website that maps where strong earthquakes hit the Philippi
 
 *Linog* = earthquake, *bagyo* = typhoon.
 
-**Live:** https://ph-disaster-history.vercel.app
+**Live demo:** https://ph-disaster-history.vercel.app
 
 ![Home page](docs/screenshots/home.jpg)
 
