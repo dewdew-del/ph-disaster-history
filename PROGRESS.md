@@ -339,3 +339,7 @@ Plan: `docs/minimal-redesign-plan.md`. Mockup approved by Dewdew first (artifact
 **How to test**
 - `/bagyo/retired`, `/sources`, `/lugar`: serif title, short intro, nothing boxed.
 - Theme toggle (moon icon) on any page: everything stays readable in dark mode.
+
+### Dark mode by default (2026-11-06)
+- `src/app/layout.tsx`: the page now starts dark; light only if the visitor picks it with the toggle (saved in localStorage). `useIsDark` assumes dark before the page loads.
+- Test: open the site in a private window: dark. Tap the sun icon: light, and it stays light after reload.

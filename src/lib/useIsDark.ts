@@ -12,5 +12,5 @@ function subscribe(onChange: () => void) {
 const isDarkNow = () => document.documentElement.classList.contains("dark");
 
 export function useIsDark(): boolean {
-  return useSyncExternalStore(subscribe, isDarkNow, () => false);
+  return useSyncExternalStore(subscribe, isDarkNow, () => true); // dark is the default
 }

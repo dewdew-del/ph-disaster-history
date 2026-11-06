@@ -22,15 +22,15 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: "#f5f6f7",
+  themeColor: "#0f1113",
 };
 
-// Light by default; dark only when the visitor picked it. Runs before paint so the page doesn't flash.
-const themeScript = `(function(){try{if(localStorage.getItem('theme')==='dark')document.documentElement.classList.add('dark');}catch(e){}})();`;
+// Dark by default (the html tag ships with "dark"); light only when the visitor picked it. Runs before paint so the page doesn't flash.
+const themeScript = `(function(){try{if(localStorage.getItem('theme')==='light')document.documentElement.classList.remove('dark');}catch(e){}})();`;
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={`h-full antialiased ${display.variable} ${sans.variable}`} suppressHydrationWarning>
+    <html lang="en" className={`dark h-full antialiased ${display.variable} ${sans.variable}`} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
