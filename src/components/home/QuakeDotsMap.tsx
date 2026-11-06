@@ -43,7 +43,7 @@ export default function QuakeDotsMap({ className = "" }: { className?: string })
 
   return (
     <svg viewBox={`0 0 ${W} ${H}`} className={className} role="img" aria-label={`Map of the Philippines with every M${MIN_MAG}+ earthquake since 1900`}>
-      <path d={land} fill="var(--raised)" />
+      <path d={land} fill="var(--land)" />
       {BANDS.map((b, i) => (
         <path key={b.min} d={paths[i]} fill="none" stroke={b.color} strokeOpacity={b.opacity} strokeWidth={b.width} strokeLinecap="round" />
       ))}

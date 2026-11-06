@@ -14,6 +14,8 @@
   --surface: #eceef0;
   --raised: #e3e6e9;
   --control: #cfd3d8;
+  /* Land on the home dot map: soft green so the islands read clearly */
+  --land: #cfe2c6;
   /* Intensity ramp (same as src/lib/scales.ts): weak -> strong */
   --cat-0: #fb923c;
   --cat-1: #ea580c;
@@ -33,6 +35,7 @@
   --surface: #17191c;
   --raised: #202327;
   --control: #34383e;
+  --land: #22352a;
   --cat-0: #c2410c;
   --cat-1: #ea580c;
   --cat-2: #fb923c;
