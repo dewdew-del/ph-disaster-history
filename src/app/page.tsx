@@ -6,7 +6,7 @@ import { fastYearPH, formatMag, formatNumber } from "@/lib/format";
 // Home is a board of flat tiles fitted edge to edge: name, map, four numbers, four links, the deadliest list, storms per decade.
 const tile = "rounded-md bg-surface p-5 md:p-6";
 const linkTile =
-  "group flex min-h-20 items-end justify-between gap-3 rounded-md p-5 text-lg font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 md:p-6";
+  "group flex min-h-14 items-center justify-between gap-3 rounded-md px-4 py-3 text-[0.9375rem] font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-2";
 
 export default function Home() {
   const quakes = getQuakesSummary();
@@ -45,11 +45,11 @@ export default function Home() {
 
         <dl className="grid grid-cols-2 gap-2 md:grid-cols-4">
           {numbers.map((n) => (
-            <div key={n.label} className={`${tile} flex min-h-32 flex-col justify-between gap-4`}>
-              <dd className={`num text-[clamp(2rem,1.4rem+1.6vw,3rem)] ${n.kind === "quake" ? "text-[var(--cat-2)]" : "text-[var(--storm)]"}`}>
+            <div key={n.label} className="flex flex-col gap-1 rounded-md bg-surface px-4 py-4">
+              <dd className={`text-[1.75rem] font-semibold leading-tight tabular-nums tracking-tight ${n.kind === "quake" ? "text-[var(--cat-2)]" : "text-[var(--storm)]"}`}>
                 {n.value}
               </dd>
-              <dt className="text-sm text-muted">{n.label}</dt>
+              <dt className="text-sm leading-snug text-muted">{n.label}</dt>
             </div>
           ))}
         </dl>

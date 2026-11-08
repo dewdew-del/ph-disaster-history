@@ -355,3 +355,6 @@ Mockup approved by Dewdew (artifact "PH Disaster History board"). Picked with th
 - Storm/province pages, map controls, filters panel, chips: flat tiles instead of thin lines and outlined pills (`Row.tsx`, `MapControls.tsx`, `FilterDrawer.tsx`, `Chips.tsx`).
 - Usability: visible focus ring, "Skip to content" link, reduced-motion support, no double-tap zoom delay, panels do not scroll the page behind them.
 - Test: open `/` in dark and light; press Tab to see the focus ring and the skip link; `/linog` Filters panel; `/bagyo/2013306N07162`.
+
+### Home: smaller number and link tiles (2026-11-08)
+- `src/app/page.tsx`: the 4 numbers use Stack Sans Text semibold at 28px (easier to read than the thin display face), tiles about half as tall; the 4 link tiles are short one-line bars.
