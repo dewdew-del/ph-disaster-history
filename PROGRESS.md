@@ -361,3 +361,4 @@ Mockup approved by Dewdew (artifact "PH Disaster History board"). Picked with th
 
 ### Home: text floats over the map (2026-11-08)
 - `src/app/page.tsx`: the dot map is now the background of the first screen (right side on desktop, faded behind the text on phones). Title, numbers and links float over it with no tile boxes; one dark button (Earthquake map) + 3 text links. Deadliest list and storms-per-decade tiles stay below.
+- Less text: removed the subtitle, the map caption and the My province / Retired names links from the hero (both are in the menu/footer); shorter number labels.

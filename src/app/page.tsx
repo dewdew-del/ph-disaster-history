@@ -1,5 +1,5 @@
 import Link from "next/link";
-import QuakeDotsMap, { MIN_MAG } from "@/components/home/QuakeDotsMap";
+import QuakeDotsMap from "@/components/home/QuakeDotsMap";
 import { getQuakes, getQuakesSummary, getTyphoonIndex } from "@/lib/data-server";
 import { fastYearPH, formatMag, formatNumber } from "@/lib/format";
 
@@ -24,10 +24,10 @@ export default function Home() {
   const maxDecade = Math.max(...decades.map(([, n]) => n));
 
   const numbers: { value: string; label: string; kind: "quake" | "storm" }[] = [
-    { value: formatNumber(quakes.total), label: "earthquakes since 1900", kind: "quake" },
+    { value: formatNumber(quakes.total), label: "quakes since 1900", kind: "quake" },
     { value: formatNumber(typhoons.count), label: "typhoons since 1945", kind: "storm" },
-    { value: formatMag(strongest[2]), label: `strongest quake, ${fastYearPH(strongest[1])}`, kind: "quake" },
-    { value: formatNumber(deadliest[0]?.phDeaths ?? 0), label: `dead in PH, ${deadliest[0]?.local ?? "Yolanda"} ${deadliest[0]?.season ?? ""}`, kind: "storm" },
+    { value: formatMag(strongest[2]), label: `strongest, ${fastYearPH(strongest[1])}`, kind: "quake" },
+    { value: formatNumber(deadliest[0]?.phDeaths ?? 0), label: `dead, ${deadliest[0]?.local ?? "Yolanda"}`, kind: "storm" },
   ];
 
   return (
@@ -37,10 +37,6 @@ export default function Home() {
         <QuakeDotsMap className="pointer-events-none absolute inset-y-0 right-0 h-full w-full opacity-30 sm:opacity-50 lg:right-[4%] lg:w-[58%] lg:opacity-100" />
         <div className="relative flex flex-col gap-8 px-3 py-10 md:px-6 md:py-14 lg:max-w-[52%] lg:py-20">
           <h1 className="text-[clamp(2.4rem,1.4rem+3.6vw,4.75rem)] leading-[1.02]">Where the Philippines shakes and the storms come in</h1>
-          <p className="max-w-[40ch] text-lg text-muted">
-            <span className="font-medium text-foreground">Every M4.5+ earthquake since 1900 and every typhoon since 1945,</span> mapped from USGS
-            and IBTrACS data.
-          </p>
           <dl className="grid grid-cols-2 gap-x-8 gap-y-6 sm:grid-cols-4">
             {numbers.map((n) => (
               <div key={n.label} className="flex flex-col gap-1">
@@ -58,14 +54,7 @@ export default function Home() {
             <Link href="/bagyo" className="font-medium underline decoration-[1.5px] underline-offset-[6px] hover:no-underline">
               Typhoon map
             </Link>
-            <Link href="/lugar" className="font-medium underline decoration-[1.5px] underline-offset-[6px] hover:no-underline">
-              My province
-            </Link>
-            <Link href="/bagyo/retired" className="font-medium underline decoration-[1.5px] underline-offset-[6px] hover:no-underline">
-              Retired names
-            </Link>
           </nav>
-          <p className="text-sm text-muted">Each dot is one M{MIN_MAG}+ earthquake (USGS)</p>
         </div>
       </section>
 
