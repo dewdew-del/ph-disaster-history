@@ -67,11 +67,11 @@ export default function LugarPicker({ provinces, counts }: Props) {
   const legend = breaks.map((b, i) => ({
     to: b,
     from: i === 0 ? 0 : breaks[i - 1] + 1,
-    color: rampColor(classColorStep(i, breaks.length), dark),
+    color: rampColor(classColorStep(i, breaks.length), dark, metric === "storms" ? "storm" : "quake"),
   }));
 
   return (
-    <div className="mx-auto max-w-[1280px] px-4 pb-16 pt-8 md:px-8 md:pt-12">
+    <div className="mx-auto max-w-[1440px] px-2 pb-12 pt-2 md:px-4">
       <h1 className="text-[3rem] leading-none md:text-[3.75rem]">My Province</h1>
       <p className="mt-3 max-w-2xl text-muted">
         Pick a province, or tap one on the map.
@@ -80,7 +80,7 @@ export default function LugarPicker({ provinces, counts }: Props) {
       <label className="mt-4 block max-w-md">
         <span className="text-sm text-muted">Province</span>
         <select
-          className="mt-1 h-11 w-full rounded-lg border border-control bg-background px-3"
+          className="mt-1 h-11 w-full rounded-md bg-surface px-3"
           defaultValue=""
           onChange={(e) => e.target.value && router.push(`/lugar/${e.target.value}`)}
         >
@@ -103,14 +103,14 @@ export default function LugarPicker({ provinces, counts }: Props) {
         <section>
           <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
             <p className="text-sm text-muted">Color by</p>
-            <div className="flex rounded-full border border-control p-0.5 text-sm" role="group" aria-label="Color by">
+            <div className="flex rounded-md bg-raised p-1 text-sm" role="group" aria-label="Color by">
               {(["storms", "quakes"] as const).map((m) => (
                 <button
                   key={m}
                   type="button"
                   aria-pressed={metric === m}
                   onClick={() => setMetric(m)}
-                  className={`rounded-full px-3.5 py-1.5 ${metric === m ? "bg-foreground font-semibold text-background" : "text-muted hover:text-foreground"}`}
+                  className={`rounded px-3.5 py-1.5 ${metric === m ? "bg-foreground font-semibold text-background" : "text-muted hover:text-foreground"}`}
                 >
                   {m === "storms" ? "Typhoons" : "Earthquakes"}
                 </button>
@@ -125,12 +125,13 @@ export default function LugarPicker({ provinces, counts }: Props) {
                 breaks={breaks}
                 label={unit}
                 dark={dark}
+                kind={metric === "storms" ? "storm" : "quake"}
                 onPick={(slug) => router.push(`/lugar/${slug}`)}
               />
             ) : (
               <MapLoading />
             )}
-            <div className="pointer-events-none absolute bottom-6 left-2 z-[1000] rounded-lg border border-border bg-background/95 px-3 py-2 text-xs">
+            <div className="pointer-events-none absolute bottom-6 left-2 z-[1000] rounded-md bg-surface px-3 py-2 text-xs">
               <div className="mb-1 font-medium">{metric === "storms" ? "Storms in path area, 1945–now" : "Quakes M4.5+, 1900–now"}</div>
               <ul className="space-y-0.5">
                 {legend.map((l) => (

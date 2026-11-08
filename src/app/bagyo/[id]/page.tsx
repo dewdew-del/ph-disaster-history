@@ -7,7 +7,7 @@ import Row, { Facts } from "@/components/ui/Row";
 import { getProvinceIndex, getSatellitePhotos, getTyphoonDetail, getTyphoonIndex } from "@/lib/data-server";
 import type { SatellitePhoto } from "@/lib/data-server";
 import { formatDateRangePH, formatDateTimePH, formatNumber, formatUsd } from "@/lib/format";
-import { categoryColor, categoryName } from "@/lib/scales";
+import { categoryName } from "@/lib/scales";
 import { stormLabel, type TyphoonSummary } from "@/lib/types";
 
 export const dynamicParams = false;
@@ -83,12 +83,12 @@ export default async function StormPage({ params }: PageProps<"/bagyo/[id]">) {
   const english = s.local && s.name ? s.name : null;
 
   return (
-    <article className="mx-auto max-w-[1280px] px-4 pb-16 pt-8 md:px-8 md:pt-12">
-      <header>
+    <article className="mx-auto max-w-[1440px] px-2 pb-12 pt-2 md:px-4">
+      <header className="rounded-md bg-surface p-5 md:p-7">
         <h1 className="text-[3.25rem] leading-none md:text-[4.5rem]">{title}</h1>
         <p className="mt-3 flex flex-wrap items-center gap-x-2 gap-y-1 text-muted">
           <span className="inline-flex items-center gap-2 font-semibold text-foreground">
-            <span aria-hidden className="h-2.5 w-2.5 rounded-[3px]" style={{ background: categoryColor(s.cat, false) }} />
+            <span aria-hidden className="h-2.5 w-2.5 rounded-[3px]" style={{ background: s.cat === "UNK" ? "var(--cat-u)" : "var(--storm)" }} />
             {categoryName(s.cat)}
           </span>
           {english && <span>· {english}</span>}
@@ -105,16 +105,16 @@ export default async function StormPage({ params }: PageProps<"/bagyo/[id]">) {
         </p>
       </header>
 
-      <div className="mt-8">
+      <div className="mt-2">
         <Facts items={facts} />
       </div>
 
-      <div className={`mt-8 grid gap-5 ${photo ? "lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]" : ""}`}>
+      <div className={`mt-2 grid gap-2 ${photo ? "lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]" : ""}`}>
         <StormMapView id={s.id} label={`${label}, ${s.season}`} track={s.track} provinceSlugs={s.provinces} />
         {photo && <SatelliteFigure photo={photo} label={label} />}
       </div>
 
-      <div className="mt-12">
+      <div className="mt-2 grid gap-2">
         <Row title="Wind over time">
           <WindChartLazy track={s.track} />
         </Row>
@@ -163,8 +163,8 @@ export default async function StormPage({ params }: PageProps<"/bagyo/[id]">) {
           <Row title="Same provinces, other deadly storms">
             <ol>
               {related.map((r) => (
-                <li key={r.id} className="border-b border-border last:border-b-0">
-                  <Link href={`/bagyo/${r.id}`} className="flex items-baseline gap-4 py-3 hover:text-muted">
+                <li key={r.id} className="">
+                  <Link href={`/bagyo/${r.id}`} className="-mx-3 flex items-baseline gap-4 rounded px-3 py-3 hover:bg-raised">
                     <span className="flex-1 text-lg font-medium">
                       {r.local ?? stormLabel(r)} <span className="text-sm font-normal text-muted">{r.season}</span>
                     </span>
@@ -206,9 +206,9 @@ export default async function StormPage({ params }: PageProps<"/bagyo/[id]">) {
         </Row>
       </div>
 
-      <nav className="mt-4 grid grid-cols-2 gap-6 border-t border-border pt-6" aria-label="Previous and next storm">
+      <nav className="mt-2 grid grid-cols-2 gap-2" aria-label="Previous and next storm">
         {s.prev ? (
-          <Link href={`/bagyo/${s.prev.id}`} className="group">
+          <Link href={`/bagyo/${s.prev.id}`} className="group rounded-md bg-surface p-5 hover:bg-raised">
             <span className="text-sm text-muted">← Previous</span>
             <span className="block text-lg font-medium group-hover:underline">{s.prev.label}</span>
           </Link>
@@ -216,7 +216,7 @@ export default async function StormPage({ params }: PageProps<"/bagyo/[id]">) {
           <span />
         )}
         {s.next && (
-          <Link href={`/bagyo/${s.next.id}`} className="group text-right">
+          <Link href={`/bagyo/${s.next.id}`} className="group rounded-md bg-surface p-5 text-right hover:bg-raised">
             <span className="text-sm text-muted">Next →</span>
             <span className="block text-lg font-medium group-hover:underline">{s.next.label}</span>
           </Link>

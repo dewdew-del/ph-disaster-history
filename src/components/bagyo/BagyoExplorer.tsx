@@ -160,7 +160,7 @@ export default function BagyoExplorer() {
           <CategoryLegend dark={dark} />
         </div>
         {(tooMany || tracksLoading) && index && (
-          <div className="absolute left-1/2 top-16 z-[1000] w-max max-w-[90%] -translate-x-1/2 rounded-full border border-border bg-background/95 px-4 py-2 text-center text-sm">
+          <div className="absolute left-1/2 top-16 z-[1000] w-max max-w-[90%] -translate-x-1/2 rounded-md bg-surface px-4 py-2 text-center text-sm shadow-[0_2px_8px_rgba(0,0,0,0.18)]">
             {tooMany ? `${formatNumber(filtered.length)} storms: pick a decade in Filters to draw them` : "Loading tracks…"}
           </div>
         )}
@@ -253,7 +253,7 @@ function StormDetails({ s, photo, dark }: { s: TyphoonSummary; photo?: Photo; da
             [String(s.prov.length), "provinces"],
           ]}
         />
-        <Link href={`/bagyo/${s.id}`} className="mt-auto rounded-full bg-foreground py-2.5 text-center font-semibold text-background">
+        <Link href={`/bagyo/${s.id}`} className="mt-auto rounded-md bg-foreground py-3 text-center font-semibold text-background">
           Open full page →
         </Link>
       </div>

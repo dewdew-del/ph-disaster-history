@@ -159,7 +159,7 @@ export default function SiteSearch() {
                   Close
                 </button>
               </div>
-              <div className="flex-1 overflow-y-auto pb-6 lg:pb-2">
+              <div className="flex-1 overflow-y-auto overscroll-contain pb-6 lg:pb-2">
                 <Results
                   id={listId}
                   results={results}

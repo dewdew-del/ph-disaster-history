@@ -18,7 +18,7 @@ export default function DecadeCharts({ storms, quakes }: Props) {
     <div className="grid gap-6 sm:grid-cols-2">
       <section>
         <h3 className="text-sm font-medium">Storms per decade (path area)</h3>
-        <ColumnChart data={storms} dark={dark} color={rampColor(2, dark)} unit="storms" height={150} />
+        <ColumnChart data={storms} dark={dark} color={rampColor(2, dark, "storm")} unit="storms" height={150} />
       </section>
       <section>
         <h3 className="text-sm font-medium">Quakes M4.5+ per decade</h3>

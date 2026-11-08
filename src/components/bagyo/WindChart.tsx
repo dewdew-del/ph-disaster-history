@@ -65,7 +65,7 @@ export default function WindChart({ track }: { track: TrackPoint[] }) {
           <Line
             type="monotone"
             dataKey="kmh"
-            stroke={rampColor(3, dark)}
+            stroke={rampColor(3, dark, "storm")}
             strokeWidth={2}
             dot={false}
             activeDot={{ r: 4 }}

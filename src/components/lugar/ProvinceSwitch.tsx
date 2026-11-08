@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 export default function ProvinceSwitch({ current, provinces }: { current: string; provinces: { slug: string; name: string }[] }) {
   const router = useRouter();
   return (
-    <label className="relative flex h-10 items-center rounded-full border border-control pl-4 pr-9 text-sm hover:bg-surface">
+    <label className="relative flex h-11 items-center rounded-md bg-raised pl-4 pr-9 text-sm hover:bg-control">
       Change province
       <span aria-hidden className="pointer-events-none absolute right-3.5">
         ▾

@@ -39,7 +39,7 @@ export default function QuakeFilters({ filter, onChange, firstYear, lastYear }: 
           {DEPTH_BANDS.map((d) => (
             <label
               key={d.key}
-              className="flex cursor-pointer items-center gap-1.5 rounded-full border border-control px-3 py-2 text-sm has-[:checked]:border-foreground"
+              className="flex cursor-pointer items-center gap-1.5 rounded-md bg-raised px-3 py-2 text-sm has-[:checked]:bg-control"
             >
               <input
                 type="checkbox"

@@ -73,8 +73,8 @@ export default async function ProvincePage({ params }: PageProps<"/lugar/[provin
   ];
 
   return (
-    <article className="mx-auto max-w-[1280px] px-4 pb-16 pt-8 md:px-8 md:pt-12">
-      <header className="flex flex-wrap items-end gap-x-6 gap-y-4">
+    <article className="mx-auto max-w-[1440px] px-2 pb-12 pt-2 md:px-4">
+      <header className="flex flex-wrap items-end gap-x-6 gap-y-4 rounded-md bg-surface p-5 md:p-7">
         <div className="min-w-0 flex-1">
           <h1 className="text-[3.25rem] leading-none md:text-[4.5rem]">{info.name}</h1>
           <p className="mt-3 text-muted">{region}</p>
@@ -82,21 +82,21 @@ export default async function ProvincePage({ params }: PageProps<"/lugar/[provin
         <ProvinceSwitch current={province} provinces={provinces} />
       </header>
 
-      <div className="mt-8">
+      <div className="mt-2">
         <Facts items={facts} />
       </div>
 
-      <div className="mt-8">
+      <div className="mt-2">
         <ProvinceMapView feature={feature} bbox={info.bbox} rows={rows} name={info.name} storms={shownStorms} />
       </div>
 
-      <div className="mt-12">
+      <div className="mt-2 grid gap-2">
         <Row title="Deadliest typhoons">
           {deadliest.length ? (
             <ol>
               {deadliest.map((s, i) => (
-                <li key={s.id} className="border-b border-border last:border-b-0">
-                  <Link href={`/bagyo/${s.id}`} className="flex items-baseline gap-4 py-3 hover:text-muted">
+                <li key={s.id} className="">
+                  <Link href={`/bagyo/${s.id}`} className="-mx-3 flex items-baseline gap-4 rounded px-3 py-3 hover:bg-raised">
                     <span className="w-6 text-sm tabular-nums text-muted">{String(i + 1).padStart(2, "0")}</span>
                     <span className="min-w-0 flex-1 truncate text-lg font-medium">
                       {s.local ?? stormLabel(s)} <span className="text-sm font-normal text-muted">{s.season}</span>
@@ -121,12 +121,12 @@ export default async function ProvincePage({ params }: PageProps<"/lugar/[provin
           {strongest.length ? (
             <ol>
               {strongest.map((q) => (
-                <li key={q.id} className="border-b border-border last:border-b-0">
+                <li key={q.id} className="">
                   <a
                     href={`https://earthquake.usgs.gov/earthquakes/eventpage/${q.id}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-baseline gap-4 py-3 hover:text-muted"
+                    className="-mx-3 flex items-baseline gap-4 rounded px-3 py-3 hover:bg-raised"
                   >
                     <span className="num w-14 shrink-0 text-2xl">{formatMag(q.mag).replace("M", "")}</span>
                     <span className="min-w-0 flex-1 truncate">

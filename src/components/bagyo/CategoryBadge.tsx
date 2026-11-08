@@ -9,7 +9,7 @@ export default function CategoryBadge({ cat, est }: { cat: CatCode; est?: boolea
   const dark = useIsDark();
   return (
     <span
-      className="inline-flex items-center gap-1 rounded-full bg-surface px-2 py-0.5 text-sm font-medium"
+      className="inline-flex items-center gap-1 rounded bg-raised px-2 py-0.5 text-sm font-medium"
       title={`${categoryName(cat)}${est ? " (wind estimated from JTWC)" : ""}`}
     >
       <span aria-hidden className="h-2 w-2 rounded-full" style={{ background: categoryColor(cat, dark) }} />

@@ -1,17 +1,25 @@
 import type { CatCode } from "./types";
 
 // Color and size scales shared by maps, legends and charts.
-// One single-hue (orange) ordinal ramp for "intensity", validated for both themes
-// (dataviz validator: monotone lightness, one hue, light end clears the surface).
+// Two ordinal ramps for "intensity": earthquakes burn warm (amber to red), typhoons run cool (sky blue to deep blue / white).
 // Light mode: weak = lighter, strong = darker. Dark mode flips so strong stands out most.
+export type RampKind = "quake" | "storm";
 
-const RAMP_LIGHT = ["#fb923c", "#ea580c", "#c2410c", "#9a3412", "#6c2410"];
-const RAMP_DARK = ["#c2410c", "#ea580c", "#fb923c", "#fdba74", "#fed7aa"];
+const RAMPS: Record<RampKind, { light: string[]; dark: string[] }> = {
+  quake: {
+    light: ["#e9a800", "#ec8a00", "#e8590c", "#d9381e", "#a61e1e"],
+    dark: ["#b0581c", "#e8590c", "#ff8a3d", "#ffc14d", "#ffe08a"],
+  },
+  storm: {
+    light: ["#7cc0ee", "#3f9be6", "#1f7fd6", "#145fb0", "#0b3d7a"],
+    dark: ["#2a6aa8", "#3a92e0", "#62bdf6", "#a6dcff", "#eaf7ff"],
+  },
+};
 
 export const UNKNOWN_COLOR = "#94a3b8";
 
-export function rampColor(step: number, dark: boolean): string {
-  const ramp = dark ? RAMP_DARK : RAMP_LIGHT;
+export function rampColor(step: number, dark: boolean, kind: RampKind = "quake"): string {
+  const ramp = dark ? RAMPS[kind].dark : RAMPS[kind].light;
   return ramp[Math.max(0, Math.min(ramp.length - 1, step))];
 }
 
@@ -81,11 +89,11 @@ export function catCodeFromIndex(i: number): CatCode {
   return i < 0 ? "UNK" : CATEGORIES[i].code;
 }
 
-export const catColorByIndex = (i: number, dark: boolean) => (i < 0 ? UNKNOWN_COLOR : rampColor(i, dark));
+export const catColorByIndex = (i: number, dark: boolean) => (i < 0 ? UNKNOWN_COLOR : rampColor(i, dark, "storm"));
 
 export function categoryColor(code: CategoryCode, dark: boolean): string {
   const i = categoryIndex(code);
-  return i < 0 ? UNKNOWN_COLOR : rampColor(i, dark);
+  return i < 0 ? UNKNOWN_COLOR : rampColor(i, dark, "storm");
 }
 
 export function categoryName(code: CategoryCode): string {

@@ -12,7 +12,7 @@ type Props = {
   provinces?: ProvinceInfo[];
 };
 
-const selectCls = "h-11 w-full rounded-lg border border-control bg-background px-3 text-base";
+const selectCls = "h-11 w-full rounded-md bg-raised px-3 text-base";
 
 export default function StormFilters({ filter, onChange, decades, provinces }: Props) {
   const searching = filter.q.trim() !== "";

@@ -12,15 +12,15 @@ export function ChipGroup({ label, children }: { label: string; children: ReactN
   );
 }
 
-/** Toggle chip: filled ink with a tick when on, hairline outline when off. */
+/** Toggle chip: filled ink with a tick when on, a flat tile when off. */
 export function Chip({ on, onClick, children }: { on: boolean; onClick: () => void; children: ReactNode }) {
   return (
     <button
       type="button"
       aria-pressed={on}
       onClick={onClick}
-      className={`flex h-10 shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full px-4 text-sm transition-colors ${
-        on ? "bg-foreground font-semibold text-background" : "border border-control hover:border-foreground"
+      className={`flex h-10 shrink-0 items-center gap-1.5 whitespace-nowrap rounded-md px-4 text-sm transition-colors ${
+        on ? "bg-foreground font-semibold text-background" : "bg-raised hover:bg-control"
       }`}
     >
       {on && (
@@ -48,14 +48,14 @@ export function Segmented<T extends string>({
   return (
     <fieldset>
       <legend className="mb-2 text-sm text-muted">{label}</legend>
-      <div className="flex rounded-full border border-control p-0.5">
+      <div className="flex rounded-md bg-raised p-1">
         {options.map((o) => (
           <button
             key={o.value}
             type="button"
             aria-pressed={value === o.value}
             onClick={() => onChange(o.value)}
-            className={`h-9 flex-1 rounded-full text-sm ${value === o.value ? "bg-foreground font-semibold text-background" : "text-muted hover:text-foreground"}`}
+            className={`h-9 flex-1 rounded text-sm ${value === o.value ? "bg-foreground font-semibold text-background" : "text-muted hover:text-foreground"}`}
           >
             {o.label}
           </button>

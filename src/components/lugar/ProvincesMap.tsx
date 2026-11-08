@@ -6,7 +6,7 @@ import { GeoJSON } from "react-leaflet";
 import type { Feature, FeatureCollection } from "geojson";
 import type { Layer, LeafletMouseEvent, Path } from "leaflet";
 import BaseMap from "@/components/map/BaseMap";
-import { rampColor } from "@/lib/scales";
+import { rampColor, type RampKind } from "@/lib/scales";
 
 type Props = {
   provinces: FeatureCollection;
@@ -16,6 +16,7 @@ type Props = {
   breaks: number[];
   label: string;
   dark: boolean;
+  kind: RampKind;
   onPick: (slug: string) => void;
 };
 
@@ -24,9 +25,9 @@ export function classOf(v: number, breaks: number[]): number {
   return breaks.length - 1;
 }
 
-export default function ProvincesMap({ provinces, values, breaks, label, dark, onPick }: Props) {
+export default function ProvincesMap({ provinces, values, breaks, label, dark, kind, onPick }: Props) {
   const key = useMemo(() => `${label}-${dark}`, [label, dark]);
-  const border = dark ? "#0e0f11" : "#ffffff";
+  const border = dark ? "#08111d" : "#ffffff";
 
   return (
     <BaseMap>
@@ -36,7 +37,7 @@ export default function ProvincesMap({ provinces, values, breaks, label, dark, o
         style={(f?: Feature) => {
           const v = values[String(f?.properties?.slug)] ?? 0;
           const step = classOf(v, breaks) + (5 - breaks.length);
-          return { color: border, weight: 0.8, fillColor: rampColor(step, dark), fillOpacity: 0.75 };
+          return { color: border, weight: 0.8, fillColor: rampColor(step, dark, kind), fillOpacity: 0.75 };
         }}
         onEachFeature={(f: Feature, layer: Layer) => {
           const slug = String(f.properties?.slug);
@@ -46,7 +47,7 @@ export default function ProvincesMap({ provinces, values, breaks, label, dark, o
           });
           layer.on({
             click: () => onPick(slug),
-            mouseover: (e: LeafletMouseEvent) => (e.target as Path).setStyle({ weight: 2.5, color: dark ? "#f1f2f4" : "#15171a" }),
+            mouseover: (e: LeafletMouseEvent) => (e.target as Path).setStyle({ weight: 2.5, color: dark ? "#eaf0f6" : "#08111d" }),
             mouseout: (e: LeafletMouseEvent) => (e.target as Path).setStyle({ weight: 0.8, color: border }),
           });
         }}

@@ -4,7 +4,7 @@ import { MAG_BANDS, magColor, magRadius } from "@/lib/scales";
 
 export default function MagnitudeLegend({ dark }: { dark: boolean }) {
   return (
-    <div className="pointer-events-auto flex items-center gap-3 rounded-full border border-border bg-background/95 px-3.5 py-1.5 text-xs">
+    <div className="pointer-events-auto flex items-center gap-3 rounded-md bg-surface px-3.5 py-2 text-xs shadow-[0_2px_8px_rgba(0,0,0,0.18)]">
       <span className="font-semibold">M</span>
       <ul className="flex flex-wrap items-center gap-x-3 gap-y-1">
         {MAG_BANDS.map((b) => {

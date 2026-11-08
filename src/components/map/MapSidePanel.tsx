@@ -12,7 +12,7 @@ export default function MapSidePanel({ label, onClose, children }: Props) {
   return (
     <aside
       aria-label={label}
-      className="fixed inset-x-0 bottom-[calc(4rem+env(safe-area-inset-bottom))] z-[1050] max-h-[50dvh] overflow-y-auto rounded-t-2xl border-t border-border bg-background shadow-[0_-8px_24px_rgba(0,0,0,0.12)] lg:absolute lg:inset-x-auto lg:bottom-4 lg:right-4 lg:top-4 lg:max-h-none lg:w-[360px] lg:rounded-xl lg:border lg:shadow-[0_8px_24px_rgba(0,0,0,0.10)]"
+      className="fixed inset-x-0 bottom-[calc(4rem+env(safe-area-inset-bottom))] z-[1050] max-h-[50dvh] overflow-y-auto rounded-t-xl bg-surface shadow-[0_-8px_24px_rgba(0,0,0,0.12)] lg:absolute lg:inset-x-auto lg:bottom-4 lg:right-4 lg:top-4 lg:max-h-none lg:w-[360px] lg:rounded-md lg:border-0 lg:shadow-[0_8px_24px_rgba(0,0,0,0.10)]"
     >
       <div className="mx-auto mt-2 h-1 w-10 rounded bg-control lg:hidden" aria-hidden />
       <button
@@ -28,12 +28,12 @@ export default function MapSidePanel({ label, onClose, children }: Props) {
   );
 }
 
-/** Two or three big numbers in a row between hairlines. */
+/** Two or three big numbers as small tiles. */
 export function FactStrip({ items }: { items: [string, string][] }) {
   return (
-    <div className="grid border-y border-border" style={{ gridTemplateColumns: `repeat(${items.length}, minmax(0, 1fr))` }}>
-      {items.map(([value, label], i) => (
-        <div key={label} className={`py-3 ${i > 0 ? "border-l border-border pl-3" : ""}`}>
+    <div className="grid gap-2" style={{ gridTemplateColumns: `repeat(${items.length}, minmax(0, 1fr))` }}>
+      {items.map(([value, label]) => (
+        <div key={label} className="rounded-md bg-raised p-3">
           <div className="num text-[1.75rem]">{value}</div>
           <div className="mt-1 text-xs text-muted">{label}</div>
         </div>

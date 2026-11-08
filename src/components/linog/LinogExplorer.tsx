@@ -130,7 +130,7 @@ export default function LinogExplorer() {
           {mode === "dots" ? (
             <MagnitudeLegend dark={dark} />
           ) : (
-            <div className="rounded-full border border-border bg-background/95 px-3.5 py-1.5 text-xs">Brighter = more quakes</div>
+            <div className="rounded-md bg-surface px-3.5 py-2 text-xs shadow-[0_2px_8px_rgba(0,0,0,0.18)]">Brighter = more quakes</div>
           )}
         </div>
         {selected && (
@@ -239,12 +239,12 @@ function QuakeDetails({ q, label, slug }: { q: Quake; label: string; slug?: stri
           href={`https://earthquake.usgs.gov/earthquakes/eventpage/${encodeURIComponent(q.id)}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="rounded-full bg-foreground py-2.5 text-center font-semibold text-background"
+          className="rounded-md bg-foreground py-3 text-center font-semibold text-background"
         >
           Open on USGS →
         </a>
         {slug && (
-          <Link href={`/lugar/${slug}`} className="rounded-full border border-control py-2.5 text-center font-semibold hover:border-foreground">
+          <Link href={`/lugar/${slug}`} className="rounded-md bg-raised py-3 text-center font-semibold hover:bg-control">
             {label.replace(/^Offshore, near /, "")} history
           </Link>
         )}

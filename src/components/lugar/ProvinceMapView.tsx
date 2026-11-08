@@ -55,14 +55,14 @@ export default function ProvinceMapView({ feature, bbox, rows, name, storms }: P
         landLabel={name}
         offshoreLabel={`Offshore, near ${name}`}
       />
-      <div className="absolute left-3 top-3 z-[1000] flex rounded-full border border-border bg-background/95 p-0.5" role="group" aria-label="Show on map">
+      <div className="absolute left-3 top-3 z-[1000] flex rounded-md bg-surface p-1 shadow-[0_2px_8px_rgba(0,0,0,0.18)]" role="group" aria-label="Show on map">
         {MODES.map(([m, label]) => (
           <button
             key={m}
             type="button"
             aria-pressed={mode === m}
             onClick={() => setMode(m)}
-            className={`rounded-full px-3.5 py-1.5 text-sm ${mode === m ? "bg-foreground font-semibold text-background" : ""}`}
+            className={`rounded px-3.5 py-1.5 text-sm ${mode === m ? "bg-foreground font-semibold text-background" : ""}`}
           >
             {label}
           </button>

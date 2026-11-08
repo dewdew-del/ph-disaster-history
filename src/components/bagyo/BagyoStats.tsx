@@ -43,7 +43,7 @@ export default function BagyoStats({ filtered, all, dark }: Props) {
         <h3 className="text-sm font-medium">Storms per year (current filters)</h3>
         {perYear.length ? (
           <>
-            <ColumnChart data={perYear} dark={dark} color={rampColor(2, dark)} unit="storms" ticks={ticks} />
+            <ColumnChart data={perYear} dark={dark} color={rampColor(2, dark, "storm")} unit="storms" ticks={ticks} />
             <ChartTable data={perYear} unit="storms" />
           </>
         ) : (

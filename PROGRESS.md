@@ -346,3 +346,12 @@ Plan: `docs/minimal-redesign-plan.md`. Mockup approved by Dewdew first (artifact
 
 ### Green land on the home map (2026-11-06)
 - New `--land` color in `src/app/globals.css` (soft green light, dark green in dark mode), used by `QuakeDotsMap.tsx` so the islands are visible in light mode.
+
+### Board look: Stack Sans, ocean navy, warm quakes / cool storms (2026-11-08)
+Mockup approved by Dewdew (artifact "PH Disaster History board"). Picked with the design-taste skill; reviewed with the Vercel web-design-guidelines skill.
+- Fonts: Stack Sans Headline (light) + Stack Sans Text replace the serif (`src/app/layout.tsx`, `globals.css`).
+- Colours: ocean-navy ground (dark default), cool grey-blue light mode. Two data ramps in `src/lib/scales.ts`: quakes amber to red, storms sky blue to white. Green land kept on the home map.
+- Home (`src/app/page.tsx`) is a board of flat tiles: title, dot map, 4 big numbers, 4 links, deadliest list, storms per decade.
+- Storm/province pages, map controls, filters panel, chips: flat tiles instead of thin lines and outlined pills (`Row.tsx`, `MapControls.tsx`, `FilterDrawer.tsx`, `Chips.tsx`).
+- Usability: visible focus ring, "Skip to content" link, reduced-motion support, no double-tap zoom delay, panels do not scroll the page behind them.
+- Test: open `/` in dark and light; press Tab to see the focus ring and the skip link; `/linog` Filters panel; `/bagyo/2013306N07162`.

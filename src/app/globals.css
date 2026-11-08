@@ -4,43 +4,47 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 :root {
-  /* Quiet atlas: cool grey paper, ink for every control and link, orange only on data. */
-  --background: #f5f6f7;
-  --foreground: #14171a;
-  --muted: #5f656e;
-  --card: #f5f6f7;
-  --border: #dfe2e6;
-  --accent: #14171a;
-  --surface: #eceef0;
-  --raised: #e3e6e9;
-  --control: #cfd3d8;
+  /* Board: flat tiles on a cool ground. Ink for controls; data colour only on data (quakes warm, storms cool). */
+  --background: #e8edf2;
+  --foreground: #08111d;
+  --muted: #4c5b6d;
+  --card: #ffffff;
+  --border: #d3dbe4;
+  --accent: #08111d;
+  --surface: #ffffff;
+  --raised: #dde4ec;
+  --control: #b9c5d2;
   /* Land on the home dot map: soft green so the islands read clearly */
-  --land: #cfe2c6;
-  /* Intensity ramp (same as src/lib/scales.ts): weak -> strong */
-  --cat-0: #fb923c;
-  --cat-1: #ea580c;
-  --cat-2: #c2410c;
-  --cat-3: #9a3412;
-  --cat-4: #6c2410;
+  --land: #cde3c3;
+  /* Quake ramp (same as src/lib/scales.ts): weak -> strong */
+  --cat-0: #e9a800;
+  --cat-1: #ec8a00;
+  --cat-2: #e8590c;
+  --cat-3: #d9381e;
+  --cat-4: #a61e1e;
   --cat-u: #94a3b8;
+  /* One storm colour for numbers and bars (middle of the storm ramp) */
+  --storm: #1f7fd6;
 }
 
 .dark {
-  --background: #0f1113;
-  --foreground: #eef0f2;
-  --muted: #9a9fa7;
-  --card: #0f1113;
-  --border: #262a2f;
-  --accent: #eef0f2;
-  --surface: #17191c;
-  --raised: #202327;
-  --control: #34383e;
-  --land: #22352a;
-  --cat-0: #c2410c;
-  --cat-1: #ea580c;
-  --cat-2: #fb923c;
-  --cat-3: #fdba74;
-  --cat-4: #fed7aa;
+  /* Ocean-navy ground, like satellite imagery of the Pacific */
+  --background: #08111d;
+  --foreground: #eaf0f6;
+  --muted: #95a3b5;
+  --card: #101c2c;
+  --border: #1f2e42;
+  --accent: #eaf0f6;
+  --surface: #101c2c;
+  --raised: #182a40;
+  --control: #2b3e57;
+  --land: #1d3a2e;
+  --cat-0: #b0581c;
+  --cat-1: #e8590c;
+  --cat-2: #ff8a3d;
+  --cat-3: #ffc14d;
+  --cat-4: #ffe08a;
+  --storm: #62bdf6;
 }
 
 @theme inline {
@@ -60,8 +64,8 @@
   --text-sm--line-height: 1.45;
   --text-base: 1.0625rem;
   --text-base--line-height: 1.55;
-  --font-sans: var(--font-public-sans), ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
-  --font-display: var(--font-instrument-serif), Georgia, "Times New Roman", serif;
+  --font-sans: var(--font-stack-text), ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  --font-display: var(--font-stack-headline), var(--font-stack-text), ui-sans-serif, system-ui, sans-serif;
 }
 
 html {
@@ -72,19 +76,20 @@ html.dark {
   color-scheme: dark;
 }
 
-/* Headings use the display serif everywhere (unlayered, so it wins over font-bold utilities). */
+/* Headings: Stack Sans Headline, light, tight (unlayered, so it wins over font-bold utilities). */
 h1,
 h2 {
   font-family: var(--font-display);
-  font-weight: 400;
-  letter-spacing: -0.005em;
+  font-weight: 300;
+  letter-spacing: -0.025em;
   text-wrap: balance;
 }
 
-/* Big numbers: serif, tabular. */
+/* Big numbers: display face, light, tabular. */
 .num {
   font-family: var(--font-display);
-  font-weight: 400;
+  font-weight: 300;
+  letter-spacing: -0.03em;
   font-variant-numeric: tabular-nums;
   line-height: 1;
 }
@@ -103,7 +108,7 @@ body {
 }
 
 .leaflet-container {
-  background: #eef0f2;
+  background: #dfe6ee;
 }
 
 .leaflet-bar,
@@ -121,13 +126,13 @@ body {
 }
 
 .dark .leaflet-container {
-  background: #0f1113;
+  background: #08111d;
 }
 
 .dark .leaflet-popup-content-wrapper,
 .dark .leaflet-popup-tip {
-  background: #17191c;
-  color: #f1f2f4;
+  background: #101c2c;
+  color: #eaf0f6;
 }
 
 .dark .leaflet-control-attribution {
@@ -140,8 +145,8 @@ body {
 }
 
 .dark .leaflet-bar a {
-  background: #17191c;
-  color: #f1f2f4;
+  background: #101c2c;
+  color: #eaf0f6;
   border-color: #2a2d32;
 }
 
@@ -160,4 +165,27 @@ body {
 .leaflet-popup-content {
   margin: 10px 12px;
   line-height: 1.4;
+}
+
+/* Usability: a clear keyboard focus ring on everything you can tab to. */
+:where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+  outline: 2px solid var(--storm);
+  outline-offset: 2px;
+}
+
+/* Phones: no double-tap zoom delay, no grey flash on tap. */
+html {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Respect "reduce motion": keep everything visible, drop the movement. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
 }
