@@ -34,7 +34,7 @@ export default function Home() {
     <div className="mx-auto grid max-w-[1440px] gap-2 px-2 pb-12 pt-2 md:px-4 lg:grid-cols-12">
       <section className="relative overflow-hidden lg:col-span-12 lg:min-h-[calc(100dvh-4.5rem)]">
         {/* The map is the background; the text floats over the open sea west of the islands. */}
-        <QuakeDotsMap className="pointer-events-none absolute inset-y-0 right-0 h-full w-full opacity-30 sm:opacity-50 lg:right-[4%] lg:w-[58%] lg:opacity-100" />
+        <QuakeDotsMap className="pointer-events-none absolute -top-[4%] right-0 h-[108%] w-full opacity-30 sm:opacity-50 lg:right-[2%] lg:w-[64%] lg:opacity-100" />
         <div className="relative flex flex-col gap-8 px-3 py-10 md:px-6 md:py-14 lg:max-w-[52%] lg:py-20">
           <h1 className="text-[clamp(2.4rem,1.4rem+3.6vw,4.75rem)] leading-[1.02]">Where the Philippines shakes and the storms come in</h1>
           <dl className="grid grid-cols-2 gap-x-8 gap-y-6 sm:grid-cols-4">

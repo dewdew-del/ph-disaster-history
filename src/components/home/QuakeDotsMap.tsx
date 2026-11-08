@@ -3,10 +3,10 @@ import { getQuakes, readPublicJson } from "@/lib/data-server";
 // A static picture of where strong quakes hit, drawn at build time (no Leaflet, no 1 MB download on the home page).
 // Each magnitude band is one SVG path of zero-length round-capped segments, so ~5,000 dots stay small.
 
-const LON0 = 116;
-const LON1 = 128;
-const LAT0 = 4;
-const LAT1 = 21.5;
+const LON0 = 117;
+const LON1 = 127;
+const LAT0 = 4.5;
+const LAT1 = 21;
 const K = Math.cos((((LAT0 + LAT1) / 2) * Math.PI) / 180);
 const W = 600;
 const S = W / ((LON1 - LON0) * K);
