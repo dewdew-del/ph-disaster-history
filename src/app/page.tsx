@@ -34,24 +34,24 @@ export default function Home() {
     <div className="mx-auto grid max-w-[1440px] gap-2 px-2 pb-12 pt-2 md:px-4 lg:grid-cols-12">
       <section className="relative overflow-hidden lg:col-span-12 lg:min-h-[calc(100dvh-4.5rem)]">
         {/* The map is the background; the text floats over the open sea west of the islands. */}
-        <QuakeDotsMap className="pointer-events-none absolute -top-[4%] right-0 h-[108%] w-full opacity-30 sm:opacity-50 lg:right-[2%] lg:w-[64%] lg:opacity-100" />
-        <div className="relative flex flex-col gap-8 px-3 py-10 md:px-6 md:py-14 lg:max-w-[52%] lg:py-20">
-          <h1 className="text-[clamp(2.4rem,1.4rem+3.6vw,4.75rem)] leading-[1.02]">Where the Philippines shakes and the storms come in</h1>
+        <QuakeDotsMap className="pointer-events-none absolute -top-[14%] -right-[6%] h-[128%] w-[112%] opacity-30 sm:opacity-50 lg:-right-[2%] lg:w-[72%] lg:opacity-100" />
+        <div className="relative flex flex-col gap-7 px-3 py-10 md:px-6 md:py-14 lg:max-w-[52%] lg:py-20">
+          <h1 className="text-[clamp(2.1rem,1.3rem+2.4vw,3.5rem)] leading-[1.05]">Where the Philippines shakes and the storms come in</h1>
           <dl className="grid grid-cols-2 gap-x-8 gap-y-6 sm:grid-cols-4">
             {numbers.map((n) => (
               <div key={n.label} className="flex flex-col gap-1">
-                <dd className={`text-[1.75rem] font-semibold leading-tight tabular-nums tracking-tight ${n.kind === "quake" ? "text-[var(--cat-2)]" : "text-[var(--storm)]"}`}>
+                <dd className={`text-[1.5rem] font-semibold leading-tight tabular-nums tracking-tight ${n.kind === "quake" ? "text-[var(--cat-2)]" : "text-[var(--storm)]"}`}>
                   {n.value}
                 </dd>
-                <dt className="text-sm leading-snug text-muted">{n.label}</dt>
+                <dt className="text-[0.8125rem] leading-snug text-muted">{n.label}</dt>
               </div>
             ))}
           </dl>
           <nav className="flex flex-wrap items-center gap-x-6 gap-y-3" aria-label="Explore">
-            <Link href="/linog" className="group inline-flex items-center gap-2 rounded-md bg-foreground px-5 py-3 font-medium text-background hover:opacity-90">
+            <Link href="/linog" className="group inline-flex items-center gap-2 rounded-md bg-foreground px-4 py-2.5 text-[0.9375rem] font-medium text-background hover:opacity-90">
               Earthquake map <span aria-hidden className="transition-transform group-hover:translate-x-1">→</span>
             </Link>
-            <Link href="/bagyo" className="font-medium underline decoration-[1.5px] underline-offset-[6px] hover:no-underline">
+            <Link href="/bagyo" className="text-[0.9375rem] font-medium underline decoration-[1.5px] underline-offset-[6px] hover:no-underline">
               Typhoon map
             </Link>
           </nav>
