@@ -358,3 +358,6 @@ Mockup approved by Dewdew (artifact "PH Disaster History board"). Picked with th
 
 ### Home: smaller number and link tiles (2026-11-08)
 - `src/app/page.tsx`: the 4 numbers use Stack Sans Text semibold at 28px (easier to read than the thin display face), tiles about half as tall; the 4 link tiles are short one-line bars.
+
+### Home: text floats over the map (2026-11-08)
+- `src/app/page.tsx`: the dot map is now the background of the first screen (right side on desktop, faded behind the text on phones). Title, numbers and links float over it with no tile boxes; one dark button (Earthquake map) + 3 text links. Deadliest list and storms-per-decade tiles stay below.

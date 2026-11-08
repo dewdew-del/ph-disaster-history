@@ -5,8 +5,6 @@ import { fastYearPH, formatMag, formatNumber } from "@/lib/format";
 
 // Home is a board of flat tiles fitted edge to edge: name, map, four numbers, four links, the deadliest list, storms per decade.
 const tile = "rounded-md bg-surface p-5 md:p-6";
-const linkTile =
-  "group flex min-h-14 items-center justify-between gap-3 rounded-md px-4 py-3 text-[0.9375rem] font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-2";
 
 export default function Home() {
   const quakes = getQuakesSummary();
@@ -34,48 +32,42 @@ export default function Home() {
 
   return (
     <div className="mx-auto grid max-w-[1440px] gap-2 px-2 pb-12 pt-2 md:px-4 lg:grid-cols-12">
-      <div className="grid gap-2 lg:col-span-7 lg:grid-rows-[auto_auto_auto]">
-        <section className={`${tile} flex flex-col justify-between gap-6 md:min-h-[300px]`}>
+      <section className="relative overflow-hidden lg:col-span-12 lg:min-h-[calc(100dvh-4.5rem)]">
+        {/* The map is the background; the text floats over the open sea west of the islands. */}
+        <QuakeDotsMap className="pointer-events-none absolute inset-y-0 right-0 h-full w-full opacity-30 sm:opacity-50 lg:right-[4%] lg:w-[58%] lg:opacity-100" />
+        <div className="relative flex flex-col gap-8 px-3 py-10 md:px-6 md:py-14 lg:max-w-[52%] lg:py-20">
           <h1 className="text-[clamp(2.4rem,1.4rem+3.6vw,4.75rem)] leading-[1.02]">Where the Philippines shakes and the storms come in</h1>
           <p className="max-w-[40ch] text-lg text-muted">
             <span className="font-medium text-foreground">Every M4.5+ earthquake since 1900 and every typhoon since 1945,</span> mapped from USGS
             and IBTrACS data.
           </p>
-        </section>
-
-        <dl className="grid grid-cols-2 gap-2 md:grid-cols-4">
-          {numbers.map((n) => (
-            <div key={n.label} className="flex flex-col gap-1 rounded-md bg-surface px-4 py-4">
-              <dd className={`text-[1.75rem] font-semibold leading-tight tabular-nums tracking-tight ${n.kind === "quake" ? "text-[var(--cat-2)]" : "text-[var(--storm)]"}`}>
-                {n.value}
-              </dd>
-              <dt className="text-sm leading-snug text-muted">{n.label}</dt>
-            </div>
-          ))}
-        </dl>
-
-        <nav className="grid grid-cols-2 gap-2 md:grid-cols-4" aria-label="Explore">
-          <Link href="/linog" className={`${linkTile} bg-foreground text-background hover:opacity-90`}>
-            Earthquake map <span aria-hidden className="transition-transform group-hover:translate-x-1">→</span>
-          </Link>
-          <Link href="/bagyo" className={`${linkTile} bg-surface hover:bg-raised`}>
-            Typhoon map <span aria-hidden className="transition-transform group-hover:translate-x-1">→</span>
-          </Link>
-          <Link href="/lugar" className={`${linkTile} bg-surface hover:bg-raised`}>
-            My province <span aria-hidden className="transition-transform group-hover:translate-x-1">→</span>
-          </Link>
-          <Link href="/bagyo/retired" className={`${linkTile} bg-surface hover:bg-raised`}>
-            Retired names <span aria-hidden className="transition-transform group-hover:translate-x-1">→</span>
-          </Link>
-        </nav>
-      </div>
-
-      <figure className="relative overflow-hidden rounded-md bg-surface lg:col-span-5">
-        <Link href="/linog" aria-label="Open the earthquake map" className="block h-full p-4">
-          <QuakeDotsMap className="mx-auto h-full max-h-[78vh] w-full" />
-        </Link>
-        <figcaption className="absolute bottom-4 left-5 text-sm text-muted">Each dot is one M{MIN_MAG}+ earthquake (USGS)</figcaption>
-      </figure>
+          <dl className="grid grid-cols-2 gap-x-8 gap-y-6 sm:grid-cols-4">
+            {numbers.map((n) => (
+              <div key={n.label} className="flex flex-col gap-1">
+                <dd className={`text-[1.75rem] font-semibold leading-tight tabular-nums tracking-tight ${n.kind === "quake" ? "text-[var(--cat-2)]" : "text-[var(--storm)]"}`}>
+                  {n.value}
+                </dd>
+                <dt className="text-sm leading-snug text-muted">{n.label}</dt>
+              </div>
+            ))}
+          </dl>
+          <nav className="flex flex-wrap items-center gap-x-6 gap-y-3" aria-label="Explore">
+            <Link href="/linog" className="group inline-flex items-center gap-2 rounded-md bg-foreground px-5 py-3 font-medium text-background hover:opacity-90">
+              Earthquake map <span aria-hidden className="transition-transform group-hover:translate-x-1">→</span>
+            </Link>
+            <Link href="/bagyo" className="font-medium underline decoration-[1.5px] underline-offset-[6px] hover:no-underline">
+              Typhoon map
+            </Link>
+            <Link href="/lugar" className="font-medium underline decoration-[1.5px] underline-offset-[6px] hover:no-underline">
+              My province
+            </Link>
+            <Link href="/bagyo/retired" className="font-medium underline decoration-[1.5px] underline-offset-[6px] hover:no-underline">
+              Retired names
+            </Link>
+          </nav>
+          <p className="text-sm text-muted">Each dot is one M{MIN_MAG}+ earthquake (USGS)</p>
+        </div>
+      </section>
 
       <section className={`${tile} lg:col-span-7`}>
         <h2 className="text-[1.75rem] leading-tight">Deadliest typhoons</h2>
